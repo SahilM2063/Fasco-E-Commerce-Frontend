@@ -11,16 +11,7 @@ export default {
       'md': { 'max': '768px' },
       'lg': { 'min': '769px' }
     },
-    extend: {
-      keyframes: {
-        slide: {
-          'from': { transform: 'translateX(0)' },
-          'to': { transform: 'translateX(-100%)' },
-        }
-      }
-
-    },
-    plugins: [require('daisyui')],
-  }
-
+    extend: {}
+  },
+  plugins: [require('daisyui')],
 }
