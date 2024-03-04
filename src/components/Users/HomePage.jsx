@@ -17,13 +17,16 @@ import f1 from "../../assets/f1.svg";
 import f2 from "../../assets/f2.svg";
 import f3 from "../../assets/f3.svg";
 import f4 from "../../assets/f4.svg";
-import ig1 from "../../assets/ig1.png";
 import ig2 from "../../assets/ig2.png";
 import ig3 from "../../assets/ig3.png";
 import ig4 from "../../assets/ig4.png";
 import ig5 from "../../assets/ig5.png";
 import ig6 from "../../assets/ig6.png";
-import ig7 from "../../assets/ig7.png";
+import ratingStar from "../../assets/ratingStar.svg";
+import leftChevron from "../../assets/leftChevron.svg";
+import rightChevron from "../../assets/rightChevron.svg";
+import t1 from "../../assets/t1.png";
+import t2 from "../../assets/t2.png";
 
 const arrivalsBtns = [
   "Men's Fashion",
@@ -56,8 +59,50 @@ const featuresArray = [
   },
 ];
 
+const testimonials = [
+  {
+    pfp: t1,
+    name: "James K.",
+    desc: "You won't regret it. I would like to personally thank you for your outstanding product. Absolutely wonderful!",
+    rating: 4,
+  },
+  {
+    pfp: t2,
+    name: "Emily S.",
+    desc: "Amazing experience! The product exceeded my expectations. I highly recommend it.",
+    rating: 5,
+  },
+  // {
+  //   pfp: t3,
+  //   name: "John D.",
+  //   desc: "Excellent service and great value for money. I'm impressed!",
+  //   rating: 5,
+  // },
+  // {
+  //   pfp: t4,
+  //   name: "Sarah M.",
+  //   desc: "I'm so glad I found this product. It has made my life much easier. Thank you!",
+  //   rating: 4,
+  // },
+  // Add more testimonials here as needed
+];
+
 const HomePage = () => {
   const [arrivalBtnActiveIndex, setArrivalBtnActiveIndex] = useState(0);
+  const [currentTestimonialIndex, setCurrentTestimonialIndex] = useState(0);
+
+  const prevCard = () => {
+    const isFirstCard = currentTestimonialIndex === 0;
+    const newIndex = isFirstCard
+      ? testimonials.length - 1
+      : currentTestimonialIndex - 1;
+    setCurrentTestimonialIndex(newIndex);
+  };
+  const nextCard = () => {
+    const isLastCard = currentTestimonialIndex === testimonials.length - 1;
+    const newIndex = isLastCard ? 0 : currentTestimonialIndex + 1;
+    setCurrentTestimonialIndex(newIndex);
+  };
 
   return (
     <>
@@ -123,6 +168,9 @@ const HomePage = () => {
         </div>
 
         <div className="arr_section_cards sm:my-4 md:my-6 lg:my-8 w-full grid sm:flex sm:flex-col md:grid-cols-2 lg:grid-cols-3 gap-10 md:gap-6 sm:gap-4">
+          <ArrivalProductCard />
+          <ArrivalProductCard />
+          <ArrivalProductCard />
           <ArrivalProductCard />
           <ArrivalProductCard />
           <ArrivalProductCard />
@@ -192,14 +240,13 @@ const HomePage = () => {
       </div>
 
       {/* Instagram sec */}
-      <div className="insta_sec w-full">
-        <h1 className="text-3xl font-semibold tracking-wide font-[Volkhov] text-center mb-4 my-16">
+      <div className="insta_sec w-full my-16">
+        <h1 className="text-3xl font-semibold tracking-wide font-[Volkhov] text-center mb-4">
           Follow Us On Instagram
         </h1>
         <p className="w-full lg:max-w-[58%] md:max-w-[80%] m-auto text-center md:text-sm sm:text-[10px] mb-20 sm:mb-8 font-[Poppins] text-gray-400 leading-6">
           Follow us on Instagram for an inside look at our latest collections,
-          style tips, and exclusive promotions. Join our fashion-forward
-          community and stay inspired with every scroll.
+          style tips, and exclusive promotions.
         </p>
         <div className="gallery_stripe w-full flex items-center justify-center">
           <img src={ig2} alt="ig" className="w-[14.57%]" />
@@ -207,6 +254,59 @@ const HomePage = () => {
           <img src={ig4} alt="ig" className="w-[14.57%]" />
           <img src={ig5} alt="ig" className="w-[14.57%]" />
           <img src={ig6} alt="ig" className="w-[14.57%]" />
+        </div>
+      </div>
+
+      {/* Testimonials sec  */}
+      <div className="testimonial_sec w-full py-8 bg-[#FAFAFA]">
+        <h1 className="text-3xl font-semibold tracking-wide font-[Volkhov] text-center mb-4 my-10">
+          This Is What Our Customers Say
+        </h1>
+        <p className="w-full lg:max-w-[58%] md:max-w-[80%] m-auto text-center md:text-sm sm:text-[10px] mb-20 sm:mb-8 font-[Poppins] text-gray-400 leading-6">
+          Explore firsthand accounts from our delighted customers, sharing their
+          experiences and satisfaction with our offerings.
+        </p>
+
+        <div className="slider w-full h-[320px] sm:h-[400px] px-32 md:px-10 flex items-center sm:gap-2">
+          <button
+            onClick={prevCard}
+            className="bg-white rounded-full w-[40px] h-[40px] flex items-center justify-center shadow-sm"
+          >
+            <img src={leftChevron} alt="leftArr" className="w-[80%]" />
+          </button>
+          <div className="card_comp w-[60%] md:w-[80%] sm:w-[80%] h-full m-auto flex flex-row sm:flex-col sm:items-center sm:justify-center gap-10 sm:gap-4 px-10 sm:p-0 py-14 bg-white  shadow-xl rounded-sm">
+            <div className="img_container w-[30%] sm:w-[60%]">
+              <img
+                src={testimonials[currentTestimonialIndex].pfp}
+                alt="t_img"
+                className="w-full object-cover"
+              />
+            </div>
+            <div className="text-content w-[60%] flex flex-col sm:justify-center sm:items-center gap-5 font-[Poppins]">
+              <p className="w-[80%] sm:w-full sm:text-[10px] text-sm text-[#484848] tracking-wide">
+                {testimonials[currentTestimonialIndex].desc > 90
+                  ? testimonials[currentTestimonialIndex].desc.slice(0, 90) +
+                    "..."
+                  : testimonials[currentTestimonialIndex].desc}
+              </p>
+              <div className="stars flex items-center">
+                <img src={ratingStar} alt="ratingStar" />
+                <img src={ratingStar} alt="ratingStar" />
+                <img src={ratingStar} alt="ratingStar" />
+                <img src={ratingStar} alt="ratingStar" />
+              </div>
+              <hr className="w-[40%] h-[1px] bg-black outline-none border-none" />
+              <span className="text-2xl font-semibold tracking-wide font-[Volkhov] text-[#484848]">
+                {testimonials[currentTestimonialIndex].name}
+              </span>
+            </div>
+          </div>
+          <button
+            onClick={nextCard}
+            className="bg-white rounded-full w-[40px] h-[40px] flex items-center justify-center shadow-sm"
+          >
+            <img src={rightChevron} alt="leftArr" className="w-[80%]" />
+          </button>
         </div>
       </div>
     </>
