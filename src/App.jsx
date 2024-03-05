@@ -4,6 +4,8 @@ import HomePage from "./components/Users/HomePage.jsx";
 import menuSvg from "./assets/menu.svg";
 import closeMenu from "./assets/closeMenu.svg";
 import rightArr from "./assets/rightArr.svg";
+import { Routes, Route, Link } from "react-router-dom";
+import Login from "./components/Users/Forms/Login.jsx";
 
 const links = [
   {
@@ -38,17 +40,21 @@ function App() {
         <div className="links flex gap-12 md:gap-6 text-sm md:text-xs md:hidden">
           {links.map((link, i) => {
             return (
-              <a key={i} href={link.href} className="cursor-pointer">
+              <Link key={i} to={link.href} className="cursor-pointer">
                 {link.title}
-              </a>
+              </Link>
             );
           })}
         </div>
-        <div className="buttons flex gap-6 md:gap-4 text-sm md:text-sm md:hidden">
-          <button>Sign In</button>
-          <button className="py-3 md:py-2 px-6 md:px-4 bg-black text-white rounded-lg">
-            Sign Up
-          </button>
+        <div className="buttons flex items-center gap-6 md:gap-4 text-sm md:text-sm md:hidden">
+          <Link to={"/login"}>
+            <button>Sign In</button>
+          </Link>
+          <Link to={"/register"}>
+            <button className="py-3 md:py-2 px-6 md:px-4 bg-black text-white rounded-lg">
+              Sign Up
+            </button>
+          </Link>
         </div>
         <div className="menuBtn hidden md:block">
           <img
@@ -81,27 +87,34 @@ function App() {
           <div className="links flex flex-col gap-12 md:gap-6">
             {links.map((link, i) => {
               return (
-                <a
+                <Link
                   key={i}
-                  href={link.href}
+                  to={link.href}
                   className="cursor-pointer hover:pl-2 hover:font-semibold transition-all"
                 >
                   {link.title}
-                </a>
+                </Link>
               );
             })}
           </div>
-          <div className="buttons flex sm:flex-col sm:items-start gap-6">
-            <button className="flex-1 sm:w-full">Sign In</button>
-            <button className="flex-1 sm:w-full py-3 md:py-2 bg-black text-white rounded-lg">
-              Sign Up
-            </button>
+          <div className="buttons flex items-center sm:flex-col sm:items-start gap-6">
+            <Link to={"/login"} className="flex-1 sm:w-full">
+              <button className="w-full">Sign In</button>
+            </Link>
+            <Link to={"/register"} className="flex-1 sm:w-full">
+              <button className="w-full py-3 md:py-2 bg-black text-white rounded-lg">
+                Sign Up
+              </button>
+            </Link>
           </div>
         </section>
       </div>
 
       {/* Homepage/Hero component */}
-      <HomePage />
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+        <Route path="/login" element={<Login />} />
+      </Routes>
     </div>
   );
 }

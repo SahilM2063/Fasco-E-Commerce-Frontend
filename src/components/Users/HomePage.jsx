@@ -27,6 +27,8 @@ import leftChevron from "../../assets/leftChevron.svg";
 import rightChevron from "../../assets/rightChevron.svg";
 import t1 from "../../assets/t1.png";
 import t2 from "../../assets/t2.png";
+import nl1 from "../../assets/nl1.png";
+import nl2 from "../../assets/nl2.png";
 
 const arrivalsBtns = [
   "Men's Fashion",
@@ -307,6 +309,71 @@ const HomePage = () => {
           >
             <img src={rightChevron} alt="leftArr" className="w-[80%]" />
           </button>
+        </div>
+      </div>
+
+      {/* NewsLetter sec */}
+      <div className="news_letter_sec w-full px-32 md:px-10 sm:px-0 py-8 flex items-center justify-center font-[Poppins] my-16">
+        <div className="img_container w-[20%]">
+          <img
+            src={nl1}
+            alt="nl_img"
+            className="w-full object-cover md:hidden sm:hidden"
+          />
+        </div>
+        <div className="nl_content flex flex-col items-center justify-end lg:gap-6 md:gap-4 sm:gap-2 sm:w-full sm:text-center">
+          <h1 className="text-3xl sm:text-2xl font-[Volkhov] font-semibold tracking-wide">
+            Subscribe To Our Newsletter
+          </h1>
+          <p className="text-[#8A8A8A] max-w-[80%] sm:max-w-full text-center text-sm sm:text-[12px]">
+            Stay informed with our curated newsletter delivering the latest
+            updates straight to your inbox.
+          </p>
+          <input
+            type="email"
+            placeholder="xyz@gmail.com"
+            className="w-[80%] sm:w-full sm:p-3 sm:text-sm p-4 px-8 shadow-lg rounded-lg text-[18px] outline-none mt-4 "
+          />
+          <button className="py-3 text-sm md:py-2 px-10 md:px-4 bg-black text-white rounded-lg mt-6">
+            Subscribe now
+          </button>
+        </div>
+        <div className="img_container w-[20%]">
+          <img
+            src={nl2}
+            alt="nl_img"
+            className="w-full object-cover md:hidden sm:hidden"
+          />
+        </div>
+      </div>
+
+      {/* footer */}
+      <div className="footer w-full px-32 sm:px-0 py-6 border-t-2 flex flex-col">
+        <div className="top w-full flex md:flex-col sm:flex-col justify-between items-center md:gap-4">
+          <div className="logo cursor-pointer">
+            <h1 className="text-3xl font-normal font-[Volkhov]">FASCO</h1>
+          </div>
+          <div className="flex gap-10 md:gap-6 sm:gap-2 items-center sm:justify-center sm:flex-wrap">
+            {[
+              "Support Center",
+              "Invoicing",
+              "Contract",
+              "Careers",
+              "Blogs",
+              "FAQs",
+            ].map((link, i) => {
+              return (
+                <a key={i} href="#" className="cursor-pointer sm:text-xs">
+                  {link}
+                </a>
+              );
+            })}
+          </div>
+        </div>
+        <div className="bottom w-full">
+          <p className="w-full font-[Poppins] text-center text-[12px] text-[#8A8A8A]">
+            Copyright © 2022 Xpro . All Rights Reseved.
+          </p>
         </div>
       </div>
     </>
