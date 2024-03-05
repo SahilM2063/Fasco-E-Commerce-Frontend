@@ -24,6 +24,7 @@ export const loginUserAction = createAsyncThunk("users/login", async ({ email, p
         })
         return data
     } catch (error) {
+        console.log(error)
         return rejectWithValue(error?.response?.data)
     }
 })
@@ -44,7 +45,7 @@ const userSlice = createSlice({
         builder.addCase(loginUserAction.rejected, (state, action) => {
             state.userAuth.loading = false;
             state.userAuth.error = action.payload
-        })
+        });
     }
 })
 

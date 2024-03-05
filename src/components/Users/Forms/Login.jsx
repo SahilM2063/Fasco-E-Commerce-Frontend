@@ -1,9 +1,31 @@
 /* eslint-disable no-unused-vars */
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import loginImg from "./assets/loginImg.png";
+import { useDispatch } from "react-redux";
+import { loginUserAction } from "../../../redux/slices/userSlice.js";
 
 const Login = () => {
+  // dispatch instance
+  const dispatch = useDispatch();
+  // state for form data
+  const [formData, setFormData] = useState({
+    email: "admin@gmail.com",
+    password: "12345",
+  });
+  // destructuring
+  const { email, password } = formData;
+  // onchange function
+  const onChangeHandler = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+  // onsubmit function
+  const onSubmitHandler = (e) => {
+    e.preventDefault();
+    // dispatching the action
+    dispatch(loginUserAction(formData));
+  };
+
   return (
     <div className="wrapper w-full h-[calc(100vh-104px)] px-32 md:px-10 sm:px-0 py-4">
       <div className="w-full h-full flex justify-center items-center border rounded-3xl">
@@ -22,18 +44,24 @@ const Login = () => {
           </Link>
           <h5 className="text-2xl font-[Volkhov] mb-10">Sign in to FASCO</h5>
           <form
-            action=""
+            onSubmit={onSubmitHandler}
             className="font-[Poppins] flex flex-col w-[70%] md:w-full sm:w-full"
           >
             <input
               type="email"
+              name="email"
               placeholder="Email"
+              value={email}
+              onChange={onChangeHandler}
               autoFocus
               className="w-full outline-none border-b-2 border-gray-400 p-2 mb-6 text-[#484848]"
             />
             <input
               type="password"
+              name="password"
               placeholder="Password"
+              value={password}
+              onChange={onChangeHandler}
               className="w-full outline-none border-b-2 border-gray-400 p-2 mb-8 text-[#484848]"
             />
             <button
