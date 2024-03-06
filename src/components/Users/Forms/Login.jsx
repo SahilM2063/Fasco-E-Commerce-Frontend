@@ -1,13 +1,16 @@
 /* eslint-disable no-unused-vars */
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import loginImg from "./assets/loginImg.png";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { loginUserAction } from "../../../redux/slices/userSlice.js";
+import ShowAlert from "../../../utils/ShowAlert.jsx";
 
 const Login = () => {
   // dispatch instance
   const dispatch = useDispatch();
+  // navigate instance
+  const navigate = useNavigate();
   // state for form data
   const [formData, setFormData] = useState({
     email: "admin@gmail.com",
@@ -26,6 +29,19 @@ const Login = () => {
     dispatch(loginUserAction(formData));
   };
 
+  const { error, loading, userInfo } = useSelector(
+    (state) => state.users.userAuth
+  );
+
+  useEffect(() => {
+    if (userInfo?.userFound?.isAdmin) {
+      navigate("/AdminDashBoard");
+    }
+    // else {
+    //   navigate("/CustomerProfile");
+    // }
+  }, [userInfo]);
+
   return (
     <div className="wrapper w-full h-[calc(100vh-104px)] px-32 md:px-10 sm:px-0 py-4">
       <div className="w-full h-full flex justify-center items-center border rounded-3xl">
@@ -36,6 +52,14 @@ const Login = () => {
             className="h-full object-cover md:hidden sm:hidden"
           />
         </div>
+        {error && (
+          <ShowAlert
+            key={Math.random()}
+            msg={error?.message}
+            alertType={"error"}
+            time={3000}
+          />
+        )}
         <div className="text_content w-[50%] md:w-[80%] sm:w-full p-4 sm:p-4">
           <Link to={"/"} className="logo cursor-pointer">
             <h1 className="text-4xl font-semibold font-[Volkhov] mb-10">
@@ -64,12 +88,21 @@ const Login = () => {
               onChange={onChangeHandler}
               className="w-full outline-none border-b-2 border-gray-400 p-2 mb-8 text-[#484848]"
             />
-            <button
-              type="submit"
-              className="w-full py-3 md:py-2 px-6 md:px-4 bg-black text-white rounded-lg mb-4 mt-6 border-[1px] border-white"
-            >
-              Sign in
-            </button>
+            {loading ? (
+              <button
+                type="submit"
+                className="w-full py-3 md:py-2 px-6 md:px-4 bg-black/95 disabled: text-white rounded-lg mb-4 mt-6 border-[1px] border-white"
+              >
+                Loading...
+              </button>
+            ) : (
+              <button
+                type="submit"
+                className="w-full py-3 md:py-2 px-6 md:px-4 bg-black text-white rounded-lg mb-4 mt-6 border-[1px] border-white"
+              >
+                Sign in
+              </button>
+            )}
             <Link to={"/register"}>
               <button
                 type="button"

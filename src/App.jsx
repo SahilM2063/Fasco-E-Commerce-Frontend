@@ -6,6 +6,8 @@ import closeMenu from "./assets/closeMenu.svg";
 import rightArr from "./assets/rightArr.svg";
 import { Routes, Route, Link } from "react-router-dom";
 import Login from "./components/Users/Forms/Login.jsx";
+import AdminDashBoard from "./components/Admin/AdminDashBoard.jsx";
+import CustomerProfile from "./components/Users/CustomerProfile.jsx";
 
 const links = [
   {
@@ -34,9 +36,9 @@ function App() {
       {/* Navbar Component */}
 
       <div className="w-full h-[80px] flex justify-between items-center px-32 md:px-10 font-[Poppins] text-[#484848]">
-        <div className="logo cursor-pointer">
+        <Link to={"/"} className="logo cursor-pointer">
           <h1 className="text-3xl font-normal font-[Volkhov]">FASCO</h1>
-        </div>
+        </Link>
         <div className="links flex gap-12 md:gap-6 text-sm md:text-xs md:hidden">
           {links.map((link, i) => {
             return (
@@ -114,6 +116,9 @@ function App() {
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/login" element={<Login />} />
+
+        <Route path="/AdminDashBoard" element={<AdminDashBoard />} />
+        <Route path="/CustomerProfile" element={<CustomerProfile />} />
       </Routes>
     </div>
   );
