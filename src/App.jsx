@@ -3,11 +3,12 @@ import React, { useState } from "react";
 import HomePage from "./components/Users/HomePage.jsx";
 import menuSvg from "./assets/menu.svg";
 import closeMenu from "./assets/closeMenu.svg";
-import rightArr from "./assets/rightArr.svg";
 import { Routes, Route, Link } from "react-router-dom";
 import Login from "./components/Users/Forms/Login.jsx";
 import AdminDashBoard from "./components/Admin/AdminDashBoard.jsx";
 import CustomerProfile from "./components/Users/CustomerProfile.jsx";
+import profile from "./components/Users/Forms/assets/profile.svg";
+import cart from "./components/Users/Forms/assets/cart.svg";
 
 const links = [
   {
@@ -31,6 +32,9 @@ const links = [
 function App() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
+  const user = JSON.parse(localStorage.getItem("userInfo"));
+  const isLoggedIn = user?.token ? true : false;
+
   return (
     <div className="w-full min-h-[100vh] ">
       {/* Navbar Component */}
@@ -48,16 +52,30 @@ function App() {
             );
           })}
         </div>
-        <div className="buttons flex items-center gap-6 md:gap-4 text-sm md:text-sm md:hidden">
-          <Link to={"/login"}>
-            <button>Sign In</button>
-          </Link>
-          <Link to={"/register"}>
-            <button className="py-3 md:py-2 px-6 md:px-4 bg-black text-white rounded-lg">
-              Sign Up
-            </button>
-          </Link>
-        </div>
+        {isLoggedIn && (
+          <div className="buttons flex items-center gap-6 md:gap-4 text-sm md:text-sm md:hidden">
+            <Link to={"/customerProfile"}>
+              <img src={profile} alt="profile" className="w-6" />
+            </Link>
+            <Link to={"/cart"}>
+              <button className="p-3 md:p-2 bg-black text-white rounded-lg">
+                <img src={cart} alt="profile" className="w-4" />
+              </button>
+            </Link>
+          </div>
+        )}
+        {!isLoggedIn && (
+          <div className="buttons flex items-center gap-6 md:gap-4 text-sm md:text-sm md:hidden">
+            <Link to={"/login"}>
+              <button>Sign In</button>
+            </Link>
+            <Link to={"/register"}>
+              <button className="py-3 md:py-2 px-6 md:px-4 bg-black text-white rounded-lg">
+                Sign Up
+              </button>
+            </Link>
+          </div>
+        )}
         <div className="menuBtn hidden md:block">
           <img
             onClick={() => setIsMenuOpen(true)}
@@ -99,16 +117,30 @@ function App() {
               );
             })}
           </div>
-          <div className="buttons flex items-center sm:flex-col sm:items-start gap-6">
-            <Link to={"/login"} className="flex-1 sm:w-full">
-              <button className="w-full">Sign In</button>
-            </Link>
-            <Link to={"/register"} className="flex-1 sm:w-full">
-              <button className="w-full py-3 md:py-2 bg-black text-white rounded-lg">
-                Sign Up
-              </button>
-            </Link>
-          </div>
+          {isLoggedIn && (
+            <div className="buttons flex items-center gap-6 md:gap-8">
+              <Link to={"/customerProfile"}>
+                <img src={profile} alt="profile" className="w-6" />
+              </Link>
+              <Link to={"/cart"}>
+                <button className="p-3 bg-black text-white rounded-lg">
+                  <img src={cart} alt="profile" className="w-4 md:w-5" />
+                </button>
+              </Link>
+            </div>
+          )}
+          {!isLoggedIn && (
+            <div className="buttons flex items-center sm:flex-col sm:items-start gap-6">
+              <Link to={"/login"} className="flex-1 sm:w-full">
+                <button className="w-full">Sign In</button>
+              </Link>
+              <Link to={"/register"} className="flex-1 sm:w-full">
+                <button className="w-full py-3 md:py-2 bg-black text-white rounded-lg">
+                  Sign Up
+                </button>
+              </Link>
+            </div>
+          )}
         </section>
       </div>
 
