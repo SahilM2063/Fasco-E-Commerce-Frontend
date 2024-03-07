@@ -6,6 +6,7 @@ import Login from "./components/Users/Forms/Login.jsx";
 import AdminDashBoard from "./components/Admin/AdminDashBoard.jsx";
 import CustomerProfile from "./components/Users/CustomerProfile.jsx";
 import Navbar from "./components/Users/Navbar.jsx";
+import AuthRoutes from "./routing/AuthRoutes.jsx";
 
 function App() {
   return (
@@ -14,7 +15,9 @@ function App() {
       <Navbar />
       <Routes>
         <Route path="/" element={<HomePage />} />
-        <Route path="/login" element={<Login />} />
+        <Route element={<AuthRoutes />}>
+          <Route path="/login" element={<Login />} />
+        </Route>
 
         <Route path="/AdminDashBoard" element={<AdminDashBoard />} />
         <Route path="/CustomerProfile" element={<CustomerProfile />} />
