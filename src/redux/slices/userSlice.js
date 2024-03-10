@@ -22,12 +22,25 @@ export const loginUserAction = createAsyncThunk("users/login", async ({ email, p
             email,
             password
         })
-
         //save the user into localStorage
         localStorage.setItem("userInfo", JSON.stringify(data));
         return data
     } catch (error) {
         console.log(error)
+        return rejectWithValue(error?.response?.data)
+    }
+})
+
+export const registerUserAction = createAsyncThunk("users/register", async ({ firstName, lastName, email, password }, { rejectWithValue, getState, dispatch }) => {
+    try {
+        const { data } = await axios.post(`${baseURL}/users/register`, {
+            firstName, lastName, email, password
+        })
+        //save the user into localStorage
+        localStorage.setItem("userInfo", JSON.stringify(data));
+        return data
+    } catch (error) {
+        console.log(error);
         return rejectWithValue(error?.response?.data)
     }
 })
@@ -48,6 +61,18 @@ const userSlice = createSlice({
         builder.addCase(loginUserAction.rejected, (state, action) => {
             state.userAuth.loading = false;
             state.userAuth.error = action.payload
+        });
+        // Register action
+        builder.addCase(registerUserAction.pending, (state, action) => {
+            state.loading = true;
+        });
+        builder.addCase(registerUserAction.fulfilled, (state, action) => {
+            state.loading = false;
+            state.user = action.payload
+        });
+        builder.addCase(registerUserAction.rejected, (state, action) => {
+            state.loading = false;
+            state.error = action.payload
         });
     }
 })

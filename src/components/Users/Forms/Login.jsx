@@ -5,6 +5,8 @@ import loginImg from "./assets/loginImg.png";
 import { useDispatch, useSelector } from "react-redux";
 import { loginUserAction } from "../../../redux/slices/userSlice.js";
 import ShowAlert from "../../../utils/ShowAlert.jsx";
+import googleSvg from "./assets/google.svg";
+import baseURL from "../../../utils/baseURL.js";
 
 const Login = () => {
   // dispatch instance
@@ -13,11 +15,14 @@ const Login = () => {
   const navigate = useNavigate();
   // state for form data
   const [formData, setFormData] = useState({
-    email: "admin@gmail.com",
-    password: "12345",
+    email: "",
+    password: "",
   });
   // destructuring
   const { email, password } = formData;
+  const { error, loading, userInfo } = useSelector(
+    (state) => state.users.userAuth
+  );
   // onchange function
   const onChangeHandler = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -29,10 +34,6 @@ const Login = () => {
     dispatch(loginUserAction(formData));
   };
 
-  const { error, loading, userInfo } = useSelector(
-    (state) => state.users.userAuth
-  );
-
   useEffect(() => {
     if (userInfo?.userFound?.isAdmin) {
       navigate("/AdminDashBoard");
@@ -43,7 +44,7 @@ const Login = () => {
   }, [userInfo]);
 
   return (
-    <div className="wrapper w-full h-[calc(100vh-104px)] px-32 md:px-10 sm:px-0 py-4">
+    <div className="wrapper w-full h-[calc(100vh-104px)] px-32 md:px-10 sm:p-0 py-4">
       <div className="w-full h-full flex justify-center items-center border rounded-3xl">
         <div className="img_container w-[50%] h-full md:hidden sm:hidden">
           <img
@@ -60,16 +61,24 @@ const Login = () => {
             time={3000}
           />
         )}
-        <div className="text_content w-[50%] md:w-[80%] sm:w-full p-4 sm:p-4">
+        <div className="text_content w-[50%] h-full md:w-[80%] sm:w-full p-4 py-10 sm:py-4 flex flex-col justify-between items-start">
           <Link to={"/"} className="logo cursor-pointer">
-            <h1 className="text-4xl font-semibold font-[Volkhov] mb-10">
-              FASCO
-            </h1>
+            <h1 className="text-4xl font-semibold font-[Volkhov]">FASCO</h1>
           </Link>
-          <h5 className="text-2xl font-[Volkhov] mb-10">Sign in to FASCO</h5>
+          <h5 className="text-xl font-[Volkhov] my-6">Sign in to FASCO</h5>
+          <Link
+            to={`${baseURL}/users/login/google`}
+            className="w-[70%] md:w-full sm:w-full flex items-center justify-center gap-6 py-3 border-[#484848] text-sm text-[#484848] font-[Poppins] border-[1px] rounded-lg"
+          >
+            <img src={googleSvg} alt="google" className="w-4" />
+            Sign in with google
+          </Link>
+          <p className="w-[70%] md:w-full sm:w-full text-center text-[#484848] font-bold my-3 tracking-wider">
+            Or
+          </p>
           <form
             onSubmit={onSubmitHandler}
-            className="font-[Poppins] flex flex-col w-[70%] md:w-full sm:w-full"
+            className="font-[Poppins] w-[70%] md:w-full sm:w-full"
           >
             <input
               type="email"
@@ -78,7 +87,7 @@ const Login = () => {
               value={email}
               onChange={onChangeHandler}
               autoFocus
-              className="w-full outline-none border-b-2 border-gray-400 p-2 mb-6 text-[#484848]"
+              className="w-full outline-none border-b-2 border-gray-400 py-2 mb-8 text-sm text-[#484848]"
             />
             <input
               type="password"
@@ -86,31 +95,31 @@ const Login = () => {
               placeholder="Password"
               value={password}
               onChange={onChangeHandler}
-              className="w-full outline-none border-b-2 border-gray-400 p-2 mb-8 text-[#484848]"
+              className="w-full outline-none border-b-2 border-gray-400 py-2 mb-14 text-sm text-[#484848]"
             />
-            {loading ? (
-              <button
-                type="submit"
-                className="w-full py-3 md:py-2 px-6 md:px-4 bg-black/95 disabled: text-white rounded-lg mb-4 mt-6 border-[1px] border-white"
-              >
-                Loading...
-              </button>
-            ) : (
-              <button
-                type="submit"
-                className="w-full py-3 md:py-2 px-6 md:px-4 bg-black text-white rounded-lg mb-4 mt-6 border-[1px] border-white"
-              >
-                Sign in
-              </button>
-            )}
-            <Link to={"/register"}>
+            <div className="btn-group w-full flex sm:flex-col items-center justify-between gap-4 sm:gap-2">
+              {loading ? (
+                <button
+                  type="submit"
+                  className="w-[50%] sm:w-full py-2 bg-black text-white rounded-lg border-[1px] border-black"
+                >
+                  Loading...
+                </button>
+              ) : (
+                <button
+                  type="submit"
+                  className="w-[50%] sm:w-full py-2 bg-black text-white rounded-lg border-[1px] border-black"
+                >
+                  Sign in
+                </button>
+              )}
               <button
                 type="button"
-                className="w-full py-3 md:py-2 px-6 md:px-4 bg-white rounded-lg border-[1px] border-black"
+                className="w-[50%] sm:w-full py-2 bg-white text-[#484848] border-[1px] border-[#484848] rounded-lg"
               >
-                Sign up
+                Sign Up
               </button>
-            </Link>
+            </div>
           </form>
         </div>
       </div>

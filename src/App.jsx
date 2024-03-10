@@ -7,6 +7,9 @@ import AdminDashBoard from "./components/Admin/AdminDashBoard.jsx";
 import CustomerProfile from "./components/Users/CustomerProfile.jsx";
 import Navbar from "./components/Users/Navbar.jsx";
 import AuthRoutes from "./routing/AuthRoutes.jsx";
+import AdminRoutes from "./routing/AdminRoutes.jsx";
+import Register from "./components/Users/Forms/Register.jsx";
+import NotFound from "./components/NotFound.jsx";
 
 function App() {
   return (
@@ -14,13 +17,16 @@ function App() {
       {/* Homepage/Hero component */}
       <Navbar />
       <Routes>
+        <Route path="*" element={<NotFound />} />
         <Route path="/" element={<HomePage />} />
+        <Route path="/register" element={<Register />} />
         <Route element={<AuthRoutes />}>
           <Route path="/login" element={<Login />} />
         </Route>
-
-        <Route path="/AdminDashBoard" element={<AdminDashBoard />} />
         <Route path="/CustomerProfile" element={<CustomerProfile />} />
+        <Route element={<AdminRoutes />}>
+          <Route path="/AdminDashBoard" element={<AdminDashBoard />} />
+        </Route>
       </Routes>
     </div>
   );
