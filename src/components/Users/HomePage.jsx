@@ -108,7 +108,7 @@ const HomePage = () => {
 
   return (
     <>
-      <div className="w-full sm:h-[calc(100vh-100px)] md:h-[calc(100vh-100px)] grid grid-cols-3 sm:grid-cols-1 sm:place-content-center px-32 md:px-10 py-4 gap-8 select-none">
+      <div className="w-full sm:h-[calc(100vh-100px)] md:h-[calc(100vh-100px)] grid grid-cols-3 sm:grid-cols-1 sm:place-content-center px-32 sm:px-6 md:px-10 py-4 gap-8 select-none">
         <div className="img__Container h-full rounded-lg overflow-hidden sm:hidden">
           <img src={h1} alt="No image" className="w-full h-full object-cover" />
         </div>
@@ -151,7 +151,7 @@ const HomePage = () => {
           just for you. Stay ahead of the trends with our newest arrivals,
           handpicked to elevate your shopping experience.
         </p>
-        <div className="selection_line w-full flex sm:flex-wrap justify-center items-center gap-9 md:gap-4">
+        <div className="selection_line w-full flex sm:flex-wrap justify-center items-center gap-9 md:gap-4 sm:gap-2">
           {arrivalsBtns.map((btn, i) => {
             return (
               <button
@@ -159,8 +159,8 @@ const HomePage = () => {
                 onClick={() => setArrivalBtnActiveIndex(i)}
                 className={
                   arrivalBtnActiveIndex === i
-                    ? `py-3 md:py-2 px-6 md:px-3 md:text-[12px] bg-black text-white rounded-lg select-none transition-all`
-                    : `py-3 md:py-2 px-6 md:px-3 md:text-[12px] bg-[#FAFAFA] text-gray-500 rounded-lg select-none transition-all`
+                    ? `py-3 md:py-2 px-6 md:px-3 md:text-[12px] sm:px-4 sm:text-sm bg-black text-white rounded-lg select-none transition-all`
+                    : `py-3 md:py-2 px-6 md:px-3 md:text-[12px] sm:px-4 sm:text-sm bg-[#FAFAFA] text-gray-500 rounded-lg select-none transition-all`
                 }
               >
                 {btn}
@@ -222,11 +222,11 @@ const HomePage = () => {
       <div className="feature_stripe px-32 md:px-10 sm:px-4 py-6 w-full grid grid-cols-4 place-content-center place-items-center gap-24 md:grid-cols-2 md:gap-10 sm:gap-6 md:place-items-start sm:grid-cols-2 sm:place-items-start">
         {featuresArray.map((feature, i) => {
           return (
-            <div key={i} className="flex items-center gap-4 sm:gap-1">
+            <div key={i} className="flex items-center gap-4 sm:gap-2">
               <img
                 src={feature.img}
                 alt="feature"
-                className="w-[16%] md:w-[14%] sm:w-[30%]"
+                className="w-[16%] md:w-[14%] sm:w-[16%]"
               />
               <div className="font-[Poppins]">
                 <span className="text-[#484848] text-sm sm:text-[10px] font-semibold">
@@ -269,7 +269,7 @@ const HomePage = () => {
           experiences and satisfaction with our offerings.
         </p>
 
-        <div className="slider w-full h-[320px] sm:h-[400px] px-32 md:px-10 flex items-center sm:gap-2">
+        <div className="slider w-full h-[320px] sm:h-[400px] px-32 md:px-10 sm:px-6 flex items-center sm:gap-2">
           <button
             onClick={prevCard}
             className="bg-white rounded-full w-[40px] h-[40px] flex items-center justify-center shadow-sm"
@@ -313,7 +313,7 @@ const HomePage = () => {
       </div>
 
       {/* NewsLetter sec */}
-      <div className="news_letter_sec w-full px-32 md:px-10 sm:px-0 py-8 flex items-center justify-center font-[Poppins] my-16">
+      <div className="news_letter_sec w-full px-32 md:px-10 sm:px-6 py-4 flex items-center justify-center font-[Poppins] my-16">
         <div className="img_container w-[20%]">
           <img
             src={nl1}
@@ -322,7 +322,7 @@ const HomePage = () => {
           />
         </div>
         <div className="nl_content flex flex-col items-center justify-end lg:gap-6 md:gap-4 sm:gap-2 sm:w-full sm:text-center">
-          <h1 className="text-3xl sm:text-2xl font-[Volkhov] font-semibold tracking-wide">
+          <h1 className="text-3xl sm:text-2xl font-[Volkhov] font-semibold tracking-wide sm:mb-2 md:mb-4">
             Subscribe To Our Newsletter
           </h1>
           <p className="text-[#8A8A8A] max-w-[80%] sm:max-w-full text-center text-sm sm:text-[12px]">
@@ -348,7 +348,7 @@ const HomePage = () => {
       </div>
 
       {/* footer */}
-      <div className="footer w-full px-32 sm:px-0 py-6 border-t-2 flex flex-col">
+      <div className="footer w-full px-32 sm:px-6 py-6 border-t-2 flex flex-col">
         <div className="top w-full flex md:flex-col sm:flex-col justify-between items-center md:gap-4">
           <div className="logo cursor-pointer">
             <h1 className="text-3xl font-normal font-[Volkhov]">FASCO</h1>

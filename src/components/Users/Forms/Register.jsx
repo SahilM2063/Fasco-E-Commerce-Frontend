@@ -7,14 +7,16 @@ import { useDispatch, useSelector } from "react-redux";
 import ShowAlert from "../../../utils/ShowAlert";
 import { registerUserAction } from "../../../redux/slices/userSlice";
 
+const defaultData = {
+  firstName: "",
+  lastName: "",
+  email: "",
+  password: "",
+};
+
 const Register = () => {
   const dispatch = useDispatch();
-  const [formData, setFormData] = useState({
-    firstName: "",
-    lastName: "",
-    email: "",
-    password: "",
-  });
+  const [formData, setFormData] = useState(defaultData);
 
   const { firstName, lastName, email, password } = formData;
 
@@ -24,14 +26,14 @@ const Register = () => {
 
   const onSubmitHandler = (e) => {
     e.preventDefault();
-    console.log(formData);
     dispatch(registerUserAction(formData));
+    setFormData(defaultData);
   };
 
   const { user, error, loading } = useSelector((state) => state?.users);
 
   return (
-    <div className="wrapper w-full h-[calc(100vh-104px)] px-32 md:px-10 sm:p-0 py-4">
+    <div className="wrapper w-full h-[calc(100vh-104px)] px-32 md:px-10 sm:px-6 py-4">
       <div className="w-full h-full flex justify-center items-center border rounded-3xl md:rounded-2xl sm:rounded-xl">
         <div className="img_container w-[50%] h-full md:hidden sm:hidden">
           <img
@@ -48,7 +50,7 @@ const Register = () => {
             time={3000}
           />
         )}
-        <div className="text_content w-[50%] h-full md:w-[80%] sm:w-[100%] p-4 py-10 md:py-4 sm:py-4 sm:px-0 flex flex-col justify-between md:justify-center items-start">
+        <div className="text_content w-[50%] h-full md:w-[80%] sm:w-[100%] p-4 py-10 md:py-4 sm:p-4 sm:px-6 flex flex-col justify-between md:justify-center items-start">
           <Link to={"/"} className="logo cursor-pointer sm:hidden md:hidden">
             <h1 className="text-4xl font-semibold font-[Volkhov] md:text-3xl">
               FASCO

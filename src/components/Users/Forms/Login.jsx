@@ -8,16 +8,18 @@ import ShowAlert from "../../../utils/ShowAlert.jsx";
 import googleSvg from "./assets/google.svg";
 import baseURL from "../../../utils/baseURL.js";
 
+const defaultData = {
+  email: "",
+  password: "",
+};
+
 const Login = () => {
   // dispatch instance
   const dispatch = useDispatch();
   // navigate instance
   const navigate = useNavigate();
   // state for form data
-  const [formData, setFormData] = useState({
-    email: "",
-    password: "",
-  });
+  const [formData, setFormData] = useState(defaultData);
   // destructuring
   const { email, password } = formData;
   const { error, loading, userInfo } = useSelector(
@@ -32,6 +34,7 @@ const Login = () => {
     e.preventDefault();
     // dispatching the action
     dispatch(loginUserAction(formData));
+    setFormData(defaultData);
   };
 
   useEffect(() => {
@@ -41,11 +44,11 @@ const Login = () => {
     // else {
     //   navigate("/CustomerProfile");
     // }
-  }, [userInfo]);
+  });
 
   return (
-    <div className="wrapper w-full h-[calc(100vh-104px)] px-32 md:px-10 sm:p-0 py-4">
-      <div className="w-full h-full flex justify-center items-center border rounded-3xl">
+    <div className="wrapper w-full h-[calc(100vh-104px)] px-32 md:px-10 sm:px-6 py-4">
+      <div className="w-full h-full flex justify-center items-center border rounded-3xl md:rounded-2xl sm:rounded-xl">
         <div className="img_container w-[50%] h-full md:hidden sm:hidden">
           <img
             src={loginImg}
@@ -61,14 +64,16 @@ const Login = () => {
             time={3000}
           />
         )}
-        <div className="text_content w-[50%] h-full md:w-[80%] sm:w-full p-4 py-10 sm:py-4 flex flex-col justify-between items-start">
-          <Link to={"/"} className="logo cursor-pointer">
+        <div className="text_content w-[50%] h-full md:w-[80%] sm:w-full p-4 py-10 sm:p-4 sm:px-6 flex flex-col justify-between items-start">
+          <Link to={"/"} className="logo cursor-pointer sm:hidden md:hidden">
             <h1 className="text-4xl font-semibold font-[Volkhov]">FASCO</h1>
           </Link>
-          <h5 className="text-xl font-[Volkhov] my-6">Sign in to FASCO</h5>
+          <h5 className="text-xl font-[Volkhov] my-6 sm:w-full sm:text-lg sm:text-center md:w-full md:text-center">
+            Sign in to FASCO
+          </h5>
           <Link
             to={`${baseURL}/users/login/google`}
-            className="w-[70%] md:w-full sm:w-full flex items-center justify-center gap-6 py-3 border-[#484848] text-sm text-[#484848] font-[Poppins] border-[1px] rounded-lg"
+            className="w-[70%] md:w-full sm:w-full flex items-center justify-center gap-6 py-3 md:py-2 border-[#484848] text-sm text-[#484848] font-[Poppins] border-[1px] rounded-lg"
           >
             <img src={googleSvg} alt="google" className="w-4" />
             Sign in with google

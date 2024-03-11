@@ -8,7 +8,7 @@ export default {
   theme: {
     screens: {
       'sm': { 'max': '426px' },
-      'md': { 'max': '768px' },
+      'md': { 'min': '426px', 'max': '769px' },
       'lg': { 'min': '769px' }
     },
     extend: {}

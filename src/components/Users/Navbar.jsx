@@ -34,11 +34,11 @@ const Navbar = () => {
   return (
     <>
       {/* Navbar Component */}
-      <div className="w-full h-[80px] flex justify-between items-center px-32 md:px-10 font-[Poppins] text-[#484848]">
+      <div className="w-full h-[80px] flex justify-between items-center px-32 sm:px-6 md:px-10 font-[Poppins] text-[#484848]">
         <Link to={"/"} className="logo cursor-pointer">
           <h1 className="text-3xl font-normal font-[Volkhov]">FASCO</h1>
         </Link>
-        <div className="links flex gap-12 md:gap-6 text-sm md:text-xs md:hidden">
+        <div className="links flex gap-12 md:gap-6 text-sm md:text-xs md:hidden sm:hidden">
           {links.map((link, i) => (
             <Link key={i} to={link.href} className="cursor-pointer">
               {link.title}
@@ -46,7 +46,7 @@ const Navbar = () => {
           ))}
         </div>
         {isLoggedIn && (
-          <div className="buttons flex items-center gap-6 md:gap-4 text-sm md:text-sm md:hidden">
+          <div className="buttons flex items-center gap-6 md:gap-4 text-sm md:text-sm md:hidden sm:hidden">
             <Link to={"/customerProfile"}>
               <img src={profile} alt="profile" className="w-6" />
             </Link>
@@ -58,7 +58,7 @@ const Navbar = () => {
           </div>
         )}
         {!isLoggedIn && (
-          <div className="buttons flex items-center gap-6 md:gap-4 text-sm md:text-sm md:hidden">
+          <div className="buttons flex items-center gap-6 md:gap-4 text-sm md:text-sm md:hidden sm:hidden">
             <Link to={"/login"}>
               <button>Sign In</button>
             </Link>
@@ -69,7 +69,7 @@ const Navbar = () => {
             </Link>
           </div>
         )}
-        <div className="menuBtn hidden md:block">
+        <div className="menuBtn hidden md:block sm:block">
           <img
             onClick={() => setIsMenuOpen(true)}
             src={menuSvg}
