@@ -4,7 +4,6 @@ import { Link, useNavigate } from "react-router-dom";
 import loginImg from "./assets/loginImg.png";
 import { useDispatch, useSelector } from "react-redux";
 import { loginUserAction } from "../../../redux/slices/userSlice.js";
-import ShowAlert from "../../../utils/ShowAlert.jsx";
 import googleSvg from "./assets/google.svg";
 import baseURL from "../../../utils/baseURL.js";
 import { useNotification } from "../../../hooks";
@@ -18,11 +17,9 @@ const defaultData = {
 const validateUserInfo = ({ email, password }) => {
   if (!email.trim()) return { ok: false, error: "Email is missing" };
   if (!isValidEmail(email)) return { ok: false, error: "Invalid email" };
-
   if (!password.trim()) return { ok: false, error: "Password is missing" };
   if (password.length < 8)
     return { ok: false, error: "Password must be 8 characters long" };
-
   return { ok: true };
 };
 
@@ -54,13 +51,10 @@ const Login = () => {
   };
 
   useEffect(() => {
-    if (userInfo?.userFound?.isAdmin) {
-      navigate("/AdminDashBoard");
+    if (error) {
+      updateNotification("error", error?.message);
     }
-    // else {
-    //   navigate("/CustomerProfile");
-    // }
-  });
+  }, [error]);
 
   return (
     <div className="wrapper w-full h-[calc(100vh-104px)] px-32 md:px-10 sm:px-6 py-4">
@@ -72,14 +66,6 @@ const Login = () => {
             className="h-full object-cover md:hidden sm:hidden"
           />
         </div>
-        {error && (
-          <ShowAlert
-            key={Math.random()}
-            msg={error?.message}
-            alertType={"error"}
-            time={3000}
-          />
-        )}
         <div className="text_content w-[50%] h-full md:w-[80%] sm:w-full p-4 py-10 sm:p-4 sm:px-6 flex flex-col justify-center items-start">
           <Link to={"/"} className="logo cursor-pointer sm:hidden md:hidden">
             <h1 className="text-4xl font-semibold font-[Volkhov]">FASCO</h1>
@@ -87,13 +73,6 @@ const Login = () => {
           <h5 className="text-xl font-[Volkhov] my-6 sm:w-full sm:text-lg sm:text-center md:w-full md:text-center">
             Sign in to FASCO
           </h5>
-          {/* <Link className="w-[70%] md:w-full sm:w-full flex items-center justify-center gap-6 py-3 md:py-2 border-[#484848] text-sm text-[#484848] font-[Poppins] border-[1px] rounded-lg">
-            <img src={googleSvg} alt="google" className="w-4" />
-            Sign in with google
-          </Link>
-          <p className="w-[70%] md:w-full sm:w-full text-center text-[#484848] font-bold my-3 tracking-wider">
-            Or
-          </p> */}
           <form
             onSubmit={onSubmitHandler}
             className="font-[Poppins] w-[70%] md:w-full sm:w-full"

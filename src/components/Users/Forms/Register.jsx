@@ -1,11 +1,11 @@
 /* eslint-disable no-unused-vars */
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import googleSvg from "./assets/google.svg";
 import registerImg from "./assets/registerImg.png";
 import { useDispatch, useSelector } from "react-redux";
-import ShowAlert from "../../../utils/ShowAlert";
 import { registerUserAction } from "../../../redux/slices/userSlice";
+import { useNotification } from "../../../hooks";
+import { isValidEmail } from "../../../utils/helper";
 
 const defaultData = {
   firstName: "",
@@ -14,11 +14,34 @@ const defaultData = {
   password: "",
 };
 
+const validateUserInfo = ({ firstName, lastName, email, password }) => {
+  var isValidName = /^[a-z A-Z]+$/; // name checking regex
+
+  if (!firstName.trim()) return { ok: false, error: "firstName is missing" };
+  if (!isValidName.test(firstName))
+    return { ok: false, error: "Invalid firstName" };
+
+  if (!lastName.trim()) return { ok: false, error: "lastName is missing" };
+  if (!isValidName.test(lastName))
+    return { ok: false, error: "Invalid lastName" };
+
+  if (!email.trim()) return { ok: false, error: "Email is missing" };
+  if (!isValidEmail(email)) return { ok: false, error: "Invalid email" };
+
+  if (!password.trim()) return { ok: false, error: "Password is missing" };
+  if (password.length < 8)
+    return { ok: false, error: "Password must be 8 characters long" };
+
+  return { ok: true };
+};
+
 const Register = () => {
+  const updateNotification = useNotification();
   const dispatch = useDispatch();
   const [formData, setFormData] = useState(defaultData);
 
   const { firstName, lastName, email, password } = formData;
+  const { user, error, loading } = useSelector((state) => state?.users);
 
   const onChangeHandler = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -26,11 +49,20 @@ const Register = () => {
 
   const onSubmitHandler = (e) => {
     e.preventDefault();
+    const { ok, error } = validateUserInfo(formData);
+    if (!ok) return updateNotification("warning", error);
     dispatch(registerUserAction(formData));
     setFormData(defaultData);
   };
 
-  const { user, error, loading } = useSelector((state) => state?.users);
+  useEffect(() => {
+    if (user?.msg) {
+      updateNotification("success", user?.msg);
+    }
+    if (error) {
+      updateNotification("error", error?.message);
+    }
+  }, [error, user]);
 
   return (
     <div className="wrapper w-full h-[calc(100vh-104px)] px-32 md:px-10 sm:px-6 py-4">
@@ -42,14 +74,6 @@ const Register = () => {
             className="h-full object-cover md:hidden sm:hidden"
           />
         </div>
-        {error && (
-          <ShowAlert
-            key={Math.random()}
-            msg={error?.message}
-            alertType={"error"}
-            time={3000}
-          />
-        )}
         <div className="text_content w-[50%] h-full md:w-[80%] sm:w-[100%] p-4 py-10 md:py-4 sm:p-4 sm:px-6 flex flex-col justify-center items-start">
           <Link to={"/"} className="logo cursor-pointer sm:hidden md:hidden">
             <h1 className="text-4xl font-semibold font-[Volkhov] md:text-3xl">
@@ -59,13 +83,6 @@ const Register = () => {
           <h5 className="text-xl font-[Volkhov] my-6 sm:w-full sm:text-center md:w-full md:text-center">
             Sign up to FASCO
           </h5>
-          {/* <button className="w-[70%] md:w-full sm:w-full flex items-center justify-center gap-6 py-3 md:py-2 border-[#484848] text-sm text-[#484848] font-[Poppins] border-[1px] rounded-lg">
-            <img src={googleSvg} alt="google" className="w-4" />
-            Sign up with google
-          </button> */}
-          {/* <p className="w-[70%] md:w-full sm:w-full text-center text-[#484848] font-bold my-3  tracking-wider">
-            Or
-          </p> */}
           <form
             onSubmit={onSubmitHandler}
             className="font-[Poppins] w-[70%] md:w-full sm:w-full"
