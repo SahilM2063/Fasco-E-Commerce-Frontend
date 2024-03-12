@@ -24,37 +24,36 @@ const validateUserInfo = ({ email, password }) => {
 };
 
 const Login = () => {
-  // dispatch instance
   const updateNotification = useNotification();
   const dispatch = useDispatch();
-  // navigate instance
   const navigate = useNavigate();
-  // state for form data
+
   const [formData, setFormData] = useState(defaultData);
-  // destructuring
   const { email, password } = formData;
   const { error, loading, userInfo } = useSelector(
     (state) => state.users.userAuth
   );
-  // onchange function
+
   const onChangeHandler = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
-  // onsubmit function
+
   const onSubmitHandler = (e) => {
     e.preventDefault();
     const { ok, error } = validateUserInfo(formData);
     if (!ok) return updateNotification("warning", error);
-    // dispatching the action
     dispatch(loginUserAction(formData));
     setFormData(defaultData);
   };
 
   useEffect(() => {
+    if (userInfo?.msg) {
+      updateNotification("success", userInfo?.msg);
+    }
     if (error) {
       updateNotification("error", error?.message);
     }
-  }, [error]);
+  }, [error, userInfo]);
 
   return (
     <div className="wrapper w-full h-[calc(100vh-104px)] px-32 md:px-10 sm:px-6 py-4">
