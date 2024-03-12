@@ -50,22 +50,22 @@ const Register = () => {
             time={3000}
           />
         )}
-        <div className="text_content w-[50%] h-full md:w-[80%] sm:w-[100%] p-4 py-10 md:py-4 sm:p-4 sm:px-6 flex flex-col justify-between md:justify-center items-start">
+        <div className="text_content w-[50%] h-full md:w-[80%] sm:w-[100%] p-4 py-10 md:py-4 sm:p-4 sm:px-6 flex flex-col justify-center items-start">
           <Link to={"/"} className="logo cursor-pointer sm:hidden md:hidden">
             <h1 className="text-4xl font-semibold font-[Volkhov] md:text-3xl">
               FASCO
             </h1>
           </Link>
-          <h5 className="text-xl font-[Volkhov] my-6 sm:text-lg sm:w-full sm:text-center md:w-full md:text-center">
+          <h5 className="text-xl font-[Volkhov] my-6 sm:w-full sm:text-center md:w-full md:text-center">
             Sign up to FASCO
           </h5>
-          <button className="w-[70%] md:w-full sm:w-full flex items-center justify-center gap-6 py-3 md:py-2 border-[#484848] text-sm text-[#484848] font-[Poppins] border-[1px] rounded-lg">
+          {/* <button className="w-[70%] md:w-full sm:w-full flex items-center justify-center gap-6 py-3 md:py-2 border-[#484848] text-sm text-[#484848] font-[Poppins] border-[1px] rounded-lg">
             <img src={googleSvg} alt="google" className="w-4" />
             Sign up with google
-          </button>
-          <p className="w-[70%] md:w-full sm:w-full text-center text-[#484848] font-bold my-3  tracking-wider">
+          </button> */}
+          {/* <p className="w-[70%] md:w-full sm:w-full text-center text-[#484848] font-bold my-3  tracking-wider">
             Or
-          </p>
+          </p> */}
           <form
             onSubmit={onSubmitHandler}
             className="font-[Poppins] w-[70%] md:w-full sm:w-full"
@@ -103,30 +103,36 @@ const Register = () => {
               placeholder="Password"
               value={password}
               onChange={onChangeHandler}
-              className="w-full outline-none border-b-2 border-gray-400 py-2 mb-14 sm:mb-8 text-sm text-[#484848]"
+              className="w-full outline-none border-b-2 border-gray-400 py-2 text-sm text-[#484848]"
             />
+            <p className="w-full text-[12px] mt-4 mb-6 sm:mb-8">
+              Already have an account ?{" "}
+              <Link to={"/login"} className="hover:underline">
+                Sign in now
+              </Link>
+            </p>
             <div className="btn-group w-full flex sm:flex-col items-center justify-between gap-4 sm:gap-2">
               {loading ? (
                 <button
                   type="submit"
-                  className="w-[50%] sm:w-full py-2 bg-black text-white rounded-lg border-[1px] border-black"
+                  className="w-full sm:w-full py-2 bg-black text-white rounded-lg border-[1px] border-black"
                 >
                   Loading...
                 </button>
               ) : (
                 <button
                   type="submit"
-                  className="w-[50%] sm:w-full py-2 bg-black text-white rounded-lg border-[1px] border-black"
+                  className="w-full sm:w-full py-2 bg-black text-white rounded-lg border-[1px] border-black"
                 >
                   Sign Up
                 </button>
               )}
-              <button
+              {/* <button
                 type="button"
                 className="w-[50%] sm:w-full py-2 bg-white text-[#484848] border-[1px] border-[#484848] rounded-lg"
               >
                 Sign In
-              </button>
+              </button> */}
             </div>
           </form>
         </div>

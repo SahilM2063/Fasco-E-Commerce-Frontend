@@ -22,7 +22,7 @@ const NotFound = () => {
           we’re sorry. the page you requested could no be found <br /> Please go
           back to the home page
         </p>
-        <Link className="py-3 md:py-2 sm:py-2 sm:text-sm px-6 md:px-4 bg-black text-white rounded-lg">
+        <Link to={"/"} className="py-3 md:py-2 sm:py-2 sm:text-sm px-6 md:px-4 bg-black text-white rounded-lg">
           Go Home
         </Link>
       </div>
