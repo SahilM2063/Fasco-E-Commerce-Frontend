@@ -5,13 +5,12 @@ import App from "./App.jsx";
 import "./index.css";
 import store from "./redux/store/store.js";
 import { Provider } from "react-redux";
-import { BrowserRouter } from "react-router-dom";
-import { GoogleOAuthProvider } from "@react-oauth/google"
+import ContextProvider from "./context/ContextProvider.jsx";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <Provider store={store}>
-    <BrowserRouter>
+    <ContextProvider>
       <App />
-    </BrowserRouter>
+    </ContextProvider>
   </Provider>
 );

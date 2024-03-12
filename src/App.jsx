@@ -10,6 +10,7 @@ import AuthRoutes from "./routing/AuthRoutes.jsx";
 import AdminRoutes from "./routing/AdminRoutes.jsx";
 import Register from "./components/Users/Forms/Register.jsx";
 import NotFound from "./components/NotFound.jsx";
+import ResetPassEmail from "./components/Users/Forms/assets/ResetPassEmail.jsx";
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
         <Route path="/register" element={<Register />} />
         <Route element={<AuthRoutes />}>
           <Route path="/login" element={<Login />} />
+          <Route path="/resetPassEmail" element={<ResetPassEmail />} />
         </Route>
         <Route path="/CustomerProfile" element={<CustomerProfile />} />
         <Route element={<AdminRoutes />}>

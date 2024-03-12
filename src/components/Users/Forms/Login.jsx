@@ -7,14 +7,28 @@ import { loginUserAction } from "../../../redux/slices/userSlice.js";
 import ShowAlert from "../../../utils/ShowAlert.jsx";
 import googleSvg from "./assets/google.svg";
 import baseURL from "../../../utils/baseURL.js";
+import { useNotification } from "../../../hooks";
+import { isValidEmail } from "../../../utils/helper.js";
 
 const defaultData = {
   email: "",
   password: "",
 };
 
+const validateUserInfo = ({ email, password }) => {
+  if (!email.trim()) return { ok: false, error: "Email is missing" };
+  if (!isValidEmail(email)) return { ok: false, error: "Invalid email" };
+
+  if (!password.trim()) return { ok: false, error: "Password is missing" };
+  if (password.length < 8)
+    return { ok: false, error: "Password must be 8 characters long" };
+
+  return { ok: true };
+};
+
 const Login = () => {
   // dispatch instance
+  const updateNotification = useNotification();
   const dispatch = useDispatch();
   // navigate instance
   const navigate = useNavigate();
@@ -32,6 +46,8 @@ const Login = () => {
   // onsubmit function
   const onSubmitHandler = (e) => {
     e.preventDefault();
+    const { ok, error } = validateUserInfo(formData);
+    if (!ok) return updateNotification("warning", error);
     // dispatching the action
     dispatch(loginUserAction(formData));
     setFormData(defaultData);
