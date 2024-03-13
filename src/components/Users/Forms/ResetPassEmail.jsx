@@ -37,14 +37,9 @@ const ResetPassEmail = () => {
 
   return (
     <div className="w-full h-[calc(100vh-104px)] px-32 md:px-10 sm:px-2 py-4 flex items-center justify-center font-[Poppins]">
-      <div
-        className="rounded-lg border bg-card text-card-foreground shadow-sm w-full max-w-md mx-auto"
-        data-v0-t="card"
-      >
+      <div className="rounded-lg border bg-card text-card-foreground shadow-sm w-full max-w-md mx-auto">
         <div className="flex flex-col p-6 space-y-4">
-          <h3 className="font-[Volkhov] tracking-wide text-2xl font-bold">
-            Forgot Password
-          </h3>
+          <h3 className="tracking-wide text-2xl font-bold">Forgot Password</h3>
           <p className="text-sm">
             Enter your email below to reset your password
           </p>

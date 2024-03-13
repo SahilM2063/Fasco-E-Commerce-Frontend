@@ -1,6 +1,7 @@
 /* eslint-disable no-unused-vars */
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit"
 import axios from "axios";
+import { useParams } from "react-router-dom"
 import baseURL from "../../utils/baseURL.js"
 
 const initialState = {
@@ -57,6 +58,23 @@ export const sendResetPassEmail = createAsyncThunk("users/sendResetPassEmail", a
     }
 })
 
+export const resetPassword = createAsyncThunk(
+    "users/resetPassword",
+    async ({ id, token, password, confirmPassword }, { rejectWithValue }) => {
+        try {
+            const { data } = await axios.post(`${baseURL}/users/reset-password/${id}/${token}`, {
+                password,
+                confirmPassword,
+            }
+            );
+            return data;
+        } catch (error) {
+            console.log(error);
+            return rejectWithValue(error?.response?.data);
+        }
+    }
+);
+
 const userSlice = createSlice({
     name: "users",
     initialState,
@@ -99,6 +117,19 @@ const userSlice = createSlice({
             state.loading = false;
             state.error = action.payload
         })
+
+        builder.addCase(resetPassword.pending, (state) => {
+            state.loading = true;
+            state.error = null;
+        })
+        builder.addCase(resetPassword.fulfilled, (state, action) => {
+            state.loading = false;
+            state.user = action.payload;
+        })
+        builder.addCase(resetPassword.rejected, (state, action) => {
+            state.loading = false;
+            state.error = action.payload;
+        });
     }
 })
 

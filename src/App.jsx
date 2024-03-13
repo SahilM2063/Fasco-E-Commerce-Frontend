@@ -11,6 +11,7 @@ import NotFound from "./components/NotFound.jsx";
 import AdminRoutes from "./routing/AdminRoutes.jsx";
 import AuthRoutes from "./routing/AuthRoutes.jsx";
 import ResetPassEmail from "./components/Users/Forms/ResetPassEmail.jsx";
+import ResetPassword from "./components/Users/Forms/ResetPassword.jsx";
 
 function App() {
   return (
@@ -26,6 +27,7 @@ function App() {
           <Route path="/CustomerProfile" element={<CustomerProfile />} />
         </Route>
         <Route path="/resetPassEmail" element={<ResetPassEmail />} />
+        <Route path="/api/v1/users/reset-password/:id/:token" element={<ResetPassword />} />
         <Route element={<AdminRoutes />}>
           <Route path="/AdminDashBoard" element={<AdminDashBoard />} />
         </Route>
