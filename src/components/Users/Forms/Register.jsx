@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import registerImg from "./assets/registerImg.png";
 import { useDispatch, useSelector } from "react-redux";
 import { registerUserAction } from "../../../redux/slices/userSlice";
@@ -38,10 +38,13 @@ const validateUserInfo = ({ firstName, lastName, email, password }) => {
 const Register = () => {
   const updateNotification = useNotification();
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [formData, setFormData] = useState(defaultData);
 
   const { firstName, lastName, email, password } = formData;
-  const { user, error, loading } = useSelector((state) => state?.users);
+  const { user, error, loading } = useSelector(
+    (state) => state?.users
+  );
 
   const onChangeHandler = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -58,11 +61,17 @@ const Register = () => {
   useEffect(() => {
     if (user?.msg) {
       updateNotification("success", user?.msg);
+      if (user?.userFound?.isAdmin) {
+        return navigate("/AdminDashboard");
+      } else {
+        return navigate("/CustomerProfile");
+      }
     }
     if (error) {
       updateNotification("error", error?.message);
     }
   }, [error, user]);
+
 
   return (
     <div className="wrapper w-full h-[calc(100vh-104px)] px-32 md:px-10 sm:px-6 py-4">

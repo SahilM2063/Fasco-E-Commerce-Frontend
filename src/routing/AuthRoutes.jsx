@@ -6,16 +6,12 @@ const AuthRoutes = ({ ...rest }) => {
   const navigate = useNavigate();
   const user = JSON.parse(localStorage.getItem("userInfo"));
   const isLoggedIn = user?.token ? true : false;
-  const isAdmin = user?.userFound?.isAdmin ? true : false;
 
   useEffect(() => {
-    // Redirect to login page if not logged in
-    if (isLoggedIn && window.location.pathname === "/login") {
-      isAdmin ? navigate("/AdminDashBoard") : navigate("/CustomerProfile");
-    }
-  }, [isLoggedIn, navigate]);
+    if (!isLoggedIn) return navigate("/login");
+  }, [user]);
 
-  return <Outlet {...rest} />;
+  return <>{isLoggedIn && <Outlet {...rest} />}</>;
 };
 
 export default AuthRoutes;

@@ -45,6 +45,18 @@ export const registerUserAction = createAsyncThunk("users/register", async ({ fi
     }
 })
 
+export const sendResetPassEmail = createAsyncThunk("users/sendResetPassEmail", async (email, { rejectWithValue, getState, dispatch }) => {
+    try {
+        const { data } = await axios.post(`${baseURL}/users/reset-password-link`, {
+            email
+        })
+        return data;
+    } catch (error) {
+        console.log(error);
+        return rejectWithValue(error?.response?.data)
+    }
+})
+
 const userSlice = createSlice({
     name: "users",
     initialState,
@@ -74,6 +86,19 @@ const userSlice = createSlice({
             state.loading = false;
             state.error = action.payload
         });
+
+        // Reset password
+        builder.addCase(sendResetPassEmail.pending, (state, action) => {
+            state.loading = true;
+        })
+        builder.addCase(sendResetPassEmail.fulfilled, (state, action) => {
+            state.loading = false;
+            state.user = action.payload
+        })
+        builder.addCase(sendResetPassEmail.rejected, (state, action) => {
+            state.loading = false;
+            state.error = action.payload
+        })
     }
 })
 

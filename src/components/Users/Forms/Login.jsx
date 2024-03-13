@@ -49,11 +49,17 @@ const Login = () => {
   useEffect(() => {
     if (userInfo?.msg) {
       updateNotification("success", userInfo?.msg);
+      if (userInfo.userFound.isAdmin) {
+        return navigate("/AdminDashboard");
+      } else {
+        return navigate("/CustomerProfile");
+      }
     }
     if (error) {
       updateNotification("error", error?.message);
     }
   }, [error, userInfo]);
+
 
   return (
     <div className="wrapper w-full h-[calc(100vh-104px)] px-32 md:px-10 sm:px-6 py-4">

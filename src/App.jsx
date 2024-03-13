@@ -6,11 +6,11 @@ import Login from "./components/Users/Forms/Login.jsx";
 import AdminDashBoard from "./components/Admin/AdminDashBoard.jsx";
 import CustomerProfile from "./components/Users/CustomerProfile.jsx";
 import Navbar from "./components/Users/Navbar.jsx";
-import AuthRoutes from "./routing/AuthRoutes.jsx";
-import AdminRoutes from "./routing/AdminRoutes.jsx";
 import Register from "./components/Users/Forms/Register.jsx";
 import NotFound from "./components/NotFound.jsx";
-import ResetPassEmail from "./components/Users/Forms/assets/ResetPassEmail.jsx";
+import AdminRoutes from "./routing/AdminRoutes.jsx";
+import AuthRoutes from "./routing/AuthRoutes.jsx";
+import ResetPassEmail from "./components/Users/Forms/ResetPassEmail.jsx";
 
 function App() {
   return (
@@ -21,11 +21,11 @@ function App() {
         <Route path="*" element={<NotFound />} />
         <Route path="/" element={<HomePage />} />
         <Route path="/register" element={<Register />} />
+        <Route path="/login" element={<Login />} />
         <Route element={<AuthRoutes />}>
-          <Route path="/login" element={<Login />} />
-          <Route path="/resetPassEmail" element={<ResetPassEmail />} />
+          <Route path="/CustomerProfile" element={<CustomerProfile />} />
         </Route>
-        <Route path="/CustomerProfile" element={<CustomerProfile />} />
+        <Route path="/resetPassEmail" element={<ResetPassEmail />} />
         <Route element={<AdminRoutes />}>
           <Route path="/AdminDashBoard" element={<AdminDashBoard />} />
         </Route>
