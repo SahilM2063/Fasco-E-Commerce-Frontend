@@ -50,9 +50,9 @@ const Login = () => {
     if (userInfo?.msg) {
       updateNotification("success", userInfo?.msg);
       if (userInfo.userFound.isAdmin) {
-        return navigate("/AdminDashboard");
+        return navigate("/admin/dashboard");
       } else {
-        return navigate("/CustomerProfile");
+        return navigate("/user/customerProfile");
       }
     }
     if (error) {
@@ -100,13 +100,13 @@ const Login = () => {
               className="w-full outline-none border-b-2 border-gray-400 py-2 text-sm text-[#484848]"
             />
             <p className="w-full text-[12px] mt-4">
-              <Link to={"/resetPassEmail"} className="hover:underline">
+              <Link to={"/user/resetPassEmail"} className="hover:underline">
                 Forget password ?
               </Link>
             </p>
             <p className="w-full text-[12px] mt-2 mb-6 sm:mb-8">
               Don&#39;t have an account ?{" "}
-              <Link to={"/register"} className="hover:underline">
+              <Link to={"/user/register"} className="hover:underline">
                 Sign up now
               </Link>
             </p>

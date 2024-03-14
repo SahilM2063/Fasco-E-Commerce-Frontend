@@ -47,7 +47,7 @@ const ResetPassword = () => {
     }
     if (user?.msg) {
       updateNotification("success", user?.msg);
-      navigate("/login");
+      navigate("/user/login");
     }
   }, [error, user]);
   return (

@@ -47,10 +47,10 @@ const Navbar = () => {
         </div>
         {isLoggedIn && (
           <div className="buttons flex items-center gap-6 md:gap-4 text-sm md:text-sm md:hidden sm:hidden">
-            <Link to={"/customerProfile"}>
+            <Link to={"/user/customerProfile"}>
               <img src={profile} alt="profile" className="w-6" />
             </Link>
-            <Link to={"/cart"}>
+            <Link to={"/user/cart"}>
               <button className="p-3 md:p-2 bg-black text-white rounded-lg">
                 <img src={cart} alt="profile" className="w-4" />
               </button>
@@ -59,10 +59,10 @@ const Navbar = () => {
         )}
         {!isLoggedIn && (
           <div className="buttons flex items-center gap-6 md:gap-4 text-sm md:text-sm md:hidden sm:hidden">
-            <Link to={"/login"}>
+            <Link to={"/user/login"}>
               <button>Sign In</button>
             </Link>
-            <Link to={"/register"}>
+            <Link to={"/user/register"}>
               <button className="py-3 md:py-2 px-6 md:px-4 bg-black text-white rounded-lg">
                 Sign Up
               </button>
@@ -108,10 +108,10 @@ const Navbar = () => {
           </div>
           {isLoggedIn && (
             <div className="buttons flex items-center gap-6 md:gap-8">
-              <Link to={"/customerProfile"}>
+              <Link to={"/user/customerProfile"}>
                 <img src={profile} alt="profile" className="w-6" />
               </Link>
-              <Link to={"/cart"}>
+              <Link to={"/user/cart"}>
                 <button className="p-3 bg-black text-white rounded-lg">
                   <img src={cart} alt="profile" className="w-4 md:w-5" />
                 </button>
@@ -120,10 +120,10 @@ const Navbar = () => {
           )}
           {!isLoggedIn && (
             <div className="buttons flex items-center sm:flex-col sm:items-start gap-6">
-              <Link to={"/login"} className="flex-1 sm:w-full">
+              <Link to={"/user/login"} className="flex-1 sm:w-full">
                 <button className="w-full">Sign In</button>
               </Link>
-              <Link to={"/register"} className="flex-1 sm:w-full">
+              <Link to={"/user/register"} className="flex-1 sm:w-full">
                 <button className="w-full py-3 md:py-2 bg-black text-white rounded-lg">
                   Sign Up
                 </button>

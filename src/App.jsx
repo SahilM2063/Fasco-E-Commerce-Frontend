@@ -12,6 +12,12 @@ import AdminRoutes from "./routing/AdminRoutes.jsx";
 import AuthRoutes from "./routing/AuthRoutes.jsx";
 import ResetPassEmail from "./components/Users/Forms/ResetPassEmail.jsx";
 import ResetPassword from "./components/Users/Forms/ResetPassword.jsx";
+import Home from "./components/Admin/Home.jsx";
+import Products from "./components/Admin/Products.jsx";
+import Orders from "./components/Admin/Orders.jsx";
+import Categories from "./components/Admin/Categories.jsx";
+import Customers from "./components/Admin/Customers.jsx";
+import Coupons from "./components/Admin/Coupons.jsx";
 
 function App() {
   return (
@@ -21,15 +27,25 @@ function App() {
       <Routes>
         <Route path="*" element={<NotFound />} />
         <Route path="/" element={<HomePage />} />
-        <Route path="/register" element={<Register />} />
-        <Route path="/login" element={<Login />} />
+        <Route path="/user/register" element={<Register />} />
+        <Route path="/user/login" element={<Login />} />
         <Route element={<AuthRoutes />}>
-          <Route path="/CustomerProfile" element={<CustomerProfile />} />
+          <Route path="/user/customerProfile" element={<CustomerProfile />} />
         </Route>
-        <Route path="/resetPassEmail" element={<ResetPassEmail />} />
-        <Route path="/api/v1/users/reset-password/:id/:token" element={<ResetPassword />} />
+        <Route path="/user/resetPassEmail" element={<ResetPassEmail />} />
+        <Route
+          path="/user/reset-password/:id/:token"
+          element={<ResetPassword />}
+        />
         <Route element={<AdminRoutes />}>
-          <Route path="/AdminDashBoard" element={<AdminDashBoard />} />
+          <Route path="/admin/dashBoard" element={<AdminDashBoard />}>
+            <Route path="home" element={<Home />} />
+            <Route path="customers" element={<Customers />} />
+            <Route path="products" element={<Products />} />
+            <Route path="orders" element={<Orders />} />
+            <Route path="categories" element={<Categories />} />
+            <Route path="coupons" element={<Coupons />} />
+          </Route>
         </Route>
       </Routes>
     </div>

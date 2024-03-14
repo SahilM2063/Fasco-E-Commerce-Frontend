@@ -62,9 +62,9 @@ const Register = () => {
     if (user?.msg) {
       updateNotification("success", user?.msg);
       if (user?.userFound?.isAdmin) {
-        return navigate("/AdminDashboard");
+        return navigate("/admin/dashboard");
       } else {
-        return navigate("/CustomerProfile");
+        return navigate("/user/customerProfile");
       }
     }
     if (error) {
@@ -133,7 +133,7 @@ const Register = () => {
             />
             <p className="w-full text-[12px] mt-4 mb-6 sm:mb-8">
               Already have an account ?{" "}
-              <Link to={"/login"} className="hover:underline">
+              <Link to={"/user/login"} className="hover:underline">
                 Sign in now
               </Link>
             </p>

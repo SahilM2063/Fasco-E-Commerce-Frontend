@@ -60,7 +60,7 @@ const ResetPassEmail = () => {
               />
             </div>
             <Link
-              to={"/login"}
+              to={"/user/login"}
               className="hover:underline w-full mt-2 text-[12px] "
             >
               Sign in
