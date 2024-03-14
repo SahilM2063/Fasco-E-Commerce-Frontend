@@ -8,7 +8,7 @@ const AuthRoutes = ({ ...rest }) => {
   const isLoggedIn = user?.token ? true : false;
 
   useEffect(() => {
-    if (!isLoggedIn) return navigate("/login");
+    if (!isLoggedIn) return navigate("/user/login");
   }, [user]);
 
   return <>{isLoggedIn && <Outlet {...rest} />}</>;
