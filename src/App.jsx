@@ -39,7 +39,7 @@ function App() {
         />
         <Route element={<AdminRoutes />}>
           <Route path="/admin/dashBoard" element={<AdminDashBoard />}>
-            <Route path="home" element={<Home />} />
+            <Route path="" element={<Home />} />
             <Route path="customers" element={<Customers />} />
             <Route path="products" element={<Products />} />
             <Route path="orders" element={<Orders />} />

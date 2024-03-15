@@ -5,7 +5,7 @@ import { Link, Outlet } from "react-router-dom";
 const sideBarLinks = [
   {
     label: "Home",
-    path: "/admin/dashboard/home",
+    path: "/admin/dashboard",
     icon: (
       <svg
         xmlns="http://www.w3.org/2000/svg"
