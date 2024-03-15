@@ -1,40 +1,23 @@
 /* eslint-disable no-unused-vars */
 import { fromJSON } from "postcss";
 import React, { useState } from "react";
-
-const defaultData = {
-  name: "",
-  price: "",
-  description: "",
-  image: "",
-  brand: "",
-  sizes: "",
-  colors: "",
-  category: "",
-  totalQty: "",
-};
+import Select from "react-select";
 
 const Products = () => {
-  const [formData, setFormData] = useState(defaultData);
-  const {
-    name,
-    price,
-    description,
-    image,
-    brand,
-    sizes,
-    colors,
-    category,
-    totalQty,
-  } = formData;
-
-  const onChangeHandler = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+  // sizes handling
+  const sizes = ["S", "M", "L", "XL", "XXL", "8", "9", "10", "11", "12"];
+  const [sizeOption, setSizeOption] = useState([]);
+  const handleSizeChange = (sizes) => {
+    setSizeOption(sizes);
   };
+  const sizeOptionsConverted = sizes?.map((size) => {
+    return { value: size, label: size };
+  });
 
+  const onChangeHandler = () => {};
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(formData);
+    console.log(sizeOption);
   };
 
   return (
@@ -45,7 +28,7 @@ const Products = () => {
             <label className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
               Product Image
             </label>
-            <img src={image} alt="no_img" className="img-preview w-full" />
+            <img src={""} alt="no_img" className="img-preview w-full" />
             <input
               className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
               placeholder="Enter product name"
@@ -64,7 +47,7 @@ const Products = () => {
                 placeholder="Enter product name"
                 type="text"
                 name="name"
-                value={name}
+                value={""}
                 onChange={onChangeHandler}
               />
             </div>
@@ -77,7 +60,7 @@ const Products = () => {
                 placeholder="Enter product description"
                 type="text"
                 name="description"
-                value={description}
+                value={""}
                 onChange={onChangeHandler}
                 rows={4}
               />
@@ -91,7 +74,7 @@ const Products = () => {
                 placeholder="Enter product description"
                 type="text"
                 name="brand"
-                value={brand}
+                value={""}
                 onChange={onChangeHandler}
               >
                 <option value="nike">Nike</option>
@@ -105,11 +88,11 @@ const Products = () => {
                 Categories
               </label>
               <select
-                className="flex min-h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm resize-y"
+                className="flex min-h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
                 placeholder="Enter product description"
                 type="text"
                 name="category"
-                value={category}
+                value={""}
                 onChange={onChangeHandler}
               >
                 <option value="men">Men</option>
@@ -123,13 +106,15 @@ const Products = () => {
               <label className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
                 Sizes
               </label>
-              <input
-                className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
-                placeholder="Enter sizes separated by comma"
-                type="text"
-                name="sizes"
-                value={sizes}
-                onChange={onChangeHandler}
+              <Select
+                isMulti
+                className="basic-multi-select w-full bg-background text-sm"
+                classNamePrefix="select"
+                options={sizeOptionsConverted}
+                isClearable={true}
+                isSearchable={true}
+                closeMenuOnSelect={false}
+                onChange={(item) => handleSizeChange(item)}
               />
             </div>
             <div className="space-y-1">
@@ -137,11 +122,11 @@ const Products = () => {
                 Colors
               </label>
               <input
-                className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
+                className="flex min-h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
                 placeholder="Enter colors separated by comma"
                 type="text"
                 name="colors"
-                value={colors}
+                value={""}
                 onChange={onChangeHandler}
               />
             </div>
@@ -155,7 +140,7 @@ const Products = () => {
                   placeholder="Enter product price"
                   type="number"
                   name="price"
-                  value={price}
+                  value={""}
                   onChange={onChangeHandler}
                 />
               </div>
@@ -168,7 +153,7 @@ const Products = () => {
                   placeholder="Enter product quantity"
                   type="number"
                   name="totalQty"
-                  value={totalQty}
+                  value={""}
                   onChange={onChangeHandler}
                 />
               </div>
