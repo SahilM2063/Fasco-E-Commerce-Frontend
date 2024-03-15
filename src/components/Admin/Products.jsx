@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import Select from "react-select";
 import { getAllCategoriesAction } from "../../redux/slices/categorySlice";
 import { getAllBrandsAction } from "../../redux/slices/brandSlice";
+import { getAllColorsAction } from "../../redux/slices/colorSlice";
 import { useDispatch, useSelector } from "react-redux";
 
 const Products = () => {
@@ -34,12 +35,41 @@ const Products = () => {
     brands: { brands },
   } = useSelector((state) => state?.brands);
 
-  console.log(brands);
+  // colors handling
+  const [colorOption, setColorOption] = useState([]);
+  const {
+    colors: { colors },
+  } = useSelector((state) => state?.colors);
+  useEffect(() => {
+    dispatch(getAllColorsAction());
+  }, [dispatch]);
+  const handleColorChange = (colors) => {
+    setColorOption(colors);
+  };
+  const colorOptionsConverted = colors?.map((color) => {
+    return { value: color?.name, label: color?.name };
+  });
 
-  const onChangeHandler = () => {};
+  const [formData, setFormData] = useState({
+    name: "",
+    description: "",
+    price: "",
+    size: "",
+    brand: "",
+    category: "",
+    color: "",
+    totalQty: "",
+  });
+
+  const { name, description, price, brand, category, totalQty } = formData;
+
+  const onChangeHandler = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(sizeOption);
+    console.log(formData);
   };
 
   return (
@@ -69,7 +99,7 @@ const Products = () => {
                 placeholder="Enter product name"
                 type="text"
                 name="name"
-                value={""}
+                value={name}
                 onChange={onChangeHandler}
               />
             </div>
@@ -82,7 +112,7 @@ const Products = () => {
                 placeholder="Enter product description"
                 type="text"
                 name="description"
-                value={""}
+                value={description}
                 onChange={onChangeHandler}
                 rows={4}
               />
@@ -96,6 +126,8 @@ const Products = () => {
                 placeholder="Enter product description"
                 type="text"
                 name="brand"
+                value={brand}
+                onChange={onChangeHandler}
               >
                 <option defaultValue>Select brand</option>
                 {brands?.map((brand) => {
@@ -115,6 +147,8 @@ const Products = () => {
                 className="flex min-h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
                 type="text"
                 name="category"
+                value={category}
+                onChange={onChangeHandler}
               >
                 <option defaultValue>Select category</option>
                 {categories?.map((category) => {
@@ -146,13 +180,16 @@ const Products = () => {
               <label className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
                 Colors
               </label>
-              <input
-                className="flex min-h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
-                placeholder="Enter colors separated by comma"
-                type="text"
-                name="colors"
-                value={""}
-                onChange={onChangeHandler}
+              <Select
+                isMulti
+                className="basic-multi-select w-full bg-background text-sm"
+                classNamePrefix="select"
+                placeholder="Select colors"
+                options={colorOptionsConverted}
+                isClearable={true}
+                isSearchable={true}
+                closeMenuOnSelect={false}
+                onChange={(item) => handleColorChange(item)}
               />
             </div>
             <div className="flex items-center justify-between gap-4">
@@ -165,7 +202,7 @@ const Products = () => {
                   placeholder="Enter product price"
                   type="number"
                   name="price"
-                  value={""}
+                  value={price}
                   onChange={onChangeHandler}
                 />
               </div>
@@ -178,7 +215,7 @@ const Products = () => {
                   placeholder="Enter product quantity"
                   type="number"
                   name="totalQty"
-                  value={""}
+                  value={totalQty}
                   onChange={onChangeHandler}
                 />
               </div>
