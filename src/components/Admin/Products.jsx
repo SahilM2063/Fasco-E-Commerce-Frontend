@@ -5,6 +5,7 @@ import Select from "react-select";
 import { getAllCategoriesAction } from "../../redux/slices/categorySlice";
 import { getAllBrandsAction } from "../../redux/slices/brandSlice";
 import { getAllColorsAction } from "../../redux/slices/colorSlice";
+import { createProductAction } from "../../redux/slices/productSlice";
 import { useDispatch, useSelector } from "react-redux";
 
 const Products = () => {
@@ -50,14 +51,24 @@ const Products = () => {
     return { value: color?.name, label: color?.name };
   });
 
+  // images handling
+  const [images, setImages] = useState([]);
+  const [productPoster, setProductPoster] = useState("");
+  const handleImageChange = (e) => {
+    const files = Array.from(e.target.files);
+    setImages(files);
+    const url = URL.createObjectURL(files[0]);
+    setProductPoster(url);
+  };
+
   const [formData, setFormData] = useState({
     name: "",
     description: "",
     price: "",
-    size: "",
+    sizes: "",
     brand: "",
     category: "",
-    color: "",
+    colors: "",
     totalQty: "",
   });
 
@@ -69,24 +80,41 @@ const Products = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(formData);
+    dispatch(
+      createProductAction({
+        ...formData,
+        sizes: sizeOption?.map((size) => size.label),
+        colors: colorOption?.map((color) => color.label),
+        images,
+      })
+    );
+    // console.log({
+    //   ...formData,
+    //   sizes: sizeOption?.map((size) => size.value),
+    //   colors: colorOption?.map((color) => color.label),
+    //   images,
+    // });
   };
 
   return (
     <div className="w-full h-full">
       <form>
         <div className="wrapper flex md:flex-col sm:flex-col justify-between gap-4">
-          <div className="img-container w-[40%] space-y-1">
+          <div className="img-container w-[40%] md:w-full space-y-1">
             <label className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
               Product Image
             </label>
-            <img src={""} alt="no_img" className="img-preview w-full" />
+            <img
+              src={productPoster}
+              alt="no_img"
+              className="img-preview w-full"
+            />
             <input
               className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
               placeholder="Enter product name"
               type="file"
-              name="image"
-              onChange={onChangeHandler}
+              multiple
+              onChange={handleImageChange}
             />
           </div>
           <div className="input-boxes flex-1 space-y-2">
@@ -169,6 +197,7 @@ const Products = () => {
                 className="basic-multi-select w-full bg-background text-sm"
                 classNamePrefix="select"
                 placeholder="Select sizes"
+                name="sizes"
                 options={sizeOptionsConverted}
                 isClearable={true}
                 isSearchable={true}
@@ -185,6 +214,7 @@ const Products = () => {
                 className="basic-multi-select w-full bg-background text-sm"
                 classNamePrefix="select"
                 placeholder="Select colors"
+                name="colors"
                 options={colorOptionsConverted}
                 isClearable={true}
                 isSearchable={true}

@@ -19,6 +19,7 @@ const initialState = {
 export const createProductAction = createAsyncThunk(
     "products/createProduct",
     async (payload, { rejectWithValue, getState, dispatch }) => {
+        // console.log(payload)
         try {
             const {
                 name,
@@ -26,6 +27,7 @@ export const createProductAction = createAsyncThunk(
                 brand,
                 category,
                 sizes,
+                images,
                 colors,
                 price,
                 totalQty,
@@ -35,19 +37,30 @@ export const createProductAction = createAsyncThunk(
             const config = {
                 headers: {
                     Authorization: `Bearer ${token}`,
+                    "Content-Type": "multipart/form-data",
                 },
             }
 
-            const { data } = await axios.post(`${baseURL}/products/create-product`, {
-                name,
-                description,
-                brand,
-                category,
-                sizes,
-                colors,
-                price,
-                totalQty,
-            }, config);
+            // formdata
+            const formData = new FormData();
+            formData.append("name", name);
+            formData.append("description", description);
+            formData.append("brand", brand);
+            formData.append("category", category);
+            formData.append("price", price);
+            formData.append("totalQty", totalQty)
+            sizes.forEach((size) => {
+                formData.append("sizes", size)
+            });
+            colors.forEach((color) => {
+                formData.append("colors", color)
+            });
+            images.forEach((image) => {
+                formData.append("images", image);
+            })
+            // console.log(formData)
+            const { data } = await axios.post(`${baseURL}/products/create-product`,
+                formData, config);
             return data;
         } catch (error) {
             console.log(error)
