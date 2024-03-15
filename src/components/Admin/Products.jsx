@@ -30,6 +30,11 @@ const Products = () => {
   useEffect(() => {
     dispatch(getAllBrandsAction());
   }, [dispatch]);
+  const {
+    brands: { brands },
+  } = useSelector((state) => state?.brands);
+
+  console.log(brands);
 
   const onChangeHandler = () => {};
   const handleSubmit = (e) => {
@@ -91,13 +96,15 @@ const Products = () => {
                 placeholder="Enter product description"
                 type="text"
                 name="brand"
-                value={""}
-                onChange={onChangeHandler}
               >
-                <option value="nike">Nike</option>
-                <option value="adidas">Adidas</option>
-                <option value="gucci">Gucci</option>
-                <option value="channel">Channel</option>
+                <option defaultValue>Select brand</option>
+                {brands?.map((brand) => {
+                  return (
+                    <option key={brand?._id} value={brand?.name}>
+                      {brand?.name}
+                    </option>
+                  );
+                })}
               </select>
             </div>
             <div className="space-y-1">
