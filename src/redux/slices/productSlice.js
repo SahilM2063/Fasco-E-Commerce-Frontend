@@ -30,6 +30,14 @@ export const createProductAction = createAsyncThunk(
                 price,
                 totalQty,
             } = payload;
+
+            const token = getState()?.users?.userAuth?.userInfo?.token;
+            const config = {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            }
+
             const { data } = await axios.post(`${baseURL}/products/create-product`, {
                 name,
                 description,
@@ -39,7 +47,7 @@ export const createProductAction = createAsyncThunk(
                 colors,
                 price,
                 totalQty,
-            });
+            }, config);
             return data;
         } catch (error) {
             console.log(error)

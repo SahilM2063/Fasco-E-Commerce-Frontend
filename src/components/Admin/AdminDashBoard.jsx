@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, Outlet } from "react-router-dom";
 
 const sideBarLinks = [
@@ -143,7 +143,7 @@ const AdminDashBoard = () => {
 
   return (
     <div>
-      <div className="w-full h-screen px-32 md:px-6 sm:px-2 flex md:flex-col sm:flex-col">
+      <div className="w-full min-h-screen h-auto px-32 md:px-6 sm:px-2 flex md:flex-col sm:flex-col">
         <div className="border lg:flex-1 rounded-sm">
           <div className="flex flex-col gap-2">
             <div className="flex h-[60px] items-center border-b px-6 font-[Poppins] md:hidden sm:hidden">
@@ -184,11 +184,7 @@ const AdminDashBoard = () => {
               </h1>
             </div>
             <div className="flex items-center gap-4 md:ml-auto md:gap-2 lg:gap-4">
-              <input
-                className="flex h-10 w-full border focus:outline-none rounded-md px-3 py-2 text-sm bg-white"
-                placeholder="Search products..."
-                type="search"
-              />
+              admin
             </div>
           </div>
           <main className="flex flex-1 flex-col gap-4 p-4 md:gap-8 md:p-6">
