@@ -1,9 +1,13 @@
 /* eslint-disable no-unused-vars */
 import { fromJSON } from "postcss";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Select from "react-select";
+import { getAllCategoriesAction } from "../../redux/slices/categorySlice";
+import { getAllBrandsAction } from "../../redux/slices/brandSlice";
+import { useDispatch, useSelector } from "react-redux";
 
 const Products = () => {
+  const dispatch = useDispatch();
   // sizes handling
   const sizes = ["S", "M", "L", "XL", "XXL", "8", "9", "10", "11", "12"];
   const [sizeOption, setSizeOption] = useState([]);
@@ -13,6 +17,19 @@ const Products = () => {
   const sizeOptionsConverted = sizes?.map((size) => {
     return { value: size, label: size };
   });
+
+  // categories handling
+  useEffect(() => {
+    dispatch(getAllCategoriesAction());
+  }, [dispatch]);
+  const { categories, loading, error } = useSelector(
+    (state) => state?.categories?.categories
+  );
+
+  // brands handling
+  useEffect(() => {
+    dispatch(getAllBrandsAction());
+  }, [dispatch]);
 
   const onChangeHandler = () => {};
   const handleSubmit = (e) => {
@@ -89,17 +106,17 @@ const Products = () => {
               </label>
               <select
                 className="flex min-h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
-                placeholder="Enter product description"
                 type="text"
                 name="category"
-                value={""}
-                onChange={onChangeHandler}
               >
-                <option value="men">Men</option>
-                <option value="women">Women</option>
-                <option value="men-accessories">Men-Accessories</option>
-                <option value="women-accessories">Women-Accessories</option>
-                <option value="kids">Kids fashion</option>
+                <option defaultValue>Select category</option>
+                {categories?.map((category) => {
+                  return (
+                    <option key={category?._id} value={category?.name}>
+                      {category?.name}
+                    </option>
+                  );
+                })}
               </select>
             </div>
             <div className="space-y-1">
@@ -110,6 +127,7 @@ const Products = () => {
                 isMulti
                 className="basic-multi-select w-full bg-background text-sm"
                 classNamePrefix="select"
+                placeholder="Select sizes"
                 options={sizeOptionsConverted}
                 isClearable={true}
                 isSearchable={true}
