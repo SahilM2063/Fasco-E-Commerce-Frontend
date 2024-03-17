@@ -1,6 +1,7 @@
 /* eslint-disable no-unused-vars */
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
 import profile from "../../assets/profile.svg";
 import cart from "../../assets/cart.svg";
 import menuSvg from "../../assets/menu.svg";
@@ -28,8 +29,8 @@ const links = [
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-  const user = JSON.parse(localStorage.getItem("userInfo"));
-  const isLoggedIn = user?.token ? true : false;
+  const isLoggedIn = useSelector((state) => state.users.isLoggedIn);
+  console.log(isLoggedIn);
 
   return (
     <>

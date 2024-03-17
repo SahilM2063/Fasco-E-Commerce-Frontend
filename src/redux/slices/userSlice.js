@@ -5,6 +5,7 @@ import { useParams } from "react-router-dom"
 import baseURL from "../../utils/baseURL.js"
 
 const initialState = {
+    isLoggedIn: false || localStorage.getItem("userInfo") ? true : false,
     loading: false,
     error: null,
     users: [],
@@ -85,10 +86,12 @@ const userSlice = createSlice({
             state.userAuth.loading = true;
         });
         builder.addCase(loginUserAction.fulfilled, (state, action) => {
+            state.isLoggedIn = true;
             state.userAuth.loading = false;
             state.userAuth.userInfo = action.payload
         });
         builder.addCase(loginUserAction.rejected, (state, action) => {
+            state.isLoggedIn = false;
             state.userAuth.loading = false;
             state.userAuth.error = action.payload
         });
@@ -97,10 +100,12 @@ const userSlice = createSlice({
             state.loading = true;
         });
         builder.addCase(registerUserAction.fulfilled, (state, action) => {
+            state.isLoggedIn = true;
             state.loading = false;
             state.user = action.payload;
         });
         builder.addCase(registerUserAction.rejected, (state, action) => {
+            state.isLoggedIn = false;
             state.loading = false;
             state.error = action.payload
         });
