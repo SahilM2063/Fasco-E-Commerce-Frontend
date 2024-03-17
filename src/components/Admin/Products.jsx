@@ -7,9 +7,11 @@ import { getAllBrandsAction } from "../../redux/slices/brandSlice";
 import { getAllColorsAction } from "../../redux/slices/colorSlice";
 import { createProductAction } from "../../redux/slices/productSlice";
 import { useDispatch, useSelector } from "react-redux";
+import { useNotification } from "../../hooks";
 
 const Products = () => {
   const dispatch = useDispatch();
+  const updateNotification = useNotification();
   // sizes handling
   const sizes = ["S", "M", "L", "XL", "XXL", "8", "9", "10", "11", "12"];
   const [sizeOption, setSizeOption] = useState([]);
@@ -24,9 +26,7 @@ const Products = () => {
   useEffect(() => {
     dispatch(getAllCategoriesAction());
   }, [dispatch]);
-  const { categories, loading, error } = useSelector(
-    (state) => state?.categories?.categories
-  );
+  const { categories } = useSelector((state) => state?.categories?.categories);
 
   // brands handling
   useEffect(() => {
@@ -95,6 +95,33 @@ const Products = () => {
     //   images,
     // });
   };
+
+  const { loading, isAdded, product, error } = useSelector(
+    (state) => state?.products
+  );
+
+  useEffect(() => {
+    if (isAdded) {
+      updateNotification("success", "Product created successfully");
+      setFormData({
+        name: "",
+        description: "",
+        price: "",
+        sizes: "",
+        brand: "",
+        category: "",
+        colors: "",
+        totalQty: "",
+      });
+      setImages([]);
+      setProductPoster("");
+      setSizeOption([]);
+      setColorOption([]);
+    }
+    if (error) {
+      updateNotification("error", error);
+    }
+  }, [isAdded, error]);
 
   return (
     <div className="w-full h-full">
@@ -254,7 +281,7 @@ const Products = () => {
               onClick={handleSubmit}
               className="w-full sm:w-full py-2 space-y-2 bg-black text-white rounded-lg border-[1px] border-black"
             >
-              Create Product
+              {loading ? "Loading..." : "Add Product"}
             </button>
           </div>
         </div>
