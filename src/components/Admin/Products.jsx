@@ -53,10 +53,21 @@ const Products = () => {
 
   // images handling
   const [images, setImages] = useState([]);
+  const [imgErrs, setImgErrs] = useState([]);
   const [productPoster, setProductPoster] = useState("");
   const handleImageChange = (e) => {
     const files = Array.from(e.target.files);
+    const fileErrs = [];
+    files.forEach((file) => {
+      if (file?.size > 1000000) {
+        fileErrs.push(`${file.name} is too large!`);
+      }
+      if (!file?.type?.startsWith("image/")) {
+        fileErrs.push(`${file.name} is not an image!`);
+      }
+    });
     setImages(files);
+    setImgErrs(fileErrs);
     const url = URL.createObjectURL(files[0]);
     setProductPoster(url);
   };
@@ -80,6 +91,9 @@ const Products = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    if (imgErrs.length > 0) {
+      return updateNotification("error", imgErrs[0]);
+    }
     dispatch(
       createProductAction({
         ...formData,
@@ -134,7 +148,7 @@ const Products = () => {
             <img
               src={productPoster}
               alt="no_img"
-              className="img-preview w-full"
+              className="img-preview w-full rounded-md"
             />
             <input
               className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm"

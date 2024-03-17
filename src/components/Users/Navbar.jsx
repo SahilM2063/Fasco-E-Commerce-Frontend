@@ -30,7 +30,7 @@ const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const isLoggedIn = useSelector((state) => state.users.isLoggedIn);
-  console.log(isLoggedIn);
+  // console.log(isLoggedIn)
 
   return (
     <>
