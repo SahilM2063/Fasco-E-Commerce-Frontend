@@ -5,7 +5,10 @@ import Select from "react-select";
 import { getAllCategoriesAction } from "../../redux/slices/categorySlice";
 import { getAllBrandsAction } from "../../redux/slices/brandSlice";
 import { getAllColorsAction } from "../../redux/slices/colorSlice";
-import { createProductAction } from "../../redux/slices/productSlice";
+import {
+  createProductAction,
+  getAllProductsAction,
+} from "../../redux/slices/productSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { useNotification } from "../../hooks";
 
@@ -115,6 +118,7 @@ const Products = () => {
   );
 
   useEffect(() => {
+    dispatch(getAllProductsAction());
     if (isAdded) {
       updateNotification("success", "Product created successfully");
       setFormData({
