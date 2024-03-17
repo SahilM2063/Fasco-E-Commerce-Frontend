@@ -143,7 +143,7 @@ const AdminDashBoard = () => {
 
   return (
     <div>
-      <div className="w-full min-h-screen h-auto px-32 md:px-6 sm:px-2 flex md:flex-col sm:flex-col">
+      <div className="w-full min-h-screen px-32 md:px-6 sm:px-2 flex md:flex-col sm:flex-col">
         <div className="border lg:flex-1 rounded-sm">
           <div className="flex flex-col gap-2">
             <div className="flex h-[60px] items-center border-b px-6 font-[Poppins] md:hidden sm:hidden">
@@ -175,7 +175,7 @@ const AdminDashBoard = () => {
           </div>
         </div>
 
-        <div className="flex flex-col w-[84%] md:w-full sm:w-full h-full border rounded-sm">
+        <div className="flex flex-col w-[84%] md:w-full sm:w-full min-h-screen h-auto border rounded-sm">
           <div className="flex h-14 lg:h-[60px] justify-between items-center gap-4 border-b px-6">
             <div className="flex items-center gap-2">
               {sideBarLinks[activeLinkIndex].icon}
@@ -187,7 +187,7 @@ const AdminDashBoard = () => {
               admin
             </div>
           </div>
-          <main className="flex flex-1 flex-col gap-4 p-4 md:gap-8 md:p-6">
+          <main className="h-full flex flex-1 flex-col gap-4 p-4 md:gap-8 md:p-6">
             <Outlet />
           </main>
         </div>

@@ -15,6 +15,8 @@ import { useNotification } from "../../hooks";
 const Products = () => {
   const dispatch = useDispatch();
   const updateNotification = useNotification();
+  const [showAddProduct, setShowAddProduct] = useState(false);
+
   // sizes handling
   const sizes = ["S", "M", "L", "XL", "XXL", "8", "9", "10", "11", "12"];
   const [sizeOption, setSizeOption] = useState([]);
