@@ -340,25 +340,19 @@ const Products = () => {
         <table className="w-full whitespace-nowrap">
           <thead>
             <tr className="h-20 w-full text-sm leading-none bg-slate-100/90">
-              <th className="font-normal text-left pl-4 font-[poppins] font-semibold">
-                #
-              </th>
-              <th className="font-normal text-left pl-11 font-[poppins] font-semibold">
+              <th className="text-left pl-4 font-[poppins] font-semibold">#</th>
+              <th className="text-left pl-11 font-[poppins] font-semibold">
                 Name
               </th>
-              <th className="font-normal text-left pl-10 font-[poppins] font-semibold">
+              <th className="text-left pl-10 font-[poppins] font-semibold">
                 Category
               </th>
-              <th className="font-normal text-left font-[poppins] font-semibold">
-                Brand
-              </th>
-              <th className="font-normal text-left font-[poppins] font-semibold">
-                Price
-              </th>
-              <th className="font-normal text-left font-[poppins] font-semibold">
+              <th className="text-left font-[poppins] font-semibold">Brand</th>
+              <th className="text-left font-[poppins] font-semibold">Price</th>
+              <th className="text-left font-[poppins] font-semibold">
                 Quantity
               </th>
-              <th className="font-normal text-left w-32 font-[poppins] font-semibold">
+              <th className="text-left w-32 font-[poppins] font-semibold">
                 Actions
               </th>
             </tr>
@@ -388,6 +382,7 @@ export const TrComponent = (props) => {
         <div className="flex items-center">
           <img
             className="shadow-md rounded-lg object-cover w-10 h-10 mr-3"
+            alt="product image"
             src={images ? images[0] : ""}
           />
           {name}
