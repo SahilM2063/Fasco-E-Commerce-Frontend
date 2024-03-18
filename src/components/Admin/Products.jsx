@@ -9,6 +9,7 @@ import { getAllBrandsAction } from "../../redux/slices/brandSlice";
 import { getAllColorsAction } from "../../redux/slices/colorSlice";
 import {
   createProductAction,
+  deleteProductAction,
   getAllProductsAction,
 } from "../../redux/slices/productSlice";
 import { useDispatch, useSelector } from "react-redux";
@@ -117,13 +118,20 @@ const Products = () => {
     // });
   };
 
-  const { loading, isAdded, product, error } = useSelector(
+  const { loading, isAdded, product, error, isDeleted } = useSelector(
     (state) => state?.products
   );
 
   // Getting All Products
   const { products } = useSelector((state) => state?.products.products);
   console.log(products);
+
+  const handleDeleteProduct = (id) => {
+    if (window.confirm("Are you sure you want to delete this product?")) {
+      dispatch(deleteProductAction(id));
+    }
+    return;
+  };
 
   useEffect(() => {
     dispatch(getAllProductsAction());
@@ -144,10 +152,14 @@ const Products = () => {
       setSizeOption([]);
       setColorOption([]);
     }
+    if (isDeleted) {
+      dispatch(getAllProductsAction());
+      updateNotification("success", "Product deleted successfully");
+    }
     if (error) {
       updateNotification("error", error);
     }
-  }, [isAdded, error]);
+  }, [isAdded, error, isDeleted]);
 
   return (
     <div className="sm:overflow-x-scroll scrollbar-hide">
@@ -175,7 +187,7 @@ const Products = () => {
       </div>
       {showAddProduct && (
         <form>
-          <div className="wrapper flex md:flex-col sm:flex-col justify-between gap-4">
+          <div className="wrapper flex md:flex-col sm:flex-col justify-between gap-4 mt-4">
             <div className="img-container w-[40%] md:w-full space-y-1">
               <label className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
                 Product Image
@@ -348,7 +360,9 @@ const Products = () => {
                 Category
               </th>
               <th className="text-left font-[poppins] font-semibold">Brand</th>
-              <th className="text-left font-[poppins] font-semibold">Price</th>
+              <th className="text-left font-[poppins] font-semibold">
+                Price(₹)
+              </th>
               <th className="text-left font-[poppins] font-semibold">
                 Quantity
               </th>
@@ -360,7 +374,12 @@ const Products = () => {
           <tbody className="w-full">
             {products?.map((product, index) => {
               return (
-                <TrComponent products={product} key={product?._id} id={index} />
+                <TrComponent
+                  products={product}
+                  key={product?._id}
+                  id={index}
+                  handleDeleteProduct={handleDeleteProduct}
+                />
               );
             })}
           </tbody>
@@ -373,8 +392,10 @@ const Products = () => {
 export default Products;
 
 export const TrComponent = (props) => {
-  const { name, category, brand, price, qtyLeft, images } = props?.products;
+  const { _id, name, category, brand, price, qtyLeft, images } =
+    props?.products;
   const id = props?.id;
+  const handleDeleteProduct = props?.handleDeleteProduct;
   return (
     <tr className="h-16 text-sm leading-none text-gray-700 border-b border-t border-gray-200 bg-white hover:bg-gray-100 font-[Poppins]">
       <td className="pl-4 font-semibold">{id + 1}</td>
@@ -402,10 +423,13 @@ export const TrComponent = (props) => {
       </td>
       <td>
         <div className="flex items-center">
-          <button className="bg-black mr-3 py-2.5 px-5 rounded-md text-sm leading-3 text-white focus:outline-none">
+          <button className="bg-black mr-3 py-2 px-5 rounded-md text-sm leading-3 text-white focus:outline-none">
             Update
           </button>
-          <button className="bg-red-600 mr-3 py-2.5 px-5 rounded-md text-sm leading-3 text-white focus:outline-none">
+          <button
+            onClick={() => handleDeleteProduct(_id)}
+            className="bg-slate-100/90 text-black mr-3 py-2 px-5 rounded-md text-sm leading-3  focus:outline-none"
+          >
             Delete
           </button>
         </div>

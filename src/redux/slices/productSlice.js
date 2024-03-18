@@ -70,7 +70,8 @@ export const createProductAction = createAsyncThunk(
 );
 
 // get all products
-export const getAllProductsAction = createAsyncThunk("products/getAllProducts"
+export const getAllProductsAction = createAsyncThunk(
+    "products/getAllProducts"
     , async (payload, { rejectWithValue, getState, dispatch }) => {
         try {
             const { data } = await axios.get(`${baseURL}/products/getAll`);
@@ -81,6 +82,29 @@ export const getAllProductsAction = createAsyncThunk("products/getAllProducts"
         }
     })
 
+// delete the product
+export const deleteProductAction = createAsyncThunk(
+    "products/deleteProduct",
+    async (id, { rejectWithValue, getState, dispatch }) => {
+        console.log(id)
+        try {
+            const token = getState()?.users?.userAuth?.userInfo?.token;
+            const config = {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            }
+
+            const { data } = await axios.delete(`${baseURL}/products/${id}`, config);
+            console.log(data)
+            return data;
+        } catch (error) {
+            console.log(error)
+            rejectWithValue(error?.response?.data)
+        }
+    }
+)
+
 const productSlice = createSlice({
     name: "products",
     initialState,
@@ -88,6 +112,7 @@ const productSlice = createSlice({
         // create product
         builder.addCase(createProductAction.pending, (state, action) => {
             state.loading = true;
+            state.isAdded = false;
         });
         builder.addCase(createProductAction.fulfilled, (state, action) => {
             state.loading = false;
@@ -113,6 +138,21 @@ const productSlice = createSlice({
             state.loading = false;
             state.error = action.payload;
             state.products = [];
+        })
+
+        // delete product
+        builder.addCase(deleteProductAction.pending, (state, action) => {
+            state.loading = true;
+            state.isDeleted = false;
+        });
+        builder.addCase(deleteProductAction.fulfilled, (state, action) => {
+            state.loading = false;
+            state.isDeleted = true;
+        });
+        builder.addCase(deleteProductAction.rejected, (state, action) => {
+            state.loading = false;
+            state.error = action.payload;
+            state.isDeleted = false;
         })
     },
 })
