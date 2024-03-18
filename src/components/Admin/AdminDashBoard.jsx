@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 import React, { useEffect, useState } from "react";
-import { Link, Outlet } from "react-router-dom";
+import { Link, Outlet, useLocation } from "react-router-dom";
 
 const sideBarLinks = [
   {
@@ -140,6 +140,30 @@ const sideBarLinks = [
 
 const AdminDashBoard = () => {
   const [activeLinkIndex, setActiveLinkIndex] = useState(0);
+  const [loading, setLoading] = useState(true);
+
+  const location = useLocation();
+
+  useEffect(() => {
+    const savedActiveLinkIndex = localStorage.getItem("activeLinkIndex");
+    if (savedActiveLinkIndex !== null) {
+      setActiveLinkIndex(parseInt(savedActiveLinkIndex));
+      setLoading(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem("activeLinkIndex", activeLinkIndex.toString());
+  }, [activeLinkIndex]);
+
+  useEffect(() => {
+    const index = sideBarLinks.findIndex(
+      (link) => link.path === location.pathname
+    );
+    if (index !== -1) {
+      setActiveLinkIndex(index);
+    }
+  }, [location.pathname]);
 
   return (
     <div>
