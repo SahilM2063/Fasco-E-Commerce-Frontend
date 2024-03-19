@@ -82,6 +82,20 @@ export const getAllProductsAction = createAsyncThunk(
         }
     })
 
+// get single productBy Id
+export const getSingleProductAction = createAsyncThunk(
+    "products/getSingleProduct",
+    async (id, { rejectWithValue, getState, dispatch }) => {
+        try {
+            const { data } = await axios.get(`${baseURL}/products/${id}`);
+            return data;
+        } catch (error) {
+            console.log(error)
+            rejectWithValue(error?.response?.data)
+        }
+    }
+)
+
 // delete the product
 export const deleteProductAction = createAsyncThunk(
     "products/deleteProduct",
@@ -140,6 +154,25 @@ const productSlice = createSlice({
             state.loading = false;
             state.error = action.payload;
             state.products = [];
+        })
+
+        // get single product
+        builder.addCase(getSingleProductAction.pending, (state, action) => {
+            state.loading = true;
+            state.isAdded = false;
+            state.error = null;
+            state.product = {};
+        });
+        builder.addCase(getSingleProductAction.fulfilled, (state, action) => {
+            state.loading = false;
+            state.product = action.payload;
+            state.isAdded = true;
+        });
+        builder.addCase(getSingleProductAction.rejected, (state, action) => {
+            state.loading = false;
+            state.error = action.payload;
+            state.isAdded = false;
+            state.product = {};
         })
 
         // delete product

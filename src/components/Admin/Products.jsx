@@ -23,7 +23,7 @@ const Products = () => {
   const updateNotification = useNotification();
   const [showAddProduct, setShowAddProduct] = useState(false);
   const [showUpdateModal, setShowUpdateModal] = useState(false);
-  const [currentProduct, setCurrentProduct] = useState([]);
+  const [productId, setProductId] = useState("");
 
   // sizes handling
   const sizes = ["S", "M", "L", "XL", "XXL", "8", "9", "10", "11", "12"];
@@ -378,7 +378,6 @@ const Products = () => {
       <UpdateProduct
         showUpdateModal={showUpdateModal}
         setShowUpdateModal={setShowUpdateModal}
-        currentProduct={currentProduct}
         brands={brands}
         categories={categories}
         sizeOptionsConverted={sizeOptionsConverted}
@@ -387,6 +386,8 @@ const Products = () => {
         handleColorChange={handleColorChange}
         sizeOption={sizeOption}
         colorOption={colorOption}
+        productId={productId}
+
       />
       <div className="bg-white mt-4 rounded-lg border overflow-x-auto scrollbar-hide">
         <table className="w-full whitespace-nowrap">
@@ -424,7 +425,7 @@ const Products = () => {
                   id={index}
                   handleDeleteProduct={handleDeleteProduct}
                   setShowUpdateModal={setShowUpdateModal}
-                  setCurrentProduct={setCurrentProduct}
+                  setProductId={setProductId}
                 />
               );
             })}
@@ -452,8 +453,7 @@ export const TrComponent = (props) => {
   const id = props?.id;
   const handleDeleteProduct = props?.handleDeleteProduct;
   const setShowUpdateModal = props?.setShowUpdateModal;
-  const setCurrentProduct = props?.setCurrentProduct;
-  const product = props.products;
+  const setProductId = props?.setProductId;
 
   return (
     <tr className="h-16 text-sm leading-none text-gray-700 border-b border-t border-gray-200 bg-white hover:bg-gray-100 font-[Poppins]">
@@ -501,7 +501,7 @@ export const TrComponent = (props) => {
         <div className="flex items-center gap-8 md:gap-4 sm:gap-4">
           <button
             onClick={() => {
-              setCurrentProduct(product);
+              setProductId(_id);
               setShowUpdateModal(true);
             }}
             className="rounded-md focus:outline-none"
