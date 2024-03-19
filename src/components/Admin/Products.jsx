@@ -16,6 +16,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNotification } from "../../hooks";
 import editSvg from "./assets/edit.svg";
 import deleteSvg from "./assets/delete.svg";
+import UpdateProduct from "./UpdateProduct";
 
 const Products = () => {
   const dispatch = useDispatch();
@@ -374,7 +375,7 @@ const Products = () => {
           </div>
         </form>
       )}
-      <UpdateProductModal
+      <UpdateProduct
         showUpdateModal={showUpdateModal}
         setShowUpdateModal={setShowUpdateModal}
         currentProduct={currentProduct}
@@ -452,6 +453,8 @@ export const TrComponent = (props) => {
   const handleDeleteProduct = props?.handleDeleteProduct;
   const setShowUpdateModal = props?.setShowUpdateModal;
   const setCurrentProduct = props?.setCurrentProduct;
+  const product = props.products;
+
   return (
     <tr className="h-16 text-sm leading-none text-gray-700 border-b border-t border-gray-200 bg-white hover:bg-gray-100 font-[Poppins]">
       <td className="pl-4 font-semibold">{id + 1}</td>
@@ -495,11 +498,11 @@ export const TrComponent = (props) => {
         <p className="mr-16">{qtyLeft}</p>
       </td>
       <td>
-        <div className="flex items-center gap-8">
+        <div className="flex items-center gap-8 md:gap-4 sm:gap-4">
           <button
             onClick={() => {
+              setCurrentProduct(product);
               setShowUpdateModal(true);
-              setCurrentProduct(props.products);
             }}
             className="rounded-md focus:outline-none"
           >
@@ -514,209 +517,5 @@ export const TrComponent = (props) => {
         </div>
       </td>
     </tr>
-  );
-};
-
-export const UpdateProductModal = (props) => {
-  const {
-    showUpdateModal,
-    currentProduct,
-    brands,
-    categories,
-    sizeOptionsConverted,
-    colorOptionsConverted,
-    handleSizeChange,
-    handleColorChange,
-  } = props;
-  console.log(currentProduct);
-  const {
-    name,
-    description,
-    category,
-    brand,
-    price,
-    totalQty,
-    images,
-    sizes,
-    colors,
-  } = currentProduct;
-
-  const handleChangeUpdateProduct = (product) => {
-    
-  };
-  return (
-    showUpdateModal && (
-      <div className="w-full h-auto mt-4">
-        <form>
-          <h1 className="text-xl font-bold font-[Poppins] text-center mt-4 underline underline-offset-8">
-            Update Product
-          </h1>
-          <div className="wrapper flex md:flex-col sm:flex-col justify-between gap-4 mt-4">
-            <div className="img-container w-[40%] md:w-full space-y-1">
-              <label className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-                Product Image
-              </label>
-              <img
-                src={images ? images[0] : ""}
-                alt="no_img"
-                className="img-preview w-full rounded-md"
-              />
-              <input
-                className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
-                type="file"
-                multiple
-                onChange={""}
-              />
-            </div>
-            <div className="input-boxes flex-1 space-y-2">
-              <div className="space-y-1">
-                <label className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-                  Name
-                </label>
-                <input
-                  className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
-                  placeholder="Enter product name"
-                  type="text"
-                  name="name"
-                  value={name}
-                  onChange={""}
-                />
-              </div>
-              <div className="space-y-1">
-                <label className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-                  Description
-                </label>
-                <textarea
-                  className="flex min-h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm resize-y"
-                  placeholder="Enter product description"
-                  type="text"
-                  name="description"
-                  value={description}
-                  onChange={""}
-                  rows={4}
-                />
-              </div>
-              <div className="space-y-1">
-                <label className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-                  Brand
-                </label>
-                <select
-                  className="flex min-h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm resize-y"
-                  placeholder="Enter product description"
-                  type="text"
-                  name="brand"
-                  value={brand}
-                  onChange={""}
-                >
-                  <option defaultValue>Select brand</option>
-                  {brands?.map((brand) => {
-                    return (
-                      <option key={brand?._id} value={brand?.name}>
-                        {brand?.name}
-                      </option>
-                    );
-                  })}
-                </select>
-              </div>
-              <div className="space-y-1">
-                <label className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-                  Categories
-                </label>
-                <select
-                  className="flex min-h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
-                  type="text"
-                  name="category"
-                  value={category}
-                  onChange={""}
-                >
-                  <option defaultValue>Select category</option>
-                  {categories?.map((category) => {
-                    return (
-                      <option key={category?._id} value={category?.name}>
-                        {category?.name}
-                      </option>
-                    );
-                  })}
-                </select>
-              </div>
-              <div className="space-y-1">
-                <label className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-                  Sizes
-                </label>
-                <Select
-                  isMulti
-                  className="basic-multi-select w-full bg-background text-sm"
-                  classNamePrefix="select"
-                  placeholder="Select sizes"
-                  name="sizes"
-                  value={sizes?.map((size) =>
-                    sizeOptionsConverted?.find((item) => item.value === size)
-                  )}
-                  options={sizeOptionsConverted}
-                  isClearable={true}
-                  isSearchable={true}
-                  closeMenuOnSelect={false}
-                  onChange={(item) => handleSizeChange(item)}
-                />
-              </div>
-              <div className="space-y-1">
-                <label className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-                  Colors
-                </label>
-                <Select
-                  isMulti
-                  className="basic-multi-select w-full bg-background text-sm"
-                  classNamePrefix="select"
-                  placeholder="Select colors"
-                  name="colors"
-                  options={colorOptionsConverted}
-                  value={colors?.map((color) =>
-                    colorOptionsConverted?.find((item) => item.value === color)
-                  )}
-                  isClearable={true}
-                  isSearchable={true}
-                  closeMenuOnSelect={false}
-                  onChange={(item) => handleColorChange(item)}
-                />
-              </div>
-              <div className="flex items-center justify-between gap-4">
-                <div className="space-y-1 w-full">
-                  <label className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-                    Price (INR)
-                  </label>
-                  <input
-                    className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
-                    placeholder="Enter product price"
-                    type="number"
-                    name="price"
-                    value={price}
-                    onChange={""}
-                  />
-                </div>
-                <div className="space-y-1 w-full">
-                  <label className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-                    Total Quantity
-                  </label>
-                  <input
-                    className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
-                    placeholder="Enter product quantity"
-                    type="number"
-                    name="totalQty"
-                    value={totalQty}
-                    onChange={""}
-                  />
-                </div>
-              </div>
-              <button
-                onClick={""}
-                className="w-full sm:w-full py-2 space-y-2 bg-black text-white rounded-lg border-[1px] border-black"
-              >
-                Update
-              </button>
-            </div>
-          </div>
-        </form>
-      </div>
-    )
   );
 };
