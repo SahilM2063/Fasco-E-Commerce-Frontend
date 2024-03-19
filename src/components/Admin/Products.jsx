@@ -14,6 +14,8 @@ import {
 } from "../../redux/slices/productSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { useNotification } from "../../hooks";
+import editSvg from "./assets/edit.svg";
+import deleteSvg from "./assets/delete.svg";
 
 const Products = () => {
   const dispatch = useDispatch();
@@ -208,10 +210,10 @@ const Products = () => {
       </div>
       {showAddProduct && (
         <form>
-          <h1 className="text-xl font-bold font-[Poppins] text-center mt-4">
+          <h1 className="text-xl font-bold font-[Poppins] text-center mt-4 underline underline-offset-8">
             Add Product
           </h1>
-          <div className="wrapper flex md:flex-col sm:flex-col justify-between gap-4 mt-2">
+          <div className="wrapper flex md:flex-col sm:flex-col justify-between gap-4 mt-4">
             <div className="img-container w-[40%] md:w-full space-y-1">
               <label className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
                 Product Image
@@ -396,12 +398,16 @@ const Products = () => {
               <th className="text-left pl-10 font-[poppins] font-semibold">
                 Category
               </th>
-              <th className="text-left font-[poppins] font-semibold">Brand</th>
               <th className="text-left font-[poppins] font-semibold">
                 Price(₹)
               </th>
+              <th className="text-left font-[poppins] font-semibold">Status</th>
               <th className="text-left font-[poppins] font-semibold">
                 Quantity
+              </th>
+              <th className="text-left font-[poppins] font-semibold">Sold</th>
+              <th className="text-left font-[poppins] font-semibold">
+                Qty. Left
               </th>
               <th className="text-left w-32 font-[poppins] font-semibold">
                 Actions
@@ -431,8 +437,17 @@ const Products = () => {
 export default Products;
 
 export const TrComponent = (props) => {
-  const { _id, name, category, brand, price, qtyLeft, images } =
-    props?.products;
+  const {
+    _id,
+    name,
+    category,
+    brand,
+    price,
+    totalQty,
+    qtyLeft,
+    images,
+    totalSold,
+  } = props?.products;
   const id = props?.id;
   const handleDeleteProduct = props?.handleDeleteProduct;
   const setShowUpdateModal = props?.setShowUpdateModal;
@@ -447,37 +462,54 @@ export const TrComponent = (props) => {
             alt="product image"
             src={images ? images[0] : ""}
           />
-          {name}
+          <div className="flex flex-col items-start justify-center gap-1">
+            <p>{name}</p>
+            <span className="text-[11px] opacity-85">{brand}</span>
+          </div>
         </div>
       </td>
       <td>
         <p className="mr-16 pl-10">{category}</p>
       </td>
       <td>
-        <p className="mr-16">{brand}</p>
+        <p className="mr-16">{price}</p>
       </td>
       <td>
-        <p className="mr-16">{price}</p>
+        {qtyLeft > 0 ? (
+          <div className="flex items-center justify-center w-20 h-6 bg-green-100 rounded-full mr-12">
+            <p className="text-xs leading-3 text-green-600">In stock</p>
+          </div>
+        ) : (
+          <div className="flex items-center justify-center w-20 h-6 bg-red-100 rounded-full mr-12">
+            <p className="text-xs leading-3 text-red-600">Out of stock</p>
+          </div>
+        )}
+      </td>
+      <td>
+        <p className="mr-16">{totalQty}</p>
+      </td>
+      <td>
+        <p className="mr-16">{totalSold}</p>
       </td>
       <td>
         <p className="mr-16">{qtyLeft}</p>
       </td>
       <td>
-        <div className="flex items-center">
+        <div className="flex items-center gap-8">
           <button
             onClick={() => {
               setShowUpdateModal(true);
               setCurrentProduct(props.products);
             }}
-            className="bg-black mr-3 py-2 px-5 rounded-md text-sm leading-3 text-white focus:outline-none"
+            className="rounded-md focus:outline-none"
           >
-            Update
+            <img src={editSvg} alt="editSvg" className="w-5" />
           </button>
           <button
             onClick={() => handleDeleteProduct(_id)}
-            className="bg-slate-100/90 text-black mr-3 py-2 px-5 rounded-md text-sm leading-3  focus:outline-none"
+            className="rounded-md focus:outline-none"
           >
-            Delete
+            <img src={deleteSvg} alt="deleteSvg" className="w-6" />
           </button>
         </div>
       </td>
@@ -488,7 +520,6 @@ export const TrComponent = (props) => {
 export const UpdateProductModal = (props) => {
   const {
     showUpdateModal,
-    setShowUpdateModal,
     currentProduct,
     brands,
     categories,
@@ -496,8 +527,6 @@ export const UpdateProductModal = (props) => {
     colorOptionsConverted,
     handleSizeChange,
     handleColorChange,
-    sizeOption,
-    colorOption,
   } = props;
   console.log(currentProduct);
   const {
@@ -511,23 +540,18 @@ export const UpdateProductModal = (props) => {
     sizes,
     colors,
   } = currentProduct;
+
+  const handleChangeUpdateProduct = (product) => {
+    
+  };
   return (
     showUpdateModal && (
       <div className="w-full h-auto mt-4">
-        {/* <div className="flex items-center justify-between w-full px-4 py-2 border rounded-lg ">
-          <span className="label-text font-[Poppins]">Update Product</span>
-          <button
-            onClick={() => setShowUpdateModal(false)}
-            className="w-6 h-6 flex items-center justify-center  bg-gray-300 font-[Poppins] rounded-full"
-          >
-            X
-          </button>
-        </div> */}
         <form>
-          <h1 className="text-xl font-bold font-[Poppins] text-center mt-4">
+          <h1 className="text-xl font-bold font-[Poppins] text-center mt-4 underline underline-offset-8">
             Update Product
           </h1>
-          <div className="wrapper flex md:flex-col sm:flex-col justify-between gap-4 mt-2">
+          <div className="wrapper flex md:flex-col sm:flex-col justify-between gap-4 mt-4">
             <div className="img-container w-[40%] md:w-full space-y-1">
               <label className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
                 Product Image
