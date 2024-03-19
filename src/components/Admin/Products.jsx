@@ -157,7 +157,21 @@ const Products = () => {
       updateNotification("success", "Product deleted successfully");
     }
     if (error) {
-      updateNotification("error", error);
+      updateNotification("error", error?.message);
+      setFormData({
+        name: "",
+        description: "",
+        price: "",
+        sizes: "",
+        brand: "",
+        category: "",
+        colors: "",
+        totalQty: "",
+      });
+      setImages([]);
+      setProductPoster("");
+      setSizeOption([]);
+      setColorOption([]);
     }
   }, [isAdded, error, isDeleted]);
 

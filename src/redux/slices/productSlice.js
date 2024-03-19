@@ -113,6 +113,8 @@ const productSlice = createSlice({
         builder.addCase(createProductAction.pending, (state, action) => {
             state.loading = true;
             state.isAdded = false;
+            state.error = null;
+            state.product = {};
         });
         builder.addCase(createProductAction.fulfilled, (state, action) => {
             state.loading = false;
