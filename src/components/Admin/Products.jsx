@@ -19,6 +19,8 @@ const Products = () => {
   const dispatch = useDispatch();
   const updateNotification = useNotification();
   const [showAddProduct, setShowAddProduct] = useState(false);
+  const [showUpdateModal, setShowUpdateModal] = useState(false);
+  const [currentProduct, setCurrentProduct] = useState([]);
 
   // sizes handling
   const sizes = ["S", "M", "L", "XL", "XXL", "8", "9", "10", "11", "12"];
@@ -124,7 +126,7 @@ const Products = () => {
 
   // Getting All Products
   const { products } = useSelector((state) => state?.products.products);
-  console.log(products);
+  // console.log(products);
 
   const handleDeleteProduct = (id) => {
     if (window.confirm("Are you sure you want to delete this product?")) {
@@ -177,7 +179,7 @@ const Products = () => {
 
   return (
     <div className="sm:overflow-x-scroll scrollbar-hide">
-      <div className="w-full flex justify-center items-center gap-6">
+      <div className="w-full flex sm:flex-col justify-center items-center gap-6 md:gap-4 sm:gap-2">
         <div className="w-full flex-1 px-4 py-1 border rounded-lg">
           <div className="form-control">
             <label className="label cursor-pointer">
@@ -190,18 +192,26 @@ const Products = () => {
             </label>
           </div>
         </div>
-        <div className="w-full flex-1 px-4 py-1 border rounded-lg hidden">
+        <div className="w-full flex-1 px-4 py-1 border rounded-lg">
           <div className="form-control">
             <label className="label cursor-pointer">
-              <span className="label-text">Update product</span>
-              <input type="checkbox" className="toggle" />
+              <span className="label-text font-[Poppins]">Update product</span>
+              <input
+                type="checkbox"
+                className="toggle"
+                checked={showUpdateModal}
+                onChange={() => setShowUpdateModal(!showUpdateModal)}
+              />
             </label>
           </div>
         </div>
       </div>
       {showAddProduct && (
         <form>
-          <div className="wrapper flex md:flex-col sm:flex-col justify-between gap-4 mt-4">
+          <h1 className="text-xl font-bold font-[Poppins] text-center mt-4">
+            Add Product
+          </h1>
+          <div className="wrapper flex md:flex-col sm:flex-col justify-between gap-4 mt-2">
             <div className="img-container w-[40%] md:w-full space-y-1">
               <label className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
                 Product Image
@@ -362,6 +372,19 @@ const Products = () => {
           </div>
         </form>
       )}
+      <UpdateProductModal
+        showUpdateModal={showUpdateModal}
+        setShowUpdateModal={setShowUpdateModal}
+        currentProduct={currentProduct}
+        brands={brands}
+        categories={categories}
+        sizeOptionsConverted={sizeOptionsConverted}
+        colorOptionsConverted={colorOptionsConverted}
+        handleSizeChange={handleSizeChange}
+        handleColorChange={handleColorChange}
+        sizeOption={sizeOption}
+        colorOption={colorOption}
+      />
       <div className="bg-white mt-4 rounded-lg border overflow-x-auto scrollbar-hide">
         <table className="w-full whitespace-nowrap">
           <thead>
@@ -393,6 +416,8 @@ const Products = () => {
                   key={product?._id}
                   id={index}
                   handleDeleteProduct={handleDeleteProduct}
+                  setShowUpdateModal={setShowUpdateModal}
+                  setCurrentProduct={setCurrentProduct}
                 />
               );
             })}
@@ -410,6 +435,8 @@ export const TrComponent = (props) => {
     props?.products;
   const id = props?.id;
   const handleDeleteProduct = props?.handleDeleteProduct;
+  const setShowUpdateModal = props?.setShowUpdateModal;
+  const setCurrentProduct = props?.setCurrentProduct;
   return (
     <tr className="h-16 text-sm leading-none text-gray-700 border-b border-t border-gray-200 bg-white hover:bg-gray-100 font-[Poppins]">
       <td className="pl-4 font-semibold">{id + 1}</td>
@@ -437,7 +464,13 @@ export const TrComponent = (props) => {
       </td>
       <td>
         <div className="flex items-center">
-          <button className="bg-black mr-3 py-2 px-5 rounded-md text-sm leading-3 text-white focus:outline-none">
+          <button
+            onClick={() => {
+              setShowUpdateModal(true);
+              setCurrentProduct(props.products);
+            }}
+            className="bg-black mr-3 py-2 px-5 rounded-md text-sm leading-3 text-white focus:outline-none"
+          >
             Update
           </button>
           <button
@@ -449,5 +482,217 @@ export const TrComponent = (props) => {
         </div>
       </td>
     </tr>
+  );
+};
+
+export const UpdateProductModal = (props) => {
+  const {
+    showUpdateModal,
+    setShowUpdateModal,
+    currentProduct,
+    brands,
+    categories,
+    sizeOptionsConverted,
+    colorOptionsConverted,
+    handleSizeChange,
+    handleColorChange,
+    sizeOption,
+    colorOption,
+  } = props;
+  console.log(currentProduct);
+  const {
+    name,
+    description,
+    category,
+    brand,
+    price,
+    totalQty,
+    images,
+    sizes,
+    colors,
+  } = currentProduct;
+  return (
+    showUpdateModal && (
+      <div className="w-full h-auto mt-4">
+        {/* <div className="flex items-center justify-between w-full px-4 py-2 border rounded-lg ">
+          <span className="label-text font-[Poppins]">Update Product</span>
+          <button
+            onClick={() => setShowUpdateModal(false)}
+            className="w-6 h-6 flex items-center justify-center  bg-gray-300 font-[Poppins] rounded-full"
+          >
+            X
+          </button>
+        </div> */}
+        <form>
+          <h1 className="text-xl font-bold font-[Poppins] text-center mt-4">
+            Update Product
+          </h1>
+          <div className="wrapper flex md:flex-col sm:flex-col justify-between gap-4 mt-2">
+            <div className="img-container w-[40%] md:w-full space-y-1">
+              <label className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+                Product Image
+              </label>
+              <img
+                src={images ? images[0] : ""}
+                alt="no_img"
+                className="img-preview w-full rounded-md"
+              />
+              <input
+                className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
+                type="file"
+                multiple
+                onChange={""}
+              />
+            </div>
+            <div className="input-boxes flex-1 space-y-2">
+              <div className="space-y-1">
+                <label className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+                  Name
+                </label>
+                <input
+                  className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
+                  placeholder="Enter product name"
+                  type="text"
+                  name="name"
+                  value={name}
+                  onChange={""}
+                />
+              </div>
+              <div className="space-y-1">
+                <label className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+                  Description
+                </label>
+                <textarea
+                  className="flex min-h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm resize-y"
+                  placeholder="Enter product description"
+                  type="text"
+                  name="description"
+                  value={description}
+                  onChange={""}
+                  rows={4}
+                />
+              </div>
+              <div className="space-y-1">
+                <label className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+                  Brand
+                </label>
+                <select
+                  className="flex min-h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm resize-y"
+                  placeholder="Enter product description"
+                  type="text"
+                  name="brand"
+                  value={brand}
+                  onChange={""}
+                >
+                  <option defaultValue>Select brand</option>
+                  {brands?.map((brand) => {
+                    return (
+                      <option key={brand?._id} value={brand?.name}>
+                        {brand?.name}
+                      </option>
+                    );
+                  })}
+                </select>
+              </div>
+              <div className="space-y-1">
+                <label className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+                  Categories
+                </label>
+                <select
+                  className="flex min-h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
+                  type="text"
+                  name="category"
+                  value={category}
+                  onChange={""}
+                >
+                  <option defaultValue>Select category</option>
+                  {categories?.map((category) => {
+                    return (
+                      <option key={category?._id} value={category?.name}>
+                        {category?.name}
+                      </option>
+                    );
+                  })}
+                </select>
+              </div>
+              <div className="space-y-1">
+                <label className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+                  Sizes
+                </label>
+                <Select
+                  isMulti
+                  className="basic-multi-select w-full bg-background text-sm"
+                  classNamePrefix="select"
+                  placeholder="Select sizes"
+                  name="sizes"
+                  value={sizes?.map((size) =>
+                    sizeOptionsConverted?.find((item) => item.value === size)
+                  )}
+                  options={sizeOptionsConverted}
+                  isClearable={true}
+                  isSearchable={true}
+                  closeMenuOnSelect={false}
+                  onChange={(item) => handleSizeChange(item)}
+                />
+              </div>
+              <div className="space-y-1">
+                <label className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+                  Colors
+                </label>
+                <Select
+                  isMulti
+                  className="basic-multi-select w-full bg-background text-sm"
+                  classNamePrefix="select"
+                  placeholder="Select colors"
+                  name="colors"
+                  options={colorOptionsConverted}
+                  value={colors?.map((color) =>
+                    colorOptionsConverted?.find((item) => item.value === color)
+                  )}
+                  isClearable={true}
+                  isSearchable={true}
+                  closeMenuOnSelect={false}
+                  onChange={(item) => handleColorChange(item)}
+                />
+              </div>
+              <div className="flex items-center justify-between gap-4">
+                <div className="space-y-1 w-full">
+                  <label className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+                    Price (INR)
+                  </label>
+                  <input
+                    className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
+                    placeholder="Enter product price"
+                    type="number"
+                    name="price"
+                    value={price}
+                    onChange={""}
+                  />
+                </div>
+                <div className="space-y-1 w-full">
+                  <label className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+                    Total Quantity
+                  </label>
+                  <input
+                    className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
+                    placeholder="Enter product quantity"
+                    type="number"
+                    name="totalQty"
+                    value={totalQty}
+                    onChange={""}
+                  />
+                </div>
+              </div>
+              <button
+                onClick={""}
+                className="w-full sm:w-full py-2 space-y-2 bg-black text-white rounded-lg border-[1px] border-black"
+              >
+                Update
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+    )
   );
 };
