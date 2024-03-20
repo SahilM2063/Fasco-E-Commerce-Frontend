@@ -2,8 +2,12 @@
 /* eslint-disable no-unused-vars */
 import React, { useEffect, useState } from "react";
 import Select from "react-select";
-import { getAllProductsAction, updateProductAction } from "../../redux/slices/productSlice";
-import { useDispatch } from "react-redux";
+import {
+  getAllProductsAction,
+  updateProductAction,
+} from "../../redux/slices/productSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { useNotification } from "../../hooks";
 
 const UpdateProduct = ({
   showUpdateModal,
@@ -15,7 +19,7 @@ const UpdateProduct = ({
   // handleSizeChange,
   // handleColorChange,
 }) => {
-  console.log(currentProduct);
+  // console.log(currentProduct);
   const dispatch = useDispatch();
 
   const [formData, setFormData] = useState({
@@ -30,6 +34,9 @@ const UpdateProduct = ({
     images: [],
   });
   const [productUrl, setProductUrl] = useState("");
+  const [imgs, setImgs] = useState([]);
+  const [imgErrs, setImgErrs] = useState([]);
+  const updateNotification = useNotification();
 
   useEffect(() => {
     setFormData({ ...currentProduct });
@@ -82,10 +89,21 @@ const UpdateProduct = ({
 
   const handleImageChange = ({ target }) => {
     const files = target.files;
+    const fileErrs = [];
     const images = Array.from(files);
+    images.forEach((img) => {
+      if (img?.size > 1000000) {
+        fileErrs.push(`${img.name} is too large!`);
+      }
+      if (!img?.type?.startsWith("image/")) {
+        fileErrs.push(`${img.name} is not an image!`);
+      }
+    });
+    setImgErrs(fileErrs);
+    setImgs(images);
     setFormData({
       ...formData,
-      images: images,
+      images: imgs,
     });
 
     const firstProduct = target.files[0];
@@ -114,6 +132,30 @@ const UpdateProduct = ({
     // setProductUrl("");
     // setShowUpdateModal(false);
   };
+
+  const { loading, error, isUpdated } = useSelector((state) => state?.products);
+
+  useEffect(() => {
+    if (isUpdated) {
+      updateNotification("success", "Product updated successfully");
+      setFormData({
+        name: "",
+        description: "",
+        brand: "",
+        category: "",
+        sizes: [],
+        colors: [],
+        price: 0,
+        totalQty: 0,
+        images: [],
+      });
+      setProductUrl("");
+      dispatch(getAllProductsAction());
+    }
+    if (error) {
+      updateNotification("error", error);
+    }
+  }, [isUpdated, error]);
 
   return (
     showUpdateModal && (

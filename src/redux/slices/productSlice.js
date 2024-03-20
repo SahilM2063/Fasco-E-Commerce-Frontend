@@ -105,8 +105,8 @@ export const updateProductAction = createAsyncThunk(
     "products/updateProduct",
     async (payload, { rejectWithValue, getState, dispatch }) => {
         console.log(payload);
-        console.log(payload._id);
         const {
+            _id,
             name,
             description,
             brand,
@@ -114,6 +114,7 @@ export const updateProductAction = createAsyncThunk(
             sizes,
             colors,
             price,
+            images,
             totalQty,
         } = payload;
         try {
@@ -124,18 +125,10 @@ export const updateProductAction = createAsyncThunk(
                 },
             };
 
+
             const { data } = await axios.put(
-                `${baseURL}/products/${payload._id}`,
-                {
-                    name,
-                    description,
-                    brand,
-                    category,
-                    sizes,
-                    colors,
-                    price,
-                    totalQty,
-                },
+                `${baseURL}/products/${_id}`,
+                payload,
                 config
             );
             console.log(data);
