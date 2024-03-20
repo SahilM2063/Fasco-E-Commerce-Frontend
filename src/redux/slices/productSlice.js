@@ -122,13 +122,32 @@ export const updateProductAction = createAsyncThunk(
             const config = {
                 headers: {
                     Authorization: `Bearer ${token}`,
+                    "Content-Type": "multipart/form-data",
                 },
             };
+
+            // formdata
+            const formData = new FormData();
+            formData.append("name", name);
+            formData.append("description", description);
+            formData.append("brand", brand);
+            formData.append("category", category);
+            formData.append("price", price);
+            formData.append("totalQty", totalQty);
+            sizes.forEach((size) => {
+                formData.append("sizes", size);
+            });
+            colors.forEach((color) => {
+                formData.append("colors", color);
+            });
+            images.forEach((image) => {
+                formData.append("images", image);
+            });
 
 
             const { data } = await axios.put(
                 `${baseURL}/products/${_id}`,
-                payload,
+                formData,
                 config
             );
             console.log(data);

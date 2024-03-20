@@ -18,6 +18,7 @@ const UpdateProduct = ({
   colorOptionsConverted,
   // handleSizeChange,
   // handleColorChange,
+  setShowUpdateModal,
 }) => {
   // console.log(currentProduct);
   const dispatch = useDispatch();
@@ -34,7 +35,6 @@ const UpdateProduct = ({
     images: [],
   });
   const [productUrl, setProductUrl] = useState("");
-  const [imgs, setImgs] = useState([]);
   const [imgErrs, setImgErrs] = useState([]);
   const updateNotification = useNotification();
 
@@ -100,10 +100,9 @@ const UpdateProduct = ({
       }
     });
     setImgErrs(fileErrs);
-    setImgs(images);
     setFormData({
       ...formData,
-      images: imgs,
+      images: images,
     });
 
     const firstProduct = target.files[0];
@@ -114,23 +113,25 @@ const UpdateProduct = ({
 
   const handleUpdateSubmit = (e) => {
     e.preventDefault();
+    if (imgErrs.length > 0) {
+      updateNotification("error", imgErrs[0]);
+      return;
+    }
     console.log(formData);
     dispatch(updateProductAction(formData));
     dispatch(getAllProductsAction());
-    // dispatch(getSingleProductAction(currentProduct._id));
-    // setFormData({
-    //   name: "",
-    //   description: "",
-    //   brand: "",
-    //   category: "",
-    //   sizes: [],
-    //   colors: [],
-    //   price: 0,
-    //   totalQty: 0,
-    //   images: [],
-    // });
-    // setProductUrl("");
-    // setShowUpdateModal(false);
+    setFormData({
+      name: "",
+      description: "",
+      brand: "",
+      category: "",
+      sizes: [],
+      colors: [],
+      price: 0,
+      totalQty: 0,
+      images: [],
+    });
+    setProductUrl("");
   };
 
   const { loading, error, isUpdated } = useSelector((state) => state?.products);
@@ -151,6 +152,7 @@ const UpdateProduct = ({
       });
       setProductUrl("");
       dispatch(getAllProductsAction());
+      setShowUpdateModal(false);
     }
     if (error) {
       updateNotification("error", error);
@@ -324,7 +326,7 @@ const UpdateProduct = ({
                 onClick={handleUpdateSubmit}
                 className="w-full sm:w-full py-2 space-y-2 bg-black text-white rounded-lg border-[1px] border-black"
               >
-                Update
+                {loading ? "Updating..." : "Update"}
               </button>
             </div>
           </div>

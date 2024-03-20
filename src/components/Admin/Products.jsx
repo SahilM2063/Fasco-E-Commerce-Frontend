@@ -385,6 +385,7 @@ const Products = () => {
         sizeOption={sizeOption}
         colorOption={colorOption}
         currentProduct={currentProduct}
+        
       />
       <div className="bg-white mt-4 rounded-lg border overflow-x-auto scrollbar-hide">
         <table className="w-full whitespace-nowrap">
