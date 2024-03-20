@@ -23,7 +23,7 @@ const Products = () => {
   const updateNotification = useNotification();
   const [showAddProduct, setShowAddProduct] = useState(false);
   const [showUpdateModal, setShowUpdateModal] = useState(false);
-  const [productId, setProductId] = useState("");
+  const [currentProduct, setCurrentProduct] = useState({});
 
   // sizes handling
   const sizes = ["S", "M", "L", "XL", "XXL", "8", "9", "10", "11", "12"];
@@ -382,12 +382,9 @@ const Products = () => {
         categories={categories}
         sizeOptionsConverted={sizeOptionsConverted}
         colorOptionsConverted={colorOptionsConverted}
-        handleSizeChange={handleSizeChange}
-        handleColorChange={handleColorChange}
         sizeOption={sizeOption}
         colorOption={colorOption}
-        productId={productId}
-
+        currentProduct={currentProduct}
       />
       <div className="bg-white mt-4 rounded-lg border overflow-x-auto scrollbar-hide">
         <table className="w-full whitespace-nowrap">
@@ -420,12 +417,12 @@ const Products = () => {
             {products?.map((product, index) => {
               return (
                 <TrComponent
-                  products={product}
+                  product={product}
                   key={product?._id}
                   id={index}
                   handleDeleteProduct={handleDeleteProduct}
                   setShowUpdateModal={setShowUpdateModal}
-                  setProductId={setProductId}
+                  setCurrentProduct={setCurrentProduct}
                 />
               );
             })}
@@ -438,7 +435,13 @@ const Products = () => {
 
 export default Products;
 
-export const TrComponent = (props) => {
+export const TrComponent = ({
+  id,
+  product,
+  handleDeleteProduct,
+  setShowUpdateModal,
+  setCurrentProduct,
+}) => {
   const {
     _id,
     name,
@@ -449,11 +452,7 @@ export const TrComponent = (props) => {
     qtyLeft,
     images,
     totalSold,
-  } = props?.products;
-  const id = props?.id;
-  const handleDeleteProduct = props?.handleDeleteProduct;
-  const setShowUpdateModal = props?.setShowUpdateModal;
-  const setProductId = props?.setProductId;
+  } = product;
 
   return (
     <tr className="h-16 text-sm leading-none text-gray-700 border-b border-t border-gray-200 bg-white hover:bg-gray-100 font-[Poppins]">
@@ -501,7 +500,7 @@ export const TrComponent = (props) => {
         <div className="flex items-center gap-8 md:gap-4 sm:gap-4">
           <button
             onClick={() => {
-              setProductId(_id);
+              setCurrentProduct(product);
               setShowUpdateModal(true);
             }}
             className="rounded-md focus:outline-none"
