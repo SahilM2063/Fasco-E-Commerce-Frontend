@@ -2,6 +2,8 @@
 /* eslint-disable no-unused-vars */
 import React, { useEffect, useState } from "react";
 import Select from "react-select";
+import { getAllProductsAction, updateProductAction } from "../../redux/slices/productSlice";
+import { useDispatch } from "react-redux";
 
 const UpdateProduct = ({
   showUpdateModal,
@@ -14,6 +16,7 @@ const UpdateProduct = ({
   // handleColorChange,
 }) => {
   console.log(currentProduct);
+  const dispatch = useDispatch();
 
   const [formData, setFormData] = useState({
     name: "",
@@ -38,8 +41,6 @@ const UpdateProduct = ({
       setProductUrl(currentProduct.images[0]); // Assuming the first image URL is what you want to display
     }
   }, [currentProduct]);
-
-  console.log(formData);
 
   const {
     name,
@@ -96,7 +97,8 @@ const UpdateProduct = ({
   const handleUpdateSubmit = (e) => {
     e.preventDefault();
     console.log(formData);
-    // dispatch(updateProductAction(formData));
+    dispatch(updateProductAction(formData));
+    dispatch(getAllProductsAction());
     // dispatch(getSingleProductAction(currentProduct._id));
     // setFormData({
     //   name: "",
