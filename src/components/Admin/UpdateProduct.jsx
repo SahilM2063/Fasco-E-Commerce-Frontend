@@ -161,12 +161,12 @@ const UpdateProduct = ({
 
   return (
     showUpdateModal && (
-      <div className="w-full h-auto mt-4">
+      <div className="w-full h-auto mt-8">
         <form>
           <h1 className="text-xl font-bold font-[Poppins] text-center mt-4 underline underline-offset-8">
             Update Product
           </h1>
-          <div className="wrapper flex md:flex-col sm:flex-col justify-between gap-4 mt-4">
+          <div className="wrapper flex md:flex-col sm:flex-col justify-between gap-4 mt-6">
             <div className="img-container w-[40%] md:w-full space-y-1">
               <label className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
                 Product Image
@@ -180,6 +180,7 @@ const UpdateProduct = ({
                 className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
                 type="file"
                 multiple
+
                 onChange={handleImageChange}
               />
             </div>

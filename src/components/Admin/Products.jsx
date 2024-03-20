@@ -156,6 +156,7 @@ const Products = () => {
       setProductPoster("");
       setSizeOption([]);
       setColorOption([]);
+      setShowAddProduct(false);
     }
     if (isDeleted) {
       dispatch(getAllProductsAction());
@@ -177,6 +178,7 @@ const Products = () => {
       setProductPoster("");
       setSizeOption([]);
       setColorOption([]);
+      setShowAddProduct(false);
     }
   }, [isAdded, error, isDeleted]);
 
@@ -210,170 +212,174 @@ const Products = () => {
         </div>
       </div>
       {showAddProduct && (
-        <form>
-          <h1 className="text-xl font-bold font-[Poppins] text-center mt-4 underline underline-offset-8">
-            Add Product
-          </h1>
-          <div className="wrapper flex md:flex-col sm:flex-col justify-between gap-4 mt-4">
-            <div className="img-container w-[40%] md:w-full space-y-1">
-              <label className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-                Product Image
-              </label>
-              <img
-                src={productPoster}
-                alt="no_img"
-                className="img-preview w-full rounded-md"
-              />
-              <input
-                className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
-                placeholder="Enter product name"
-                type="file"
-                multiple
-                onChange={handleImageChange}
-              />
-            </div>
-            <div className="input-boxes flex-1 space-y-2">
-              <div className="space-y-1">
+        <div className=" mt-8">
+          <form>
+            <h1 className="text-xl font-bold font-[Poppins] text-center mt-4 underline underline-offset-8">
+              Add Product
+            </h1>
+            <div className="wrapper flex md:flex-col sm:flex-col justify-between gap-4 mt-6">
+              <div className="img-container w-[40%] md:w-full space-y-1">
                 <label className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-                  Name
+                  Product Image
                 </label>
+                <img
+                  src={productPoster}
+                  alt="no_img"
+                  className="img-preview w-full rounded-md"
+                />
                 <input
                   className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
                   placeholder="Enter product name"
-                  type="text"
-                  name="name"
-                  value={name}
-                  onChange={onChangeHandler}
+                  type="file"
+                  multiple
+                  onChange={handleImageChange}
                 />
               </div>
-              <div className="space-y-1">
-                <label className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-                  Description
-                </label>
-                <textarea
-                  className="flex min-h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm resize-y"
-                  placeholder="Enter product description"
-                  type="text"
-                  name="description"
-                  value={description}
-                  onChange={onChangeHandler}
-                  rows={4}
-                />
-              </div>
-              <div className="space-y-1">
-                <label className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-                  Brand
-                </label>
-                <select
-                  className="flex min-h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm resize-y"
-                  placeholder="Enter product description"
-                  type="text"
-                  name="brand"
-                  value={brand}
-                  onChange={onChangeHandler}
-                >
-                  <option defaultValue>Select brand</option>
-                  {brands?.map((brand) => {
-                    return (
-                      <option key={brand?._id} value={brand?.name}>
-                        {brand?.name}
-                      </option>
-                    );
-                  })}
-                </select>
-              </div>
-              <div className="space-y-1">
-                <label className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-                  Categories
-                </label>
-                <select
-                  className="flex min-h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
-                  type="text"
-                  name="category"
-                  value={category}
-                  onChange={onChangeHandler}
-                >
-                  <option defaultValue>Select category</option>
-                  {categories?.map((category) => {
-                    return (
-                      <option key={category?._id} value={category?.name}>
-                        {category?.name}
-                      </option>
-                    );
-                  })}
-                </select>
-              </div>
-              <div className="space-y-1">
-                <label className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-                  Sizes
-                </label>
-                <Select
-                  isMulti
-                  className="basic-multi-select w-full bg-background text-sm"
-                  classNamePrefix="select"
-                  placeholder="Select sizes"
-                  name="sizes"
-                  options={sizeOptionsConverted}
-                  isClearable={true}
-                  isSearchable={true}
-                  closeMenuOnSelect={false}
-                  onChange={(item) => handleSizeChange(item)}
-                />
-              </div>
-              <div className="space-y-1">
-                <label className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-                  Colors
-                </label>
-                <Select
-                  isMulti
-                  className="basic-multi-select w-full bg-background text-sm"
-                  classNamePrefix="select"
-                  placeholder="Select colors"
-                  name="colors"
-                  options={colorOptionsConverted}
-                  isClearable={true}
-                  isSearchable={true}
-                  closeMenuOnSelect={false}
-                  onChange={(item) => handleColorChange(item)}
-                />
-              </div>
-              <div className="flex items-center justify-between gap-4">
-                <div className="space-y-1 w-full">
+              <div className="input-boxes flex-1 space-y-2">
+                <div className="space-y-1">
                   <label className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-                    Price (INR)
+                    Name
                   </label>
                   <input
                     className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
-                    placeholder="Enter product price"
-                    type="number"
-                    name="price"
-                    value={price}
+                    placeholder="Enter product name"
+                    type="text"
+                    name="name"
+                    value={name}
                     onChange={onChangeHandler}
                   />
                 </div>
-                <div className="space-y-1 w-full">
+                <div className="space-y-1">
                   <label className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-                    Total Quantity
+                    Description
                   </label>
-                  <input
-                    className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
-                    placeholder="Enter product quantity"
-                    type="number"
-                    name="totalQty"
-                    value={totalQty}
+                  <textarea
+                    className="flex min-h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm resize-y"
+                    placeholder="Enter product description"
+                    type="text"
+                    name="description"
+                    value={description}
                     onChange={onChangeHandler}
+                    rows={4}
                   />
                 </div>
+                <div className="space-y-1">
+                  <label className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+                    Brand
+                  </label>
+                  <select
+                    className="flex min-h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm resize-y"
+                    placeholder="Enter product description"
+                    type="text"
+                    name="brand"
+                    value={brand}
+                    onChange={onChangeHandler}
+                  >
+                    <option defaultValue>Select brand</option>
+                    {brands?.map((brand) => {
+                      return (
+                        <option key={brand?._id} value={brand?.name}>
+                          {brand?.name}
+                        </option>
+                      );
+                    })}
+                  </select>
+                </div>
+                <div className="space-y-1">
+                  <label className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+                    Categories
+                  </label>
+                  <select
+                    className="flex min-h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
+                    type="text"
+                    name="category"
+                    value={category}
+                    onChange={onChangeHandler}
+                  >
+                    <option defaultValue>Select category</option>
+                    {categories?.map((category) => {
+                      return (
+                        <option key={category?._id} value={category?.name}>
+                          {category?.name}
+                        </option>
+                      );
+                    })}
+                  </select>
+                </div>
+                <div className="space-y-1">
+                  <label className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+                    Sizes
+                  </label>
+                  <Select
+                    isMulti
+                    className="basic-multi-select w-full bg-background text-sm"
+                    classNamePrefix="select"
+                    placeholder="Select sizes"
+                    name="sizes"
+                    options={sizeOptionsConverted}
+                    value={sizeOption}
+                    isClearable={true}
+                    isSearchable={true}
+                    closeMenuOnSelect={false}
+                    onChange={(item) => handleSizeChange(item)}
+                  />
+                </div>
+                <div className="space-y-1">
+                  <label className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+                    Colors
+                  </label>
+                  <Select
+                    isMulti
+                    className="basic-multi-select w-full bg-background text-sm"
+                    classNamePrefix="select"
+                    placeholder="Select colors"
+                    name="colors"
+                    value={colorOption}
+                    options={colorOptionsConverted}
+                    isClearable={true}
+                    isSearchable={true}
+                    closeMenuOnSelect={false}
+                    onChange={(item) => handleColorChange(item)}
+                  />
+                </div>
+                <div className="flex items-center justify-between gap-4">
+                  <div className="space-y-1 w-full">
+                    <label className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+                      Price (INR)
+                    </label>
+                    <input
+                      className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
+                      placeholder="Enter product price"
+                      type="number"
+                      name="price"
+                      value={price}
+                      onChange={onChangeHandler}
+                    />
+                  </div>
+                  <div className="space-y-1 w-full">
+                    <label className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+                      Total Quantity
+                    </label>
+                    <input
+                      className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
+                      placeholder="Enter product quantity"
+                      type="number"
+                      name="totalQty"
+                      value={totalQty}
+                      onChange={onChangeHandler}
+                    />
+                  </div>
+                </div>
+                <button
+                  onClick={handleSubmit}
+                  className="w-full sm:w-full py-2 space-y-2 bg-black text-white rounded-lg border-[1px] border-black"
+                >
+                  {loading ? "Loading..." : "Add Product"}
+                </button>
               </div>
-              <button
-                onClick={handleSubmit}
-                className="w-full sm:w-full py-2 space-y-2 bg-black text-white rounded-lg border-[1px] border-black"
-              >
-                {loading ? "Loading..." : "Add Product"}
-              </button>
             </div>
-          </div>
-        </form>
+          </form>
+        </div>
       )}
       <UpdateProduct
         showUpdateModal={showUpdateModal}
@@ -385,7 +391,6 @@ const Products = () => {
         sizeOption={sizeOption}
         colorOption={colorOption}
         currentProduct={currentProduct}
-        
       />
       <div className="bg-white mt-4 rounded-lg border overflow-x-auto scrollbar-hide">
         <table className="w-full whitespace-nowrap">
