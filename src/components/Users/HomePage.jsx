@@ -29,6 +29,7 @@ import t1 from "../../assets/t1.png";
 import t2 from "../../assets/t2.png";
 import nl1 from "../../assets/nl1.png";
 import nl2 from "../../assets/nl2.png";
+import { Link } from "react-router-dom";
 
 const arrivalsBtns = [
   "Men's Fashion",
@@ -118,9 +119,12 @@ const HomePage = () => {
           </div>
           <div className="sub_main_Container flex flex-col items-center gap-4">
             <img src={main} alt="No image" />
-            <button className="py-3 px-12 bg-black text-white rounded-lg uppercase text-sm tracking-wide">
+            <Link
+              to={"/shop"}
+              className="py-3 px-12 bg-black text-white rounded-lg uppercase text-sm tracking-wide"
+            >
               Shop now
-            </button>
+            </Link>
           </div>
           <div className="sub_img_Container sm:hidden">
             <img src={h4} alt="No image" />

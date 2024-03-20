@@ -11,7 +11,7 @@ const Shop = () => {
 
   useEffect(() => {
     dispatch(getAllProductsAction());
-  });
+  }, []);
   return (
     <div className="arr_section_cards sm:my-4 md:my-6 lg:my-8 w-full grid sm:flex sm:flex-col md:grid-cols-2 lg:grid-cols-3 gap-10 md:gap-6 sm:gap-4">
       {products &&
