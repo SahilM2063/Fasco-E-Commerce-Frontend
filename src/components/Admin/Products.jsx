@@ -1,7 +1,6 @@
 /* eslint-disable no-unsafe-optional-chaining */
 /* eslint-disable react/prop-types */
 /* eslint-disable no-unused-vars */
-import { fromJSON } from "postcss";
 import React, { useEffect, useState } from "react";
 import Select from "react-select";
 import { getAllCategoriesAction } from "../../redux/slices/categorySlice";

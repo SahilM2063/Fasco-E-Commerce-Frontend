@@ -93,8 +93,8 @@ const sideBarLinks = [
     ),
   },
   {
-    label: "Categories",
-    path: "/admin/dashboard/categories",
+    label: "Manage",
+    path: "/admin/dashboard/manage",
     icon: (
       <svg
         xmlns="http://www.w3.org/2000/svg"

@@ -15,9 +15,9 @@ import ResetPassword from "./components/Users/Forms/ResetPassword.jsx";
 import Home from "./components/Admin/Home.jsx";
 import Products from "./components/Admin/Products.jsx";
 import Orders from "./components/Admin/Orders.jsx";
-import Categories from "./components/Admin/Categories.jsx";
 import Customers from "./components/Admin/Customers.jsx";
 import Coupons from "./components/Admin/Coupons.jsx";
+import Manage from "./components/Admin/Manage.jsx";
 import Shop from "./components/Users/Shop.jsx";
 
 function App() {
@@ -45,7 +45,7 @@ function App() {
             <Route path="customers" element={<Customers />} />
             <Route path="products" element={<Products />} />
             <Route path="orders" element={<Orders />} />
-            <Route path="categories" element={<Categories />} />
+            <Route path="manage" element={<Manage />} />
             <Route path="coupons" element={<Coupons />} />
           </Route>
         </Route>
