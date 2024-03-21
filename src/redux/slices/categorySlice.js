@@ -17,16 +17,18 @@ const initialState = {
 // category actions
 export const createCategoryAction = createAsyncThunk(
     "category/createCategory",
-    async ({ name }, { rejectWithValue, getState, dispatch }) => {
+    async (payload, { rejectWithValue, getState, dispatch }) => {
+        const { name, image } = payload
         try {
             const token = getState()?.users?.userAuth?.userInfo?.token;
             const config = {
                 headers: {
                     Authorization: `Bearer ${token}`,
+                    "Content-Type": "multipart/form-data",
                 },
             }
             const { data } = await axios.post(`${baseURL}/categories/create-category`, {
-                name
+                name, image
             }, config);
             return data;
         } catch (error) {
@@ -70,6 +72,9 @@ const categorySlice = createSlice({
         // create category
         builder.addCase(createCategoryAction.pending, (state, action) => {
             state.loading = true;
+            state.isAdded = false;
+            state.error = null;
+            state.category = {};
         });
         builder.addCase(createCategoryAction.fulfilled, (state, action) => {
             state.loading = false;
