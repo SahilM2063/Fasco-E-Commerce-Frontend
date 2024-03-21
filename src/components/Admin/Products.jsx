@@ -231,6 +231,7 @@ const Products = () => {
                   placeholder="Enter product name"
                   type="file"
                   multiple
+                  accept="image/*"
                   onChange={handleImageChange}
                 />
               </div>
