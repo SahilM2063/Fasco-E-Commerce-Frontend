@@ -36,17 +36,19 @@ const AddCategory = ({ setShowAddCategory, showAddCategory }) => {
   );
 
   useEffect(() => {
-    dispatch(getAllCategoriesAction());
-    setShowAddCategory(false);
     if (isAdded) {
       updateNotification("success", "Category added successfully");
       setCategoryFormData({ name: "", image: "" });
+      setShowAddCategory(false);
       setCatPoster("");
+      dispatch(getAllCategoriesAction());
     }
     if (error) {
       updateNotification("error", error?.message);
       setCategoryFormData({ name: "", image: "" });
+      setShowAddCategory(false);
       setCatPoster("");
+      dispatch(getAllCategoriesAction());
     }
   }, [isAdded, error]);
 
