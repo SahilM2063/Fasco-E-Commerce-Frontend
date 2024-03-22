@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   createCategoryAction,
   getAllCategoriesAction,
+  updateCategoryAction,
 } from "../../redux/slices/categorySlice";
 
 export const AddCategory = ({ setShowAddCategory, showAddCategory }) => {
@@ -125,7 +126,8 @@ export const UpdateCategory = ({
   showUpdateCategory,
   currentCategory,
 }) => {
-  console.log(currentCategory);
+  // console.log(currentCategory);
+  const dispatch = useDispatch();
 
   const [categoryFormData, setCategoryFormData] = useState({
     name: "",
@@ -135,6 +137,7 @@ export const UpdateCategory = ({
 
   useEffect(() => {
     setCategoryFormData({
+      ...currentCategory,
       name: currentCategory?.name,
       image: currentCategory?.image,
     });
@@ -154,6 +157,7 @@ export const UpdateCategory = ({
   const handleUpdatedCategorySubmit = (e) => {
     e.preventDefault();
     console.log(categoryFormData);
+    dispatch(updateCategoryAction(categoryFormData));
   };
 
   return (

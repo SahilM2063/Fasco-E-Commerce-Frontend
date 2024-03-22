@@ -62,7 +62,31 @@ export const deleteCategoryAction = createAsyncThunk("category/deleteCategory", 
         console.log(error)
         return rejectWithValue(error?.response?.data);
     }
+})
 
+export const updateCategoryAction = createAsyncThunk("category/updateCategory", async (payload, { rejectWithValue, getState, dispatch }) => {
+    const { _id, name, image } = payload
+    console.log(_id)
+    try {
+        const token = getState()?.users?.userAuth?.userInfo?.token;
+        const config = {
+            headers: {
+                Authorization: `Bearer ${token}`,
+                "Content-Type": "multipart/form-data",
+            },
+        }
+
+        // form data
+        const formData = new FormData();
+        formData.append("name", name);
+        formData.append("image", image);
+
+        const { data } = await axios.put(`${baseURL}/categories/${_id}`, formData, config);
+        return data;
+    } catch (error) {
+        console.log(error)
+        return rejectWithValue(error?.response?.data);
+    }
 })
 
 const categorySlice = createSlice({
@@ -102,6 +126,25 @@ const categorySlice = createSlice({
             state.error = action.payload;
             state.categories = [];
             state.isAdded = false;
+        });
+
+        // update category
+        builder.addCase(updateCategoryAction.pending, (state, action) => {
+            state.loading = true;
+            state.isUpdated = false;
+            state.error = null;
+        });
+        builder.addCase(updateCategoryAction.fulfilled, (state, action) => {
+            state.loading = false;
+            state.isUpdated = true;
+            state.category = action.payload;
+            state.error = null
+        });
+        builder.addCase(updateCategoryAction.rejected, (state, action) => {
+            state.loading = false;
+            state.error = action.payload;
+            state.isUpdated = false;
+            state.category = {};
         })
 
         // delete category
