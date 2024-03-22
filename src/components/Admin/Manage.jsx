@@ -11,7 +11,7 @@ import {
   getAllCategoriesAction,
 } from "../../redux/slices/categorySlice.js";
 import { useNotification } from "../../hooks";
-import AddCategory from "./ManageCategory.jsx";
+import { AddCategory, UpdateCategory } from "./ManageCategory.jsx";
 
 const Manage = () => {
   const dispatch = useDispatch();
@@ -24,7 +24,9 @@ const Manage = () => {
     dispatch(getAllCategoriesAction());
   }, [dispatch]);
 
+  const [currentCategory, setCurrentCategory] = useState({});
   const [showAddCategory, setShowAddCategory] = useState(false);
+  const [showUpdateCategory, setShowUpdateCategory] = useState(false);
 
   const handleDeleteCategory = (id) => {
     if (window.confirm("Are you sure you want to delete this category?")) {
@@ -67,7 +69,15 @@ const Manage = () => {
                 <h1 className="text-md font-bold">{category?.name}</h1>
                 <div className="flex items-center gap-2">
                   <button>
-                    <img src={editSvg} alt="edit" className="w-5" />
+                    <img
+                      src={editSvg}
+                      onClick={() => {
+                        setShowUpdateCategory(true);
+                        setCurrentCategory(category);
+                      }}
+                      alt="edit"
+                      className="w-5"
+                    />
                   </button>
                   <button onClick={() => handleDeleteCategory(category._id)}>
                     <img src={deleteSvg} alt="delete" className="w-5" />
@@ -87,6 +97,11 @@ const Manage = () => {
       <AddCategory
         setShowAddCategory={setShowAddCategory}
         showAddCategory={showAddCategory}
+      />
+      <UpdateCategory
+        currentCategory={currentCategory}
+        showUpdateCategory={showUpdateCategory}
+        setShowUpdateCategory={setShowUpdateCategory}
       />
     </div>
   );
