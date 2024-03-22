@@ -17,6 +17,11 @@ import {
 import { useNotification } from "../../hooks";
 import { AddCategory, UpdateCategory } from "./ManageCategory.jsx";
 import { AddBrand, UpdateBrand } from "./ManageBrand.jsx";
+import { AddColor, UpdateColor } from "./ManageColors.jsx";
+import {
+  getAllColorsAction,
+  deleteColorAction,
+} from "../../redux/slices/colorSlice.js";
 
 const Manage = () => {
   const dispatch = useDispatch();
@@ -26,6 +31,7 @@ const Manage = () => {
   useEffect(() => {
     dispatch(getAllCategoriesAction());
     dispatch(getAllBrandsAction());
+    dispatch(getAllColorsAction());
   }, [dispatch]);
 
   // handling categories
@@ -85,6 +91,35 @@ const Manage = () => {
       dispatch(getAllBrandsAction());
     }
   }, [brandData?.isDeleted, brandData?.error]);
+
+  // Handling categories -------------------------------------------------------------------------------------------------------------------------------------------
+
+  const [currentColor, setCurrentColor] = useState({});
+  const [showAddColor, setShowAddColor] = useState(false);
+  const [showUpdateColor, setShowUpdateColor] = useState(false);
+
+  const { colors } = useSelector((state) => state?.colors?.colors);
+  // console.log(brands);
+
+  const handleDeleteColor = (id) => {
+    if (window.confirm("Are you sure you want to delete this brand?")) {
+      dispatch(deleteColorAction(id));
+    }
+    return;
+  };
+
+  const colorData = useSelector((state) => state?.colors);
+
+  useEffect(() => {
+    if (colorData?.isDeleted) {
+      updateNotifications("success", colorData?.brand?.message);
+      dispatch(getAllColorsAction());
+    }
+    if (colorData?.error) {
+      updateNotifications("error", colorData?.error?.message);
+      dispatch(getAllColorsAction());
+    }
+  }, [colorData?.isDeleted, colorData?.error]);
 
   return (
     <div className="w-full h-full relative">
@@ -179,6 +214,48 @@ const Manage = () => {
         currentBrand={currentBrand}
         setShowUpdateBrand={setShowUpdateBrand}
         showUpdateBrand={showUpdateBrand}
+      />
+
+      <h1 className="text-xl font-bold font-[Poppins] mt-8 mb-4">
+        Manage Colors
+      </h1>
+      <div className="w-full grid grid-cols-4 md:grid-cols-2 sm:grid-cols-1 gap-4 md:gap-4 sm:gap-2 font-[Poppins] overflow-hidden">
+        {colors?.map((color, index) => {
+          return (
+            <div
+              key={index}
+              className="bg-transparent border-black border-[1px] rounded-lg p-3 flex items-center justify-between"
+            >
+              <div className={`w-10 h-10 rounded-full bg-${color?.name}`}></div>
+              <h1>{color?.name}</h1>
+              <div className="btns flex items-center gap-2">
+                <button
+                  onClick={() => {
+                    setShowUpdateColor(true);
+                    setCurrentColor(color);
+                  }}
+                >
+                  <img src={editSvg} alt="edit" className="w-5" />
+                </button>
+                <button onClick={() => handleDeleteColor(color._id)}>
+                  <img src={deleteSvg} alt="delete" className="w-5" />
+                </button>
+              </div>
+            </div>
+          );
+        })}
+        <button
+          onClick={() => setShowAddColor(true)}
+          className="kbd border-black border-[1px] rounded-lg font-semibold p-3 flex items-center justify-center"
+        >
+          Add Color
+        </button>
+      </div>
+      <AddColor setShowAddColor={setShowAddColor} showAddColor={showAddColor} />
+      <UpdateColor
+        currentColor={currentColor}
+        setShowUpdateColor={setShowUpdateColor}
+        showUpdateColor={showUpdateColor}
       />
     </div>
   );
