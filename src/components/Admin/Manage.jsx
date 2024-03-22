@@ -112,7 +112,7 @@ const Manage = () => {
 
   useEffect(() => {
     if (colorData?.isDeleted) {
-      updateNotifications("success", colorData?.brand?.message);
+      updateNotifications("success", colorData?.color?.message);
       dispatch(getAllColorsAction());
     }
     if (colorData?.error) {
