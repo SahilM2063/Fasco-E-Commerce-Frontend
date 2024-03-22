@@ -128,6 +128,7 @@ export const UpdateCategory = ({
 }) => {
   // console.log(currentCategory);
   const dispatch = useDispatch();
+  const updateNotification = useNotification();
 
   const [categoryFormData, setCategoryFormData] = useState({
     name: "",
@@ -159,6 +160,23 @@ export const UpdateCategory = ({
     console.log(categoryFormData);
     dispatch(updateCategoryAction(categoryFormData));
   };
+
+  const { loading, error, isUpdated, category } = useSelector(
+    (state) => state?.categories
+  );
+
+  useEffect(() => {
+    if (isUpdated) {
+      dispatch(getAllCategoriesAction());
+      setShowUpdateCategory(false);
+      updateNotification("success", category?.message);
+    }
+    if (error) {
+      dispatch(getAllCategoriesAction());
+      setShowUpdateCategory(false);
+      updateNotification("error", error?.message);
+    }
+  }, [isUpdated, error]);
 
   return (
     showUpdateCategory && (
@@ -210,7 +228,7 @@ export const UpdateCategory = ({
                     onClick={handleUpdatedCategorySubmit}
                     className="w-full sm:w-full py-2 space-y-2 bg-black text-white rounded-lg "
                   >
-                    Update Category
+                    {loading ? "Updating..." : "Update"}
                   </button>
                   <button
                     onClick={() => setShowUpdateCategory(false)}
