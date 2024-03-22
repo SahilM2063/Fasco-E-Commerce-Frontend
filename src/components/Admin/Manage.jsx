@@ -10,19 +10,26 @@ import {
   deleteCategoryAction,
   getAllCategoriesAction,
 } from "../../redux/slices/categorySlice.js";
+import {
+  deleteBrandAction,
+  getAllBrandsAction,
+} from "../../redux/slices/brandSlice.js";
 import { useNotification } from "../../hooks";
 import { AddCategory, UpdateCategory } from "./ManageCategory.jsx";
+import { AddBrand, UpdateBrand } from "./ManageBrand.jsx";
 
 const Manage = () => {
   const dispatch = useDispatch();
   const updateNotifications = useNotification();
 
-  const { categories } = useSelector((state) => state?.categories?.categories);
   // console.log(categories);
-
   useEffect(() => {
     dispatch(getAllCategoriesAction());
+    dispatch(getAllBrandsAction());
   }, [dispatch]);
+
+  // handling categories
+  const { categories } = useSelector((state) => state?.categories?.categories);
 
   const [currentCategory, setCurrentCategory] = useState({});
   const [showAddCategory, setShowAddCategory] = useState(false);
@@ -49,6 +56,35 @@ const Manage = () => {
       dispatch(getAllCategoriesAction());
     }
   }, [isDeleted, error]);
+
+  // handling Brands ----------------------------------------------------------------------------------------------------------------------------------------------
+
+  const [currentBrand, setCurrentBrand] = useState({});
+  const [showAddBrand, setShowAddBrand] = useState(false);
+  const [showUpdateBrand, setShowUpdateBrand] = useState(false);
+
+  const { brands } = useSelector((state) => state?.brands?.brands);
+  // console.log(brands);
+
+  const handleDeleteBrand = (id) => {
+    if (window.confirm("Are you sure you want to delete this brand?")) {
+      dispatch(deleteBrandAction(id));
+    }
+    return;
+  };
+
+  const brandData = useSelector((state) => state?.brands);
+
+  useEffect(() => {
+    if (brandData?.isDeleted) {
+      updateNotifications("success", brandData?.brand?.message);
+      dispatch(getAllBrandsAction());
+    }
+    if (brandData?.error) {
+      updateNotifications("error", brandData?.error?.message);
+      dispatch(getAllBrandsAction());
+    }
+  }, [brandData?.isDeleted, brandData?.error]);
 
   return (
     <div className="w-full h-full relative">
@@ -89,7 +125,7 @@ const Manage = () => {
         })}
         <button
           onClick={() => setShowAddCategory(true)}
-          className="w-full p-4 bg-black/5 rounded-lg"
+          className="w-full p-4 bg-black/5 rounded-lg font-semibold text-black border"
         >
           Add Category
         </button>
@@ -102,6 +138,47 @@ const Manage = () => {
         currentCategory={currentCategory}
         showUpdateCategory={showUpdateCategory}
         setShowUpdateCategory={setShowUpdateCategory}
+      />
+
+      <h1 className="text-xl font-bold font-[Poppins] mt-8 mb-4">
+        Manage Brands
+      </h1>
+      <div className="w-full grid grid-cols-4 md:grid-cols-2 sm:grid-cols-1 gap-4 md:gap-4 sm:gap-2 font-[Poppins] overflow-hidden">
+        {brands?.map((brand, index) => {
+          return (
+            <div
+              key={index}
+              className="bg-transparent border-black border-[1px] rounded-lg p-3 flex items-center justify-between"
+            >
+              <h1>{brand?.name}</h1>
+              <div className="btns flex items-center gap-2">
+                <button
+                  onClick={() => {
+                    setShowUpdateBrand(true);
+                    setCurrentBrand(brand);
+                  }}
+                >
+                  <img src={editSvg} alt="edit" className="w-5" />
+                </button>
+                <button onClick={() => handleDeleteBrand(brand._id)}>
+                  <img src={deleteSvg} alt="delete" className="w-5" />
+                </button>
+              </div>
+            </div>
+          );
+        })}
+        <button
+          onClick={() => setShowAddBrand(true)}
+          className="kbd border-black border-[1px] rounded-lg font-semibold p-3 flex items-center justify-center"
+        >
+          Add Brand
+        </button>
+      </div>
+      <AddBrand setShowAddBrand={setShowAddBrand} showAddBrand={showAddBrand} />
+      <UpdateBrand
+        currentBrand={currentBrand}
+        setShowUpdateBrand={setShowUpdateBrand}
+        showUpdateBrand={showUpdateBrand}
       />
     </div>
   );
