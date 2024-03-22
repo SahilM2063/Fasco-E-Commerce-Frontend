@@ -103,6 +103,7 @@ const categorySlice = createSlice({
         builder.addCase(createCategoryAction.fulfilled, (state, action) => {
             state.loading = false;
             state.isAdded = true;
+            state.error = null
             state.category = action.payload;
         });
         builder.addCase(createCategoryAction.rejected, (state, action) => {
