@@ -113,6 +113,7 @@ const categorySlice = createSlice({
         builder.addCase(deleteCategoryAction.fulfilled, (state, action) => {
             state.loading = false;
             state.isDeleted = true;
+            state.category = action.payload;
         });
         builder.addCase(deleteCategoryAction.rejected, (state, action) => {
             state.loading = false;

@@ -37,7 +37,7 @@ const AddCategory = ({ setShowAddCategory, showAddCategory }) => {
 
   useEffect(() => {
     if (isAdded) {
-      updateNotification("success", "Category added successfully");
+      updateNotification("success", category?.message);
       setCategoryFormData({ name: "", image: "" });
       setShowAddCategory(false);
       setCatPoster("");

@@ -33,13 +33,13 @@ const Manage = () => {
     return;
   };
 
-  const { loading, error, isDeleted } = useSelector(
+  const { loading, error, isDeleted, category } = useSelector(
     (state) => state?.categories
   );
 
   useEffect(() => {
     if (isDeleted) {
-      updateNotifications("success", "Category deleted successfully");
+      updateNotifications("success", category?.message);
       dispatch(getAllCategoriesAction());
     }
     if (error) {
