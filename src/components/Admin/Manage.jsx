@@ -137,7 +137,7 @@ const Manage = () => {
                 className="w-full h-[80%] object-cover rounded-lg"
               />
               <div className="content w-full backdrop-blur-lg flex justify-between items-center">
-                <h1 className="text-md font-bold">{category?.name}</h1>
+                <h1 className="text-sm font-bold">{category?.name}</h1>
                 <div className="flex items-center gap-2">
                   <button>
                     <img
@@ -183,9 +183,9 @@ const Manage = () => {
           return (
             <div
               key={index}
-              className="bg-transparent border-black border-[1px] rounded-lg p-3 flex items-center justify-between"
+              className="bg-transparent border-black border-[1px] rounded-lg p-3 flex items-center justify-between "
             >
-              <h1>{brand?.name}</h1>
+              <h1 className="text-sm font-semibold">{brand?.name}</h1>
               <div className="btns flex items-center gap-2">
                 <button
                   onClick={() => {
@@ -226,8 +226,10 @@ const Manage = () => {
               key={index}
               className="bg-transparent border-black border-[1px] rounded-lg p-3 flex items-center justify-between"
             >
-              <div className={`w-10 h-10 rounded-full bg-${color?.name}`}></div>
-              <h1>{color?.name}</h1>
+              <div
+                className={`w-7 h-7 border-black rounded-full bg-${color.name}-500 `}
+              ></div>
+              <h1 className="text-sm font-semibold">{color?.name}</h1>
               <div className="btns flex items-center gap-2">
                 <button
                   onClick={() => {
