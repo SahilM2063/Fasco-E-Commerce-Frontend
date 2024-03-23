@@ -9,6 +9,7 @@ import {
 } from "../../redux/slices/userSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { useNotification } from "../../hooks";
+import default1 from "./assets/default1.png";
 
 const Customers = () => {
   const dispatch = useDispatch();
@@ -96,7 +97,7 @@ export const TrComponent = ({ id, user, handleUserDelete }) => {
           <img
             className="shadow-md rounded-full object-cover w-10 h-10 mr-3"
             alt="product image"
-            src={""}
+            src={user?.image ? user?.image : default1}
           />
           <div className="flex flex-col items-start justify-center gap-1">
             <p>{user?.firstName + " " + user?.lastName}</p>
