@@ -86,6 +86,24 @@ export const resetPassword = createAsyncThunk(
     }
 );
 
+export const userDeleteAction = createAsyncThunk("users/userDelete", async (id, { rejectWithValue, getState, dispatch }) => {
+    try {
+
+        const token = getState()?.users?.userAuth?.userInfo?.token
+        const config = {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        }
+
+        const { data } = await axios.delete(`${baseURL}/users/${id}`, config)
+        return data
+    } catch (error) {
+        console.log(error)
+        return rejectWithValue(error?.response?.data)
+    }
+})
+
 const userSlice = createSlice({
     name: "users",
     initialState,
@@ -149,6 +167,7 @@ const userSlice = createSlice({
             state.error = action.payload
         })
 
+        // Reset password
         builder.addCase(resetPassword.pending, (state) => {
             state.loading = true;
             state.error = null;
@@ -161,6 +180,22 @@ const userSlice = createSlice({
             state.loading = false;
             state.error = action.payload;
         });
+
+        // delete user
+        builder.addCase(userDeleteAction.pending, (state) => {
+            state.loading = true;
+            state.error = null;
+            state.user = {};
+        });
+        builder.addCase(userDeleteAction.fulfilled, (state, action) => {
+            state.loading = false;
+            state.user = action.payload;
+        });
+        builder.addCase(userDeleteAction.rejected, (state, action) => {
+            state.loading = false;
+            state.error = action.payload;
+            state.user = {};
+        })
     }
 })
 

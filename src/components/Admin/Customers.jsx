@@ -3,17 +3,42 @@
 import React, { useEffect } from "react";
 import editSvg from "./assets/edit.svg";
 import deleteSvg from "./assets/delete.svg";
-import { getAllUsersAction } from "../../redux/slices/userSlice";
+import {
+  getAllUsersAction,
+  userDeleteAction,
+} from "../../redux/slices/userSlice";
 import { useDispatch, useSelector } from "react-redux";
+import { useNotification } from "../../hooks";
 
 const Customers = () => {
   const dispatch = useDispatch();
-  const { users } = useSelector((state) => state?.users?.users);
-  console.log(users);
+  const updateNotification = useNotification();
 
   useEffect(() => {
     dispatch(getAllUsersAction());
   }, [dispatch]);
+
+  const { users } = useSelector((state) => state?.users?.users);
+
+  const { loading, error, user } = useSelector((state) => state?.users);
+
+  const handleUserDelete = async (id) => {
+    if (window.confirm("Are you sure you want to delete this user?")) {
+      dispatch(userDeleteAction(id));
+    }
+    return;
+  };
+
+  useEffect(() => {
+    if (error) {
+      updateNotification("error", error?.message);
+      dispatch(getAllUsersAction());
+    }
+    if (user?.message) {
+      updateNotification("success", user?.message);
+      dispatch(getAllUsersAction());
+    }
+  }, [error, user]);
 
   return (
     <div className="sm:overflow-x-scroll scrollbar-hide">
@@ -44,7 +69,14 @@ const Customers = () => {
           </thead>
           <tbody className="w-full">
             {users?.map((user, index) => {
-              return <TrComponent user={user} key={user?._id} id={index} />;
+              return (
+                <TrComponent
+                  user={user}
+                  key={user?._id}
+                  id={index}
+                  handleUserDelete={handleUserDelete}
+                />
+              );
             })}
           </tbody>
         </table>
@@ -55,7 +87,7 @@ const Customers = () => {
 
 export default Customers;
 
-export const TrComponent = ({ id, user }) => {
+export const TrComponent = ({ id, user, handleUserDelete }) => {
   return (
     <tr className="h-16 text-sm leading-none text-gray-700 border-b border-t border-gray-200 bg-white hover:bg-gray-100 font-[Poppins]">
       <td className="pl-4 font-semibold">{id + 1}</td>
@@ -93,7 +125,10 @@ export const TrComponent = ({ id, user }) => {
           <button className="rounded-md focus:outline-none">
             <img src={editSvg} alt="editSvg" className="w-5" />
           </button>
-          <button className="rounded-md focus:outline-none">
+          <button
+            onClick={() => handleUserDelete(user?._id)}
+            className="rounded-md focus:outline-none"
+          >
             <img src={deleteSvg} alt="deleteSvg" className="w-6" />
           </button>
         </div>
