@@ -18,6 +18,16 @@ const initialState = {
     }
 }
 
+export const getAllUsersAction = createAsyncThunk("users/getAllUsers", async (_, { rejectWithValue, getState, dispatch }) => {
+    try {
+        const { data } = await axios.get(`${baseURL}/users/getAll`)
+        return data
+    } catch (error) {
+        console.log(error)
+        return rejectWithValue(error?.response?.data)
+    }
+})
+
 export const loginUserAction = createAsyncThunk("users/login", async ({ email, password }, { rejectWithValue, getState, dispatch }) => {
     try {
         const { data } = await axios.post(`${baseURL}/users/login`, {
@@ -81,6 +91,22 @@ const userSlice = createSlice({
     initialState,
     extraReducers: (builder) => {
         // handle actions
+        // get all users
+        builder.addCase(getAllUsersAction.pending, (state, action) => {
+            state.loading = true;
+            state.error = null;
+            state.users = [];
+        });
+        builder.addCase(getAllUsersAction.fulfilled, (state, action) => {
+            state.loading = false;
+            state.users = action.payload;
+        });
+        builder.addCase(getAllUsersAction.rejected, (state, action) => {
+            state.loading = false;
+            state.error = action.payload
+            state.users = [];
+        })
+
         // Login action
         builder.addCase(loginUserAction.pending, (state, action) => {
             state.userAuth.loading = true;
