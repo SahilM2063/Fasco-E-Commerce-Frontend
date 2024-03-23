@@ -60,6 +60,7 @@ export const AddColor = ({ setShowAddColor, showAddColor }) => {
                     className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
                     placeholder="Enter color name"
                     type="text"
+                    autoFocus
                     value={name}
                     onChange={(e) =>
                       setColorFormData({
@@ -154,6 +155,7 @@ export const UpdateColor = ({
                     className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
                     type="text"
                     name="category"
+                    autoFocus
                     value={name}
                     onChange={(e) =>
                       setColorFormData({

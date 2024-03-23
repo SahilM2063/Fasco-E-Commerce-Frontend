@@ -60,6 +60,7 @@ export const AddBrand = ({ setShowAddBrand, showAddBrand }) => {
                     className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
                     placeholder="Enter category name"
                     type="text"
+                    autoFocus
                     value={name}
                     onChange={(e) =>
                       setBrandFormData({
@@ -155,6 +156,7 @@ export const UpdateBrand = ({
                     placeholder="Enter category name"
                     type="text"
                     name="category"
+                    autoFocus
                     value={name}
                     onChange={(e) =>
                       setBrandFormData({

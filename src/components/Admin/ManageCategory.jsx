@@ -89,6 +89,7 @@ export const AddCategory = ({ setShowAddCategory, showAddCategory }) => {
                     placeholder="Enter category name"
                     type="text"
                     name="category"
+                    autoFocus
                     value={name}
                     onChange={(e) =>
                       setCategoryFormData({
@@ -214,6 +215,7 @@ export const UpdateCategory = ({
                     placeholder="Enter category name"
                     type="text"
                     name="category"
+                    autoFocus
                     value={name}
                     onChange={(e) =>
                       setCategoryFormData({

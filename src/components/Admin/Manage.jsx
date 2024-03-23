@@ -124,7 +124,7 @@ const Manage = () => {
   return (
     <div className="w-full h-full relative">
       <h1 className="text-xl font-bold font-[Poppins] mb-4">Manage Category</h1>
-      <div className="w-full grid grid-cols-4 md:grid-cols-2 sm:grid-cols-1 gap-8 md:gap-4 sm:gap-2 font-[Poppins] overflow-hidden">
+      <div className="w-full grid grid-cols-4 md:grid-cols-2 sm:grid-cols-1 gap-4 md:gap-4 sm:gap-2 font-[Poppins] overflow-hidden">
         {categories?.map((category, index) => {
           return (
             <div
