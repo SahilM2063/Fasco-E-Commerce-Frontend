@@ -102,7 +102,7 @@ const Manage = () => {
   // console.log(brands);
 
   const handleDeleteColor = (id) => {
-    if (window.confirm("Are you sure you want to delete this brand?")) {
+    if (window.confirm("Are you sure you want to delete this color?")) {
       dispatch(deleteColorAction(id));
     }
     return;
