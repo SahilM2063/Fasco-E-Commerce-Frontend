@@ -22,7 +22,7 @@ import Shop from "./components/Users/Shop.jsx";
 
 function App() {
   return (
-    <div className="w-full min-h-[100vh]">
+    <div className="w-full min-h-[100vh] ">
       {/* Homepage/Hero component */}
       <Navbar />
       <Routes>
