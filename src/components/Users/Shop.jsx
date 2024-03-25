@@ -73,6 +73,7 @@ const Shop = () => {
   const [selectedColors, setSelectedColors] = useState([]);
   const [selectedPriceRange, setSelectedPriceRange] = useState("");
   const [selectedBrand, setSelectedBrand] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState("");
 
   const handleSizeSelect = (size) => {
     setSelectedSizes((prevSizes) => {
@@ -97,11 +98,19 @@ const Shop = () => {
   };
 
   const handlePriceRangeSelect = (priceRange) => {
-    setSelectedPriceRange(priceRange);
+    selectedPriceRange === priceRange
+      ? setSelectedPriceRange("")
+      : setSelectedPriceRange(priceRange);
   };
 
   const handleBrandSelect = (brand) => {
-    setSelectedBrand(brand);
+    selectedBrand === brand ? setSelectedBrand("") : setSelectedBrand(brand);
+  };
+
+  const handleCategorySelect = (category) => {
+    selectedCategory === category
+      ? setSelectedCategory("")
+      : setSelectedCategory(category);
   };
 
   // Update the filteredProducts logic to handle flexible filtering
@@ -112,7 +121,8 @@ const Shop = () => {
       if (
         selectedSizes.length > 0 ||
         selectedColors.length > 0 ||
-        selectedBrand !== ""
+        selectedBrand !== "" ||
+        selectedCategory !== ""
       ) {
         return (
           (selectedSizes.length === 0 ||
@@ -121,7 +131,8 @@ const Shop = () => {
             selectedColors.every((color) =>
               product?.colors?.includes(color)
             )) &&
-          (selectedBrand === "" || product.brand === selectedBrand)
+          (selectedBrand === "" || product.brand === selectedBrand) &&
+          (selectedCategory === "" || product.category === selectedCategory)
         );
       } else {
         return true; // Return all products if no size, color, or brand is selected
@@ -137,7 +148,8 @@ const Shop = () => {
             selectedColors.every((color) =>
               product?.colors?.includes(color)
             )) &&
-          (selectedBrand === "" || product.brand === selectedBrand)
+          (selectedBrand === "" || product.brand === selectedBrand) &&
+          (selectedCategory === "" || product.category === selectedCategory)
         );
       } else {
         const [min, max] = selectedPriceRange.split("-").map(Number);
@@ -150,7 +162,8 @@ const Shop = () => {
             selectedColors.every((color) =>
               product?.colors?.includes(color)
             )) &&
-          (selectedBrand === "" || product.brand === selectedBrand)
+          (selectedBrand === "" || product.brand === selectedBrand) &&
+          (selectedCategory === "" || product.category === selectedCategory)
         );
       }
     }
@@ -233,6 +246,7 @@ const Shop = () => {
                       name="price"
                       id={index}
                       className="radio w-4 h-4"
+                      checked={price?.amount === selectedPriceRange}
                     />
                     <label
                       htmlFor={index}
@@ -304,8 +318,12 @@ const Shop = () => {
                 {categories.map((category, index) => {
                   return (
                     <span
+                      onClick={() => handleCategorySelect(category?.name)}
                       key={index}
-                      className="text-sm hover:text-black  text-[#8A8A8A] cursor-pointer font-[Poppins] capitalize"
+                      className={`text-sm hover:text-black  text-[#8A8A8A] cursor-pointer font-[Poppins] capitalize ${
+                        selectedCategory === category?.name &&
+                        "text-[#000] font-semibold"
+                      }`}
                     >
                       {category?.name}
                     </span>
