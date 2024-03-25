@@ -34,13 +34,13 @@ const Shop = () => {
       amount: "500-1000",
     },
     {
-      amount: "1000-1500",
+      amount: "1000-2500",
     },
     {
-      amount: "1500-2000",
+      amount: "2500-5000",
     },
     {
-      amount: "2000-2500",
+      amount: "5000 above",
     },
   ];
   const sortOOptions = [
@@ -71,6 +71,8 @@ const Shop = () => {
 
   const [selectedSizes, setSelectedSizes] = useState([]);
   const [selectedColors, setSelectedColors] = useState([]);
+  const [selectedPriceRange, setSelectedPriceRange] = useState("");
+  const [selectedBrand, setSelectedBrand] = useState("");
 
   const handleSizeSelect = (size) => {
     setSelectedSizes((prevSizes) => {
@@ -94,14 +96,63 @@ const Shop = () => {
     });
   };
 
+  const handlePriceRangeSelect = (priceRange) => {
+    setSelectedPriceRange(priceRange);
+  };
+
+  const handleBrandSelect = (brand) => {
+    setSelectedBrand(brand);
+  };
+
+  // Update the filteredProducts logic to handle flexible filtering
   const filteredProducts = products?.filter((product) => {
-    if (selectedSizes.length === 0 && selectedColors.length === 0) {
-      return true;
+    // Check if selectedPriceRange is empty
+    if (selectedPriceRange === "") {
+      // Check if sizes, colors, or brand are selected
+      if (
+        selectedSizes.length > 0 ||
+        selectedColors.length > 0 ||
+        selectedBrand !== ""
+      ) {
+        return (
+          (selectedSizes.length === 0 ||
+            selectedSizes.every((size) => product?.sizes?.includes(size))) &&
+          (selectedColors.length === 0 ||
+            selectedColors.every((color) =>
+              product?.colors?.includes(color)
+            )) &&
+          (selectedBrand === "" || product.brand === selectedBrand)
+        );
+      } else {
+        return true; // Return all products if no size, color, or brand is selected
+      }
     } else {
-      return (
-        selectedSizes.every((size) => product?.sizes?.includes(size)) &&
-        selectedColors.every((color) => product?.colors?.includes(color))
-      );
+      // Handle filtering based on selectedPriceRange and optionally selectedBrand
+      if (selectedPriceRange === "5000 above") {
+        return (
+          product.price >= 5000 &&
+          (selectedSizes.length === 0 ||
+            selectedSizes.every((size) => product?.sizes?.includes(size))) &&
+          (selectedColors.length === 0 ||
+            selectedColors.every((color) =>
+              product?.colors?.includes(color)
+            )) &&
+          (selectedBrand === "" || product.brand === selectedBrand)
+        );
+      } else {
+        const [min, max] = selectedPriceRange.split("-").map(Number);
+        return (
+          product.price >= min &&
+          product.price <= max &&
+          (selectedSizes.length === 0 ||
+            selectedSizes.every((size) => product?.sizes?.includes(size))) &&
+          (selectedColors.length === 0 ||
+            selectedColors.every((color) =>
+              product?.colors?.includes(color)
+            )) &&
+          (selectedBrand === "" || product.brand === selectedBrand)
+        );
+      }
     }
   });
 
@@ -172,12 +223,27 @@ const Shop = () => {
             <div className="flex flex-col w-full items-start justify-start gap-2 flex-wrap">
               {priseOptions?.map((price, index) => {
                 return (
-                  <span
+                  <div
+                    onClick={() => setSelectedPriceRange(price?.amount)}
                     key={index}
-                    className="text-md  text-[#8A8A8A] cursor-pointer font-[Poppins]"
+                    className="flex items-center gap-2"
                   >
-                    {price?.amount}
-                  </span>
+                    <input
+                      type="radio"
+                      name="price"
+                      id={index}
+                      className="radio w-4 h-4"
+                    />
+                    <label
+                      htmlFor={index}
+                      className={`text-md text-[#8A8A8A] cursor-pointer font-[Poppins] ${
+                        selectedPriceRange === price?.amount &&
+                        "text-[#000] font-semibold"
+                      }`}
+                    >
+                      {price?.amount}
+                    </label>
+                  </div>
                 );
               })}
             </div>
@@ -204,7 +270,11 @@ const Shop = () => {
                   return (
                     <span
                       key={index}
-                      className="text-sm hover:text-black  text-[#8A8A8A] cursor-pointer font-[Poppins] capitalize"
+                      onClick={() => handleBrandSelect(brand?.name)}
+                      className={`text-sm hover:text-black  text-[#8A8A8A] cursor-pointer font-[Poppins] capitalize ${
+                        selectedBrand === brand?.name &&
+                        "text-[#000] font-semibold"
+                      }`}
                     >
                       {brand?.name}
                     </span>
