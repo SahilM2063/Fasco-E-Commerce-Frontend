@@ -69,6 +69,42 @@ const Shop = () => {
   const [showCategory, setShowCategory] = useState(false);
   const [showBrand, setShowBrand] = useState(false);
 
+  const [selectedSizes, setSelectedSizes] = useState([]);
+  const [selectedColors, setSelectedColors] = useState([]);
+
+  const handleSizeSelect = (size) => {
+    setSelectedSizes((prevSizes) => {
+      const newSizes = prevSizes.includes(size)
+        ? prevSizes.filter((s) => s !== size)
+        : [...prevSizes, size];
+      console.log("Previous Sizes:", prevSizes);
+      console.log("New Sizes:", newSizes);
+      return newSizes;
+    });
+  };
+
+  const handleColorSelect = (color) => {
+    setSelectedColors((prevColors) => {
+      const newColors = prevColors.includes(color)
+        ? prevColors.filter((c) => c !== color)
+        : [...prevColors, color];
+      console.log("Previous Colors:", prevColors);
+      console.log("New Colors:", prevColors);
+      return newColors;
+    });
+  };
+
+  const filteredProducts = products?.filter((product) => {
+    if (selectedSizes.length === 0 && selectedColors.length === 0) {
+      return true;
+    } else {
+      return (
+        selectedSizes.every((size) => product?.sizes?.includes(size)) &&
+        selectedColors.every((color) => product?.colors?.includes(color))
+      );
+    }
+  });
+
   return (
     <div className="w-full min-h-screen px-32 md:px-10 sm:px-6 my-6 flex">
       <div
@@ -97,7 +133,10 @@ const Shop = () => {
                 return (
                   <span
                     key={index}
-                    className="text-xs text-[#8A8A8A] hover:text-[#484848] hover:border-[#484848] rounded-[5px] cursor-pointer font-[Poppins] border border-[#8A8A8A] w-8 h-8 flex items-center justify-center"
+                    className={`text-xs text-[#8A8A8A] hover:border-[#484848] rounded-[5px] cursor-pointer font-[Poppins] border border-[#8A8A8A] w-8 h-8 flex items-center justify-center ${
+                      selectedSizes.includes(size) && "bg-[#000] text-white"
+                    }`}
+                    onClick={() => handleSizeSelect(size)}
                   >
                     {size}
                   </span>
@@ -114,7 +153,11 @@ const Shop = () => {
                 return (
                   <span
                     key={index}
-                    className="text-xs rounded-full cursor-pointer shadow-md w-8 h-8"
+                    onClick={() => handleColorSelect(color?.name)}
+                    className={`text-xs rounded-full cursor-pointer shadow-md w-8 h-8 ${
+                      selectedColors.includes(color?.name) &&
+                      "border-2 border-[#000] "
+                    }`}
                     title={color?.name}
                     style={{ backgroundColor: color?.name }}
                   ></span>
@@ -220,7 +263,7 @@ const Shop = () => {
           />
         </div>
         <div className="cards grid grid-cols-3 md:grid-cols-2 sm:grid-cols-2 gap-12 sm:gap-x-4 sm:gap-y-4">
-          {products?.map((product, index) => {
+          {filteredProducts?.map((product, index) => {
             return (
               <div
                 key={index}
