@@ -26,7 +26,7 @@ const Shop = () => {
   const { brands } = useSelector((state) => state?.brands?.brands);
   const { colors } = useSelector((state) => state?.colors?.colors);
   const sizes = ["S", "M", "L", "XL", "XXL", "8", "9", "10", "11", "12"];
-  const priseOptions = [
+  const priceOptions = [
     {
       amount: "0-500",
     },
@@ -43,25 +43,20 @@ const Shop = () => {
       amount: "5000 above",
     },
   ];
-  const sortOOptions = [
+  const sortOptions = [
     {
-      href: "#",
       label: "Price: Low to High",
     },
     {
-      href: "#",
       label: "Price: High to Low",
     },
     {
-      href: "#",
       label: "Newest",
     },
     {
-      href: "#",
-      label: "Most Popular",
+      label: "Oldest",
     },
     {
-      href: "#",
       label: "Best Rating",
     },
   ];
@@ -177,6 +172,28 @@ const Shop = () => {
     setSelectedCategory("");
   };
 
+  const [selectedSortOption, setSelectedSortOption] = useState("");
+
+  const handleSortChange = (selectedOption) => {
+    setSelectedSortOption(selectedOption);
+  };
+
+  const sortedProducts = filteredProducts?.sort((a, b) => {
+    if (selectedSortOption === "Price: Low to High") {
+      return a.price - b.price;
+    } else if (selectedSortOption === "Price: High to Low") {
+      return b.price - a.price;
+    } else if (selectedSortOption === "Newest") {
+      return new Date(b.createdAt) - new Date(a.createdAt);
+    } else if (selectedSortOption === "Oldest") {
+      return new Date(a.createdAt) - new Date(b.createdAt);
+    } else if (selectedSortOption === "Best Rating") {
+      return b.rating - a.rating;
+    } else {
+      return 0;
+    }
+  });
+
   return (
     <div className="w-full min-h-screen px-32 md:px-10 sm:px-6 my-6 flex">
       <div
@@ -242,7 +259,7 @@ const Shop = () => {
               Prices
             </h1>
             <div className="flex flex-col w-full items-start justify-start gap-2 flex-wrap">
-              {priseOptions?.map((price, index) => {
+              {priceOptions?.map((price, index) => {
                 return (
                   <div
                     onClick={() => setSelectedPriceRange(price?.amount)}
@@ -254,7 +271,7 @@ const Shop = () => {
                       name="price"
                       id={index}
                       className="radio w-4 h-4"
-                      checked={price?.amount === selectedPriceRange}
+                      defaultChecked={price?.amount === selectedPriceRange}
                     />
                     <label
                       htmlFor={index}
@@ -351,10 +368,17 @@ const Shop = () => {
 
       <div className="main flex-1 min-h-screen h-full pl-8 sm:pl-1">
         <div className="w-full mb-4 flex justify-between items-center">
-          <select className="font-[Poppins] text-sm border outline-none p-1 rounded-sm cursor-pointer">
+          <select
+            onChange={(e) => handleSortChange(e.target.value)}
+            className="font-[Poppins] text-sm border outline-none p-1 rounded-sm cursor-pointer"
+          >
             <option>Sort</option>
-            {sortOOptions?.map((option, index) => {
-              return <option key={index}>{option.label}</option>;
+            {sortOptions?.map((option, index) => {
+              return (
+                <option value={option.label} key={index}>
+                  {option.label}
+                </option>
+              );
             })}
           </select>
           <img
@@ -365,7 +389,7 @@ const Shop = () => {
           />
         </div>
         <div className="cards grid grid-cols-3 md:grid-cols-2 sm:grid-cols-2 gap-12 sm:gap-x-4 sm:gap-y-4">
-          {filteredProducts?.map((product, index) => {
+          {sortedProducts?.map((product, index) => {
             return (
               <div
                 key={index}
