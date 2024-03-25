@@ -169,6 +169,14 @@ const Shop = () => {
     }
   });
 
+  const resetFilters = () => {
+    setSelectedSizes([]);
+    setSelectedColors([]);
+    setSelectedPriceRange("");
+    setSelectedBrand("");
+    setSelectedCategory("");
+  };
+
   return (
     <div className="w-full min-h-screen px-32 md:px-10 sm:px-6 my-6 flex">
       <div
@@ -332,6 +340,12 @@ const Shop = () => {
               </div>
             )}
           </div>
+          <button
+            onClick={() => resetFilters()}
+            className="w-full bg-black p-2 text-white rounded-lg"
+          >
+            Reset Filters
+          </button>
         </div>
       </div>
 
