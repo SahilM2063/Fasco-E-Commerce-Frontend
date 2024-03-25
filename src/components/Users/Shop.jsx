@@ -12,6 +12,7 @@ import { getAllColorsAction } from "../../redux/slices/colorSlice";
 const Shop = () => {
   const dispatch = useDispatch();
 
+  // getting all brands, categories, colors and products dynamically
   useEffect(() => {
     dispatch(getAllProductsAction());
     dispatch(getAllCategoriesAction());
@@ -19,12 +20,15 @@ const Shop = () => {
     dispatch(getAllColorsAction());
   }, [dispatch]);
 
+  // state for mobile sized filter option
   const [showFilter, setShowFilter] = useState(false);
 
+  // fetching all data from states
   const { products } = useSelector((state) => state?.products?.products);
   const { categories } = useSelector((state) => state?.categories?.categories);
   const { brands } = useSelector((state) => state?.brands?.brands);
   const { colors } = useSelector((state) => state?.colors?.colors);
+  // some hardcoded data
   const sizes = ["S", "M", "L", "XL", "XXL", "8", "9", "10", "11", "12"];
   const priceOptions = [
     {
@@ -61,14 +65,18 @@ const Shop = () => {
     },
   ];
 
+  // dropdown state for category and brand
   const [showCategory, setShowCategory] = useState(false);
   const [showBrand, setShowBrand] = useState(false);
 
+  // state for selected filters
   const [selectedSizes, setSelectedSizes] = useState([]);
   const [selectedColors, setSelectedColors] = useState([]);
   const [selectedPriceRange, setSelectedPriceRange] = useState("");
   const [selectedBrand, setSelectedBrand] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("");
+
+  // handle selected  filters change
 
   const handleSizeSelect = (size) => {
     setSelectedSizes((prevSizes) => {
@@ -108,11 +116,9 @@ const Shop = () => {
       : setSelectedCategory(category);
   };
 
-  // Update the filteredProducts logic to handle flexible filtering
+  // filtering products - main logic ---------------------------------------------------------------------------
   const filteredProducts = products?.filter((product) => {
-    // Check if selectedPriceRange is empty
     if (selectedPriceRange === "") {
-      // Check if sizes, colors, or brand are selected
       if (
         selectedSizes.length > 0 ||
         selectedColors.length > 0 ||
@@ -130,10 +136,9 @@ const Shop = () => {
           (selectedCategory === "" || product.category === selectedCategory)
         );
       } else {
-        return true; // Return all products if no size, color, or brand is selected
+        return true;
       }
     } else {
-      // Handle filtering based on selectedPriceRange and optionally selectedBrand
       if (selectedPriceRange === "5000 above") {
         return (
           product.price >= 5000 &&
@@ -164,6 +169,7 @@ const Shop = () => {
     }
   });
 
+  // reset filters
   const resetFilters = () => {
     setSelectedSizes([]);
     setSelectedColors([]);
@@ -172,12 +178,15 @@ const Shop = () => {
     setSelectedCategory("");
   };
 
+  // sort state for products
   const [selectedSortOption, setSelectedSortOption] = useState("");
 
+  // handle sort change
   const handleSortChange = (selectedOption) => {
     setSelectedSortOption(selectedOption);
   };
 
+  // sort products - second main logic ----------------------------------------------------------------------------------
   const sortedProducts = filteredProducts?.sort((a, b) => {
     if (selectedSortOption === "Price: Low to High") {
       return a.price - b.price;
