@@ -23,6 +23,7 @@ const SingleProductDetail = () => {
   console.log(product);
 
   const [countVal, setCountVal] = useState(1);
+  const [mainProductImage, setMainProductImage] = useState(0);
 
   return (
     <div className="w-full px-32 pb-6 md:px-10 sm:px-6 gap-12 mt-8">
@@ -30,13 +31,14 @@ const SingleProductDetail = () => {
         <div className="image-container w-full  flex justify-between gap-4">
           {product?.images.length > 1 && (
             <div className="side-img w-[20%] flex flex-col gap-4">
-              {product?.images?.slice(1).map((img, index) => {
+              {product?.images?.map((img, index) => {
                 return (
                   <img
                     key={index}
+                    onMouseEnter={() => setMainProductImage(index)}
                     src={img}
                     alt=""
-                    className="w-full h-1/5 rounded-sm object-top object-cover "
+                    className="w-full h-[100px] hover:border-[2px] hover:border-black p-[1px] cursor-pointer rounded-sm object-top object-cover "
                   />
                 );
               })}
@@ -44,9 +46,9 @@ const SingleProductDetail = () => {
           )}
           <div className="main-img flex-1">
             <img
-              src={product?.images[0]}
-              alt=""
-              className="w-full h-full object-cover rounded-md"
+              src={product?.images[mainProductImage]}
+              alt="noImage"
+              className="w-full object-cover rounded-md transition-all"
             />
           </div>
         </div>

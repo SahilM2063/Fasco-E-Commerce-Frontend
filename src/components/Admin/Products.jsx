@@ -397,13 +397,13 @@ const Products = () => {
           <thead>
             <tr className="h-20 w-full text-sm leading-none bg-slate-100/90">
               <th className="text-left pl-4 font-[poppins] font-semibold">#</th>
-              <th className="text-left pl-11 font-[poppins] font-semibold">
+              <th className="text-left pl-4 font-[poppins] font-semibold">
                 Name
               </th>
               <th className="text-left pl-10 font-[poppins] font-semibold">
                 Category
               </th>
-              <th className="text-left font-[poppins] font-semibold">
+              <th className="text-left pl-4 font-[poppins] font-semibold">
                 Price(₹)
               </th>
               <th className="text-left font-[poppins] font-semibold">Status</th>
@@ -463,7 +463,7 @@ export const TrComponent = ({
   return (
     <tr className="h-16 text-sm leading-none text-gray-700 border-b border-t border-gray-200 bg-white hover:bg-gray-100 font-[Poppins]">
       <td className="pl-4 font-semibold">{id + 1}</td>
-      <td className="pl-11">
+      <td className="pl-4">
         <div className="flex items-center">
           <img
             className="shadow-md rounded-lg object-cover w-10 h-10 mr-3"
@@ -471,24 +471,24 @@ export const TrComponent = ({
             src={images ? images[0] : ""}
           />
           <div className="flex flex-col items-start justify-center gap-1">
-            <p>{name}</p>
+            <p className="text-sm">{name}</p>
             <span className="text-[11px] opacity-85">{brand}</span>
           </div>
         </div>
       </td>
       <td>
-        <p className="mr-16 pl-10">{category}</p>
+        <p className="pl-10 text-xs">{category}</p>
       </td>
       <td>
-        <p className="mr-16">{price}</p>
+        <p className="mr-8 pl-4">{price}</p>
       </td>
       <td>
         {qtyLeft > 0 ? (
-          <div className="flex items-center justify-center w-20 h-6 bg-green-100 rounded-full mr-12">
+          <div className="flex items-center justify-center w-20 h-6 bg-green-100 rounded-full mr-8">
             <p className="text-xs leading-3 text-green-600">In stock</p>
           </div>
         ) : (
-          <div className="flex items-center justify-center w-20 h-6 bg-red-100 rounded-full mr-12">
+          <div className="flex items-center justify-center w-20 h-6 bg-red-100 rounded-full mr-8">
             <p className="text-xs leading-3 text-red-600">Out of stock</p>
           </div>
         )}
