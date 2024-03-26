@@ -180,7 +180,6 @@ const UpdateProduct = ({
                 className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
                 type="file"
                 multiple
-
                 onChange={handleImageChange}
               />
             </div>
@@ -327,7 +326,7 @@ const UpdateProduct = ({
                 onClick={handleUpdateSubmit}
                 className="w-full sm:w-full py-2 space-y-2 bg-black text-white rounded-lg border-[1px] border-black"
               >
-                {loading ? "Updating..." : "Update"}
+                {loading ? "updating..." : "Update"}
               </button>
             </div>
           </div>
