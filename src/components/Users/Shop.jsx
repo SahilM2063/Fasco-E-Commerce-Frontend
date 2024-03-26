@@ -268,32 +268,35 @@ const Shop = () => {
               Prices
             </h1>
             <div className="flex flex-col w-full items-start justify-start gap-2 flex-wrap">
-              {priceOptions?.map((price, index) => {
-                return (
-                  <div
-                    onClick={() => setSelectedPriceRange(price?.amount)}
-                    key={index}
-                    className="flex items-center gap-2"
+              {priceOptions.map((price, index) => (
+                <div
+                  key={index}
+                  className={`flex items-center gap-2 cursor-pointer ${
+                    price.amount === selectedPriceRange
+                      ? "font-semibold text-black"
+                      : ""
+                  }`}
+                >
+                  <input
+                    type="radio"
+                    name="price"
+                    id={`price-${index}`}
+                    className="radio w-4 h-4"
+                    checked={price.amount === selectedPriceRange}
+                    onChange={() => handlePriceRangeSelect(price.amount)}
+                  />
+                  <label
+                    htmlFor={`price-${index}`}
+                    className={`text-md text-[#8A8A8A] font-[Poppins] cursor-pointer ${
+                      selectedPriceRange === price.amount
+                        ? "font-semibold text-black"
+                        : ""
+                    }`}
                   >
-                    <input
-                      type="radio"
-                      name="price"
-                      id={index}
-                      className="radio w-4 h-4"
-                      defaultChecked={price?.amount === selectedPriceRange}
-                    />
-                    <label
-                      htmlFor={index}
-                      className={`text-md text-[#8A8A8A] cursor-pointer font-[Poppins] ${
-                        selectedPriceRange === price?.amount &&
-                        "text-[#000] font-semibold"
-                      }`}
-                    >
-                      {price?.amount}
-                    </label>
-                  </div>
-                );
-              })}
+                    {price.amount === 0 ? "All Prices" : `$${price.amount}`}
+                  </label>
+                </div>
+              ))}
             </div>
           </div>
           <div className="filter space-y-3">
@@ -319,9 +322,9 @@ const Shop = () => {
                     <span
                       key={index}
                       onClick={() => handleBrandSelect(brand?.name)}
-                      className={`text-sm hover:text-black  text-[#8A8A8A] cursor-pointer font-[Poppins] capitalize ${
+                      className={`text-sm hover:text-black text-[#8A8A8A] cursor-pointer font-[Poppins] capitalize ${
                         selectedBrand === brand?.name &&
-                        "text-[#000] font-semibold"
+                        "text-black font-semibold"
                       }`}
                     >
                       {brand?.name}
@@ -356,7 +359,7 @@ const Shop = () => {
                       key={index}
                       className={`text-sm hover:text-black  text-[#8A8A8A] cursor-pointer font-[Poppins] capitalize ${
                         selectedCategory === category?.name &&
-                        "text-[#000] font-semibold"
+                        "text-black font-semibold"
                       }`}
                     >
                       {category?.name}
@@ -398,6 +401,11 @@ const Shop = () => {
           />
         </div>
         <div className="cards grid grid-cols-3 md:grid-cols-2 sm:grid-cols-2 gap-12 sm:gap-x-4 sm:gap-y-4">
+          {sortedProducts?.length === 0 && (
+            <h1 className="w-full text-center text-xl font-bold">
+              No Products Found
+            </h1>
+          )}
           {sortedProducts?.map((product, index) => {
             return (
               <div
