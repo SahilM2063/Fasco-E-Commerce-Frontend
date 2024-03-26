@@ -36,7 +36,7 @@ const SingleProductDetail = () => {
                     key={index}
                     src={img}
                     alt=""
-                    className="w-full h-1/6 rounded-sm object-top object-cover "
+                    className="w-full h-1/5 rounded-sm object-top object-cover "
                   />
                 );
               })}
@@ -46,20 +46,30 @@ const SingleProductDetail = () => {
             <img
               src={product?.images[0]}
               alt=""
-              className="w-full max-h-[600px] object-cover rounded-md"
+              className="w-full h-full object-cover rounded-md"
             />
           </div>
         </div>
 
-        <div className="content w-full pl-20 space-y-6 flex flex-col justify-start">
-          <h1 className="font-[Volkhov] text-3xl leading-[30px]">
-            Denim Jacket
-          </h1>
-          <div className="flex items-center">
-            {renderStars(rating)}
-            <span className="ml-3 text-sm font-semibold font-[Poppins]">
-              (3)
-            </span>
+        <div className="content w-full pl-20 space-y-5 flex flex-col justify-start">
+          <p className="text-[#8a8a8a] text-xs capitalize font-[Poppins]">
+            {product?.category}
+          </p>
+          <div className="flex justify-between items-center">
+            <h1 className="font-[Volkhov] text-3xl leading-[30px]">
+              {product?.name}
+            </h1>
+            <div className="flex items-center">
+              {renderStars(rating)}
+              <span className="ml-3 text-sm font-semibold font-[Poppins]">
+                (3)
+              </span>
+            </div>
+          </div>
+          <div>
+            <p className="text-[#8A8A8A] capitalize text-sm font-[Poppins]">
+              {product?.brand}
+            </p>
           </div>
           <div className="price flex gap-2 items-center  font-[Poppins]">
             <h1 className="text-2xl font-semibold">₹ {product?.price}.00</h1>
@@ -68,10 +78,7 @@ const SingleProductDetail = () => {
             </span>
           </div>
           <p className="description text-[#8A8A8A] text-xs font-[Poppins]">
-            Lorem ipsum dolor, sit amet consectetur adipisicing elit. Beatae
-            iure error quibusdam exercitationem, nobis earum ut hic deleniti
-            fuga nemo obcaecati aliquam iusto! Iste minus voluptatem est id
-            commodi porro ducimus odit rerum aperiam.
+            {product?.description}
           </p>
           <div className="flex flex-col items-start justify-start gap-2">
             <p className="text-sm font-[Poppins]">
@@ -94,7 +101,7 @@ const SingleProductDetail = () => {
             ></progress>
           </div>
           <div className="sizes space-y-2">
-            <label className="font-[Volkhov]">Size : M</label>
+            <label className="font-[Poppins] font-semibold">Size : M</label>
             <div className="flex items-center gap-2">
               {product?.sizes.map((size, index) => {
                 return (
@@ -109,7 +116,7 @@ const SingleProductDetail = () => {
             </div>
           </div>
           <div className="colors space-y-2">
-            <label className="font-[Volkhov]">Color : Red</label>
+            <label className="font-[Poppins] font-semibold">Color : Red</label>
             <div className="flex items-center gap-2">
               {product?.colors.map((color, index) => {
                 return (
@@ -127,7 +134,7 @@ const SingleProductDetail = () => {
           <div className="buttons w-full space-y-2">
             <label className="font-[Volkhov]">Quantity</label>
             <div className="flex items-center gap-2">
-              <div className="counter w-[120px] h-[40px] border-[1px] border-[#d5d5d5] rounded-sm flex justify-between items-center">
+              <div className="counter w-[120px] h-[40px] border-[1px] border-[#d5d5d5] rounded-md flex justify-between items-center">
                 <button
                   onClick={() => {
                     if (countVal <= 1) {
@@ -154,7 +161,7 @@ const SingleProductDetail = () => {
                   +
                 </button>
               </div>
-              <button className="addtocart flex-1 h-[40px] border-[1px] border-black rounded-sm font-[Volkhov]">
+              <button className="addtocart flex-1 h-[40px] text-white bg-black rounded-md font-[Poppins]">
                 Add to cart
               </button>
             </div>
