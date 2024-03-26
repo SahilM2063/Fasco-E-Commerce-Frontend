@@ -19,6 +19,7 @@ import Customers from "./components/Admin/Customers.jsx";
 import Coupons from "./components/Admin/Coupons.jsx";
 import Manage from "./components/Admin/Manage.jsx";
 import Shop from "./components/Users/Shop.jsx";
+import SingleProductDetail from "./components/Users/SingleProductDetail.jsx";
 
 function App() {
   return (
@@ -29,6 +30,7 @@ function App() {
         <Route path="*" element={<NotFound />} />
         <Route path="/" element={<HomePage />} />
         <Route path="/shop" element={<Shop />} />
+        <Route path="/product/:id" element={<SingleProductDetail />} />
         <Route path="/user/register" element={<Register />} />
         <Route path="/user/login" element={<Login />} />
         <Route element={<AuthRoutes />}>

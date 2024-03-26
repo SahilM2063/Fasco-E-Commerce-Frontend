@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { getAllProductsAction } from "../../redux/slices/productSlice";
+import { useNavigate } from "react-router-dom";
 import downSvg from "../../assets/down.svg";
 import filterSVg from "../../assets/filter.svg";
 import closeMenu from "../../assets/closeMenu.svg";
@@ -11,6 +12,7 @@ import { getAllColorsAction } from "../../redux/slices/colorSlice";
 
 const Shop = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   // getting all brands, categories, colors and products dynamically
   useEffect(() => {
@@ -116,7 +118,7 @@ const Shop = () => {
       : setSelectedCategory(category);
   };
 
-  // filtering products - main logic ---------------------------------------------------------------------------
+  // filtering products - main logic -----------------------------------------------------------------------------------
   const filteredProducts = products?.filter((product) => {
     if (selectedPriceRange === "") {
       if (
@@ -176,6 +178,8 @@ const Shop = () => {
     setSelectedPriceRange("");
     setSelectedBrand("");
     setSelectedCategory("");
+    setShowBrand(false);
+    setShowCategory(false);
   };
 
   // sort state for products
@@ -186,7 +190,7 @@ const Shop = () => {
     setSelectedSortOption(selectedOption);
   };
 
-  // sort products - second main logic ----------------------------------------------------------------------------------
+  // sort products - second main logic ---------------------------------------------------------------------------------
   const sortedProducts = filteredProducts?.sort((a, b) => {
     if (selectedSortOption === "Price: Low to High") {
       return a.price - b.price;
@@ -411,6 +415,7 @@ const Shop = () => {
             return (
               <div
                 key={index}
+                onClick={() => navigate(`/product/${product?._id}`)}
                 className="card w-full h-[400px] sm:h-[300px] flex flex-col justify-between items-center font-[Poppins] rounded-lg overflow-hidden cursor-pointer"
               >
                 <img
