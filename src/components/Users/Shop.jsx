@@ -231,8 +231,9 @@ const Shop = () => {
                 return (
                   <span
                     key={index}
-                    className={`text-xs text-[#8A8A8A] hover:border-[#484848] rounded-[5px] cursor-pointer font-[Poppins] border border-[#8A8A8A] w-8 h-8 flex items-center justify-center ${
-                      selectedSizes.includes(size) && "bg-[#000] text-white"
+                    className={`text-xs text-[#8A8A8A] hover:border-[#484848] hover:text-black rounded-[5px] cursor-pointer font-[Poppins] border-[1px] border-black w-8 h-8 flex items-center justify-center ${
+                      selectedSizes.includes(size) &&
+                      "bg-[#000] text-white hover:text-white"
                     }`}
                     onClick={() => handleSizeSelect(size)}
                   >
