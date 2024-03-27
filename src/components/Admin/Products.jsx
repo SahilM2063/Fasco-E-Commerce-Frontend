@@ -181,6 +181,22 @@ const Products = () => {
     }
   }, [isAdded, error, isDeleted]);
 
+  // pagination state
+  const [currentPage, setCurrentPage] = useState(1);
+  const [perPageLimit, setPerPageLimit] = useState(3);
+
+  // pagination logic
+  const totalPages = Math.ceil(products?.length / perPageLimit);
+
+  const handlePageChange = (newPage) => {
+    setCurrentPage(newPage);
+  };
+
+  const startIndex = (currentPage - 1) * perPageLimit;
+  const endIndex = startIndex + perPageLimit;
+
+  const paginatedProducts = products?.slice(startIndex, endIndex);
+
   return (
     <div className="sm:overflow-x-scroll scrollbar-hide">
       <div className="w-full flex sm:flex-col justify-center items-center gap-6 md:gap-4 sm:gap-2">
@@ -392,6 +408,7 @@ const Products = () => {
         colorOption={colorOption}
         currentProduct={currentProduct}
       />
+
       <div className="bg-white mt-4 rounded-lg border overflow-x-auto scrollbar-hide">
         <table className="w-full whitespace-nowrap">
           <thead>
@@ -420,7 +437,7 @@ const Products = () => {
             </tr>
           </thead>
           <tbody className="w-full">
-            {products?.map((product, index) => {
+            {paginatedProducts?.map((product, index) => {
               return (
                 <TrComponent
                   product={product}
@@ -434,6 +451,41 @@ const Products = () => {
             })}
           </tbody>
         </table>
+        {/* pagination */}
+        <div className="join w-full flex justify-center items-center mt-8 mb-4">
+          <button
+            onClick={() => handlePageChange(currentPage - 1)}
+            className={`join-item btn btn-sm border-none rounded-l-md ${
+              currentPage === 1 && "bg-gray"
+            }`}
+            disabled={currentPage === 1}
+          >
+            «
+          </button>
+          {Array.from({ length: totalPages }, (_, i) => i + 1).map(
+            (pageNum) => (
+              <button
+                key={pageNum}
+                onClick={() => handlePageChange(pageNum)}
+                className={`join-item btn btn-sm border-none font-[Poppins] font-semibold text-xs flex items-center justify-center ${
+                  currentPage === pageNum &&
+                  "bg-[#1a1a1a] text-white hover:bg-[#1a1a1a] hover:text-white"
+                }`}
+              >
+                {pageNum}
+              </button>
+            )
+          )}
+          <button
+            onClick={() => handlePageChange(currentPage + 1)}
+            className={`join-item btn btn-sm border-none rounded-r-md ${
+              currentPage === totalPages && "bg-gray"
+            }`}
+            disabled={currentPage === totalPages}
+          >
+            »
+          </button>
+        </div>
       </div>
     </div>
   );
