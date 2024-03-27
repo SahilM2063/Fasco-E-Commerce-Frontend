@@ -178,10 +178,10 @@ export default SingleProductDetail;
 
 const renderStars = (rating) => {
   const filledStars = Array.from({ length: rating }, (_, index) => (
-    <img key={index} src={filledStar} alt="Filled Star" />
+    <img key={`filled_${index}`} src={filledStar} alt="Filled Star" />
   ));
   const emptyStars = Array.from({ length: 5 - rating }, (_, index) => (
-    <img key={index} src={emptyStar} alt="Empty Star" />
+    <img key={`empty_${index}`} src={emptyStar} alt="Empty Star" />
   ));
   return [...filledStars, ...emptyStars];
 };
