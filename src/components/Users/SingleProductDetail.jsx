@@ -15,13 +15,42 @@ const SingleProductDetail = () => {
 
   useEffect(() => {
     dispatch(getSingleProductAction(id));
+    setProductData({
+      productId: product?._id,
+      quantity: countVal,
+      price: product?.price,
+      size: selectedSize,
+      color: selectedColor,
+    });
   }, [dispatch]);
 
   const { product } = useSelector((state) => state?.products?.product);
-  console.log(product);
+  // console.log(product);
 
   const [countVal, setCountVal] = useState(1);
   const [mainProductImage, setMainProductImage] = useState(0);
+
+  const [selectedSize, setSelectedSize] = useState();
+  const [selectedColor, setSelectedColor] = useState();
+  const [productData, setProductData] = useState({
+    productId: "",
+    quantity: "",
+    price: "",
+    size: "",
+    color: "",
+  });
+
+  useEffect(() => {
+    setProductData({
+      productId: product?._id,
+      quantity: countVal,
+      price: product?.price,
+      size: selectedSize,
+      color: selectedColor,
+    });
+  }, [countVal, selectedSize, selectedColor, product]);
+
+  console.log(productData);
 
   return (
     <div className="w-full px-32 pb-6 md:px-10 sm:px-6 mt-8">
@@ -109,14 +138,18 @@ const SingleProductDetail = () => {
           </div>
           <div className="sizes space-y-2">
             <label className="font-[Poppins] font-semibold text-[#484848]">
-              Size : M
+              Size : {selectedSize}
             </label>
             <div className="flex items-center gap-2">
               {product?.sizes.map((size, index) => {
                 return (
                   <span
                     key={index}
-                    className={`text-xs text-[#8A8A8A] border-[#8A8A8A] hover:font-semibold hover:border-black hover:text-black rounded-[5px] cursor-pointer font-[Poppins] border-[1px]  w-8 h-8 flex items-center justify-center`}
+                    onClick={() => setSelectedSize(size)}
+                    className={`text-xs text-[#8A8A8A] border-[#8A8A8A] hover:font-semibold hover:border-black hover:text-black rounded-[5px] cursor-pointer font-[Poppins] border-[1px]  w-8 h-8 flex items-center justify-center ${
+                      selectedSize === size &&
+                      "font-semibold bg-black text-white hover:text-white hover:bg-black"
+                    }`}
                   >
                     {size}
                   </span>
@@ -133,9 +166,12 @@ const SingleProductDetail = () => {
                 return (
                   <span
                     key={index}
-                    className={`text-xs rounded-full cursor-pointer shadow-md w-8 h-8 `}
+                    className={`text-xs rounded-full cursor-pointer shadow-md w-8 h-8 ${
+                      selectedColor === color && "border-[2px] border-black"
+                    } flex items-center justify-center`}
                     style={{ backgroundColor: color }}
                     title={color}
+                    onClick={() => setSelectedColor(color)}
                   ></span>
                 );
               })}
