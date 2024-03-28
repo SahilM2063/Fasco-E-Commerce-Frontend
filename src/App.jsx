@@ -20,6 +20,7 @@ import Coupons from "./components/Admin/Coupons.jsx";
 import Manage from "./components/Admin/Manage.jsx";
 import Shop from "./components/Users/Shop.jsx";
 import SingleProductDetail from "./components/Users/SingleProductDetail.jsx";
+import Cart from "./components/Users/Cart.jsx";
 
 function App() {
   return (
@@ -35,6 +36,7 @@ function App() {
         <Route path="/user/login" element={<Login />} />
         <Route element={<AuthRoutes />}>
           <Route path="/user/customerProfile" element={<CustomerProfile />} />
+          <Route path="/user/cart" element={<Cart />} />
         </Route>
         <Route path="/user/resetPassEmail" element={<ResetPassEmail />} />
         <Route

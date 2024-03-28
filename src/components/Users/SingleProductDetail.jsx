@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { getSingleProductAction } from "../../redux/slices/productSlice";
 import filledStar from "../../assets/filledStar.svg";
@@ -8,6 +8,7 @@ import emptyStar from "../../assets/emptyStar.svg";
 
 const SingleProductDetail = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { id } = useParams();
 
   const rating = 1;
@@ -173,7 +174,10 @@ const SingleProductDetail = () => {
                   +
                 </button>
               </div>
-              <button className="addtocart flex-1 h-[40px] text-white bg-black rounded-md font-[Poppins]">
+              <button
+                onClick={() => navigate("/user/cart")}
+                className="addtocart flex-1 h-[40px] text-white bg-black rounded-md font-[Poppins]"
+              >
                 Add to cart
               </button>
             </div>

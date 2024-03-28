@@ -11,7 +11,7 @@ export default {
       'md': { 'min': '426px', 'max': '769px' },
       'lg': { 'min': '769px' }
     },
-    extend: {}
+    extend: {},
   },
   plugins: [require('daisyui')],
 }
