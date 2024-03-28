@@ -27,7 +27,7 @@ const SingleProductDetail = () => {
       <div className="product w-full flex md:flex-col sm:flex-col justify-between md:gap-8 sm:gap-8">
         <div className="image-container pr-20 md:px-10 sm:px-4 w-full flex sm:flex-col-reverse justify-between gap-4">
           {product?.images.length > 1 && (
-            <div className="side-img w-[20%] sm:w-full flex flex-col sm:flex-row gap-4 sm:justify-center sm:px-4">
+            <div className="side-img w-[20%] sm:w-full flex flex-col sm:flex-row gap-4 sm:gap-3 sm:justify-center sm:px-4">
               {product?.images?.map((img, index) => {
                 return (
                   <img
@@ -71,7 +71,9 @@ const SingleProductDetail = () => {
             </p>
           </div>
           <div className="price flex gap-2 items-center  font-[Poppins]">
-            <h1 className="text-2xl font-semibold">₹ {product?.price}.00</h1>
+            <h1 className="text-2xl font-semibold text-[#484848]">
+              ₹ {product?.price}.00
+            </h1>
             <span className="text-lg text-[#8A8A8A] line-through">
               ₹ {(product?.price / (1 - 0.1)).toFixed(2)}
             </span>
@@ -83,13 +85,18 @@ const SingleProductDetail = () => {
             <p className="text-sm font-[Poppins]">
               {product?.qtyLeft <= Math.floor(product?.totalQty / 2) ? (
                 <span>
-                  Only <span className="font-semibold">{product?.qtyLeft}</span>{" "}
+                  Only{" "}
+                  <span className="font-semibold text-[#484848]">
+                    {product?.qtyLeft}
+                  </span>{" "}
                   left in stock
                 </span>
               ) : (
                 <>
-                  <span className="font-semibold">{product?.qtyLeft}</span> left
-                  in stock
+                  <span className="font-semibold text-[#484848]">
+                    {product?.qtyLeft}
+                  </span>{" "}
+                  left in stock
                 </>
               )}
             </p>
@@ -100,13 +107,15 @@ const SingleProductDetail = () => {
             ></progress>
           </div>
           <div className="sizes space-y-2">
-            <label className="font-[Poppins] font-semibold">Size : M</label>
+            <label className="font-[Poppins] font-semibold text-[#484848]">
+              Size : M
+            </label>
             <div className="flex items-center gap-2">
               {product?.sizes.map((size, index) => {
                 return (
                   <span
                     key={index}
-                    className={`text-xs text-[#8A8A8A] hover:border-[#484848] hover:text-black rounded-[5px] cursor-pointer font-[Poppins] border-[1px] border-black w-8 h-8 flex items-center justify-center`}
+                    className={`text-xs text-[#8A8A8A] border-[#8A8A8A] hover:font-semibold hover:border-black hover:text-black rounded-[5px] cursor-pointer font-[Poppins] border-[1px]  w-8 h-8 flex items-center justify-center`}
                   >
                     {size}
                   </span>
@@ -115,7 +124,9 @@ const SingleProductDetail = () => {
             </div>
           </div>
           <div className="colors space-y-2">
-            <label className="font-[Poppins] font-semibold">Color : Red</label>
+            <label className="font-[Poppins] font-semibold text-[#484848]">
+              Color : Red
+            </label>
             <div className="flex items-center gap-2">
               {product?.colors.map((color, index) => {
                 return (
@@ -131,7 +142,9 @@ const SingleProductDetail = () => {
           </div>
 
           <div className="buttons w-full space-y-2">
-            <label className="font-[Volkhov]">Quantity</label>
+            <label className="font-[Poppins] font-semibold text-[#484848]">
+              Quantity
+            </label>
             <div className="flex items-center gap-2">
               <div className="counter w-[120px] h-[40px] border-[1px] border-[#d5d5d5] rounded-md flex justify-between items-center">
                 <button
@@ -145,7 +158,7 @@ const SingleProductDetail = () => {
                 >
                   -
                 </button>
-                <span className="flex-1 h-full font-[poppins] font-semibold flex justify-center items-center">
+                <span className="flex-1 h-full font-[poppins] font-semibold flex justify-center items-center text-[#484848]">
                   {countVal}
                 </span>
                 <button
