@@ -81,7 +81,7 @@ const SingleProductDetail = () => {
         </div>
 
         <div className="content w-full pl-20 md:px-10 sm:px-4 space-y-5 flex flex-col justify-start">
-          <p className="text-[#8a8a8a] text-xs capitalize font-[Poppins]">
+          <p className="text-[#8a8a8a] text-xs capitalize font-[Poppins] italic">
             {product?.category}
           </p>
           <div className="flex sm:flex-col justify-between items-center sm:items-start sm:gap-4">
@@ -159,7 +159,7 @@ const SingleProductDetail = () => {
           </div>
           <div className="colors space-y-2">
             <label className="font-[Poppins] font-semibold text-[#484848]">
-              Color : Red
+              Color : {selectedColor}
             </label>
             <div className="flex items-center gap-2">
               {product?.colors.map((color, index) => {
@@ -200,8 +200,11 @@ const SingleProductDetail = () => {
                 </span>
                 <button
                   onClick={() => {
-                    if (countVal >= 8) {
+                    if (countVal >= 8 && countVal < product?.qtyLeft) {
                       return setCountVal(8);
+                    }
+                    if(countVal >= product?.qtyLeft){
+                      return setCountVal(product?.qtyLeft);
                     }
                     setCountVal(countVal + 1);
                   }}
