@@ -5,15 +5,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { getSingleProductAction } from "../../redux/slices/productSlice";
 import filledStar from "../../assets/filledStar.svg";
 import emptyStar from "../../assets/emptyStar.svg";
-import ig1 from "../../assets/ig1.png";
-import ig2 from "../../assets/ig2.png";
-import ig3 from "../../assets/ig3.png";
 
 const SingleProductDetail = () => {
   const dispatch = useDispatch();
   const { id } = useParams();
 
-  const rating = 3;
+  const rating = 1;
 
   useEffect(() => {
     dispatch(getSingleProductAction(id));
@@ -26,19 +23,19 @@ const SingleProductDetail = () => {
   const [mainProductImage, setMainProductImage] = useState(0);
 
   return (
-    <div className="w-full px-32 pb-6 md:px-10 sm:px-6 gap-12 mt-8">
-      <div className="product w-full pr-20 flex justify-between">
-        <div className="image-container w-full  flex justify-between gap-4">
+    <div className="w-full px-32 pb-6 md:px-10 sm:px-6 mt-8">
+      <div className="product w-full flex md:flex-col sm:flex-col justify-between md:gap-8 sm:gap-8">
+        <div className="image-container pr-20 md:px-10 sm:px-4 w-full flex sm:flex-col-reverse justify-between gap-4">
           {product?.images.length > 1 && (
-            <div className="side-img w-[20%] flex flex-col gap-4">
+            <div className="side-img w-[20%] sm:w-full flex flex-col sm:flex-row gap-4 sm:justify-center sm:px-4">
               {product?.images?.map((img, index) => {
                 return (
                   <img
                     key={index}
                     onMouseEnter={() => setMainProductImage(index)}
                     src={img}
-                    alt=""
-                    className="w-full h-[100px] hover:border-[2px] hover:border-black p-[1px] cursor-pointer rounded-sm object-top object-cover "
+                    alt="noImage"
+                    className="w-full sm:w-1/4 h-1/4 hover:border-[2px] hover:border-black p-[1px] cursor-pointer rounded-md object-top object-cover "
                   />
                 );
               })}
@@ -48,16 +45,16 @@ const SingleProductDetail = () => {
             <img
               src={product?.images[mainProductImage]}
               alt="noImage"
-              className="w-full object-cover rounded-md transition-all"
+              className="w-full h-full object-cover rounded-md transition-all"
             />
           </div>
         </div>
 
-        <div className="content w-full pl-20 space-y-5 flex flex-col justify-start">
+        <div className="content w-full pl-20 md:px-10 sm:px-4 space-y-5 flex flex-col justify-start">
           <p className="text-[#8a8a8a] text-xs capitalize font-[Poppins]">
             {product?.category}
           </p>
-          <div className="flex justify-between items-center">
+          <div className="flex sm:flex-col justify-between items-center sm:items-start sm:gap-4">
             <h1 className="font-[Volkhov] text-3xl leading-[30px]">
               {product?.name}
             </h1>
