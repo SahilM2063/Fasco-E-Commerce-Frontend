@@ -4,6 +4,7 @@ import productReducer from "../slices/productSlice.js"
 import categoryReducer from "../slices/categorySlice.js"
 import brandReducer from "../slices/brandSlice.js"
 import colorReducer from "../slices/colorSlice.js"
+import cartReducer from "../slices/cartSlice.js"
 
 const store = configureStore({
     reducer: {
@@ -11,7 +12,8 @@ const store = configureStore({
         products: productReducer,
         categories: categoryReducer,
         brands: brandReducer,
-        colors: colorReducer
+        colors: colorReducer,
+        cart: cartReducer
     },
 })
 
