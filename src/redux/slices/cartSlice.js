@@ -6,6 +6,7 @@ import baseURL from "../../utils/baseURL.js";
 // initial state for cart
 const initialState = {
     cart: [],
+    productMsg: {},
     loading: false,
     error: null,
     isAdded: false,
@@ -31,6 +32,24 @@ export const getCartDataAction = createAsyncThunk("cart/getCartData", async (pay
     }
 })
 
+export const addToCartAction = createAsyncThunk("cart/addToCart", async (payload, { rejectWithValue, getState, dispatch }) => {
+    console.log(payload)
+    try {
+        const token = getState()?.users?.userAuth?.userInfo?.token;
+        console.log(token)
+        const config = {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        }
+        const { data } = await axios.post(`${baseURL}/cart/addToCart`, payload, config);
+        return data;
+    } catch (error) {
+        console.log(error)
+        return rejectWithValue(error?.response?.data);
+    }
+})
+
 const cartSlice = createSlice({
     name: "cart",
     initialState,
@@ -48,8 +67,26 @@ const cartSlice = createSlice({
             state.loading = false;
             state.error = action.payload;
             state.cart = [];
-        })
+        });
+
+        builder.addCase(addToCartAction.pending, (state) => {
+            state.loading = true;
+            state.error = null;
+            state.isAdded = false;
+            state.productMsg = {};
+        });
+        builder.addCase(addToCartAction.fulfilled, (state, action) => {
+            state.loading = false;
+            state.isAdded = true;
+            state.productMsg = action.payload;
+        });
+        builder.addCase(addToCartAction.rejected, (state, action) => {
+            state.loading = false;
+            state.error = action.payload;
+            state.isAdded = false;
+            state.productMsg = {};
+        });
     },
-}) 
+})
 
 export default cartSlice.reducer

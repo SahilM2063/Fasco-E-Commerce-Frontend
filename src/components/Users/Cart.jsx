@@ -3,7 +3,10 @@ import React, { useEffect } from "react";
 import x from "../../assets/ig6.png";
 import remove from "../../assets/closeMenu.svg";
 import { useSelector, useDispatch } from "react-redux";
-import { getCartDataAction } from "../../redux/slices/cartSlice";
+import {
+  deleteCartAction,
+  getCartDataAction,
+} from "../../redux/slices/cartSlice";
 
 const Cart = () => {
   const dispatch = useDispatch();

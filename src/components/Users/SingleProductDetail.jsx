@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { getSingleProductAction } from "../../redux/slices/productSlice";
 import filledStar from "../../assets/filledStar.svg";
 import emptyStar from "../../assets/emptyStar.svg";
+import { addToCartAction } from "../../redux/slices/cartSlice";
 
 const SingleProductDetail = () => {
   const dispatch = useDispatch();
@@ -51,6 +52,11 @@ const SingleProductDetail = () => {
   }, [countVal, selectedSize, selectedColor, product]);
 
   console.log(productData);
+
+  const handleAddToCart = () => {
+    console.log(productData)
+    dispatch(addToCartAction(productData));
+  };
 
   return (
     <div className="w-full px-32 pb-6 md:px-10 sm:px-6 mt-8">
@@ -203,7 +209,7 @@ const SingleProductDetail = () => {
                     if (countVal >= 8 && countVal < product?.qtyLeft) {
                       return setCountVal(8);
                     }
-                    if(countVal >= product?.qtyLeft){
+                    if (countVal >= product?.qtyLeft) {
                       return setCountVal(product?.qtyLeft);
                     }
                     setCountVal(countVal + 1);
@@ -214,7 +220,7 @@ const SingleProductDetail = () => {
                 </button>
               </div>
               <button
-                onClick={() => navigate("/user/cart")}
+                onClick={handleAddToCart}
                 className="addtocart flex-1 h-[40px] text-white bg-black rounded-md font-[Poppins]"
               >
                 Add to cart
