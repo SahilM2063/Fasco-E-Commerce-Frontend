@@ -1,10 +1,11 @@
 /* eslint-disable no-unused-vars */
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import remove from "../../assets/closeMenu.svg";
 import { useSelector, useDispatch } from "react-redux";
 import {
   getCartDataAction,
   removeFromCart,
+  updateCartAction,
 } from "../../redux/slices/cartSlice";
 import { useNotification } from "../../hooks";
 
@@ -16,7 +17,7 @@ const Cart = () => {
     dispatch(getCartDataAction());
   }, [dispatch]);
 
-  const { cart, productMsg, error, isDeleted } = useSelector(
+  const { cart, loading, productMsg, error, isDeleted } = useSelector(
     (state) => state?.cart
   );
   const cartData = cart?.user?.cart;
@@ -38,6 +39,44 @@ const Cart = () => {
       dispatch(getCartDataAction());
     }
   }, [isDeleted, error]);
+
+  // handling quantities
+  const handleQtyIncr = (product) => {
+    const currentQuantity = quantities[product?._id] || product?.quantity;
+    const updatedQuantity = Math.min(currentQuantity + 1, 8); // Limit increment to 8
+    setQuantity(product?._id, updatedQuantity);
+    dispatch(
+      updateCartAction({
+        id: product._id,
+        quantity: updatedQuantity,
+      })
+    );
+  };
+
+  const handleQtyDecr = (product) => {
+    const currentQuantity = quantities[product?._id] || product?.quantity;
+    if (currentQuantity > 1) {
+      const updatedQuantity = currentQuantity - 1;
+      setQuantity(product?._id, updatedQuantity);
+      dispatch(
+        updateCartAction({
+          id: product._id,
+          quantity: updatedQuantity,
+        })
+      );
+    }
+  };
+
+  const [quantities, setQuantities] = useState({});
+
+  const setQuantity = (id, quantity) => {
+    setQuantities({
+      ...quantities,
+      [id]: quantity,
+    });
+  };
+
+  const { isUpdated } = useSelector((state) => state?.cart);
 
   return (
     <div className="w-full px-32 pb-6 md:px-10 sm:px-6 mt-8">
@@ -71,46 +110,56 @@ const Cart = () => {
             </thead>
             <tbody className="w-full">
               {cartData?.map((product, index) => (
-                <tr key={index} className="w-full h-40">
+                <tr key={index} className="w-full h-40 md:h-28">
                   <td className="pl-4 font-semibold">{index + 1}</td>
                   <td className="">
                     <div className="flex items-start gap-4">
                       <img
-                        className="shadow-md rounded-sm object-cover h-32"
+                        className="shadow-md rounded-sm object-cover h-32 w-32 md:h-20 md:w-20"
                         alt="product image"
                         src={product?.productId?.images[0]}
                       />
                       <div className="content flex items-start flex-col space-y-2">
-                        <p className="font-[Volkhov] text-xl tracking-tight text-[#484848] ">
+                        <p className="font-[Volkhov] text-xl md:text-base tracking-tight text-[#484848] ">
                           {product?.productId?.name}
                         </p>
                         <div className="space-y-1">
-                          <p className="text-sm font-[Poppins] tracking-wide text-[#8A8A8A]">
+                          <p className="text-sm md:text-xs font-[Poppins] tracking-wide text-[#8A8A8A]">
                             Color : {product?.color}
                           </p>
-                          <p className="text-sm font-[Poppins] tracking-wide text-[#8A8A8A]">
+                          <p className="text-sm md:text-xs font-[Poppins] tracking-wide text-[#8A8A8A]">
                             Size: {product?.size}
                           </p>
                         </div>
                       </div>
                     </div>
                   </td>
-                  <td className="pl-4 font-[Poppins]">₹ {product?.price}</td>
+                  <td className="pl-4 font-[Poppins] md:text-sm">
+                    ₹ {product?.price}
+                  </td>
                   <td className="pl-4">
-                    <div className="counter w-[100px] h-[40px]  border-[1px] border-[#d5d5d5] rounded-md flex justify-between items-center">
-                      <button className="flex-1 text-lg h-full font-[poppins] flex justify-center items-center">
+                    <div className="counter w-[100px] h-[40px] md:w-[70px] md:h-[30px]  border-[1px] border-[#d5d5d5] rounded-md flex justify-between items-center">
+                      <button
+                        onClick={() => handleQtyDecr(product)}
+                        className="flex-1 text-lg md:text-sm h-full font-[poppins] flex justify-center items-center"
+                      >
                         -
                       </button>
-                      <span className="flex-1 h-full font-[poppins] font-semibold flex justify-center items-center text-[#484848]">
-                        {product?.quantity}
+                      <span className="flex-1 md:text-sm h-full font-[poppins] font-semibold flex justify-center items-center text-[#484848]">
+                        {quantities[product?._id] || product?.quantity}
                       </span>
-                      <button className="flex-1 text-lg h-full font-[poppins] flex justify-center items-center">
+                      <button
+                        onClick={() => handleQtyIncr(product)}
+                        className="flex-1 text-lg md:text-sm h-full font-[poppins] flex justify-center items-center"
+                      >
                         +
                       </button>
                     </div>
                   </td>
-                  <td className="pl-4 font-semibold font-[Poppins]">
-                    ₹ {product?.price * product?.quantity}
+                  <td className="pl-4 font-semibold font-[Poppins] md:text-sm">
+                    ₹{" "}
+                    {product?.price *
+                      (quantities[product?._id] || product?.quantity)}
                   </td>
                   <td>
                     <img

@@ -50,6 +50,24 @@ export const addToCartAction = createAsyncThunk("cart/addToCart", async (payload
     }
 })
 
+export const updateCartAction = createAsyncThunk("cart/updateCart", async (payload, { rejectWithValue, getState, dispatch }) => {
+    try {
+        const { id, quantity } = payload
+        console.log(id, quantity)
+        const token = getState()?.users?.userAuth?.userInfo?.token;
+        const config = {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        }
+        const { data } = await axios.put(`${baseURL}/cart/updateCart/${id}`, payload, config);
+        return data;
+    } catch (error) {
+        console.log(error)
+        return rejectWithValue(error?.response?.data);
+    }
+})
+
 export const removeFromCart = createAsyncThunk("cart/removeFromCart", async (id, { rejectWithValue, getState, dispatch }) => {
     try {
         const token = getState()?.users?.userAuth?.userInfo?.token;
@@ -108,6 +126,25 @@ const cartSlice = createSlice({
             state.isAdded = false;
             state.productMsg = {};
         });
+
+        builder.addCase(updateCartAction.pending, (state) => {
+            state.loading = true;
+            state.error = null;
+            state.isUpdated = false
+            state.productMsg = {};
+        });
+        builder.addCase(updateCartAction.fulfilled, (state, action) => {
+            state.loading = false;
+            state.isUpdated = true;
+            state.productMsg = action.payload;
+        });
+        builder.addCase(updateCartAction.rejected, (state, action) => {
+            state.loading = false;
+            state.error = action.payload;
+            state.isUpdated = false
+            state.productMsg = {};
+        })
+
 
         builder.addCase(removeFromCart.pending, (state) => {
             state.loading = true;
