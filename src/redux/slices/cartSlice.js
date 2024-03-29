@@ -50,6 +50,22 @@ export const addToCartAction = createAsyncThunk("cart/addToCart", async (payload
     }
 })
 
+export const removeFromCart = createAsyncThunk("cart/removeFromCart", async (id, { rejectWithValue, getState, dispatch }) => {
+    try {
+        const token = getState()?.users?.userAuth?.userInfo?.token;
+        const config = {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        }
+        const { data } = await axios.delete(`${baseURL}/cart/removeFromCart/${id}`, config);
+        return data;
+    } catch (error) {
+        console.log(error)
+        return rejectWithValue(error?.response?.data);
+    }
+})
+
 const cartSlice = createSlice({
     name: "cart",
     initialState,
@@ -57,15 +73,21 @@ const cartSlice = createSlice({
         builder.addCase(getCartDataAction.pending, (state) => {
             state.loading = true;
             state.error = null;
+            state.isAdded = false;
+            state.isDeleted = false;
             state.cart = [];
         });
         builder.addCase(getCartDataAction.fulfilled, (state, action) => {
             state.loading = false;
             state.cart = action.payload;
+            state.isAdded = false;
+            state.isDeleted = false;
         });
         builder.addCase(getCartDataAction.rejected, (state, action) => {
             state.loading = false;
             state.error = action.payload;
+            state.isAdded = false;
+            state.isDeleted = false;
             state.cart = [];
         });
 
@@ -86,6 +108,24 @@ const cartSlice = createSlice({
             state.isAdded = false;
             state.productMsg = {};
         });
+
+        builder.addCase(removeFromCart.pending, (state) => {
+            state.loading = true;
+            state.error = null;
+            state.isDeleted = false;
+            state.productMsg = {};
+        });
+        builder.addCase(removeFromCart.fulfilled, (state, action) => {
+            state.loading = false;
+            state.isDeleted = true;
+            state.productMsg = action.payload;
+        });
+        builder.addCase(removeFromCart.rejected, (state, action) => {
+            state.loading = false;
+            state.error = action.payload;
+            state.isDeleted = false;
+            state.productMsg = {};
+        })
     },
 })
 

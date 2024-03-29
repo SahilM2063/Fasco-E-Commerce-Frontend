@@ -6,10 +6,12 @@ import { getSingleProductAction } from "../../redux/slices/productSlice";
 import filledStar from "../../assets/filledStar.svg";
 import emptyStar from "../../assets/emptyStar.svg";
 import { addToCartAction } from "../../redux/slices/cartSlice";
+import { useNotification } from "../../hooks";
 
 const SingleProductDetail = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const updateNotification = useNotification();
   const { id } = useParams();
 
   const rating = 1;
@@ -54,9 +56,34 @@ const SingleProductDetail = () => {
   console.log(productData);
 
   const handleAddToCart = () => {
-    console.log(productData)
+    console.log(productData);
     dispatch(addToCartAction(productData));
   };
+
+  const { loading, error, isAdded, productMsg } = useSelector(
+    (state) => state?.cart
+  );
+
+  useEffect(() => {
+    if (isAdded) {
+      updateNotification("success", productMsg?.message);
+      setCountVal(1);
+      setSelectedSize();
+      setSelectedColor();
+      setProductData({
+        productId: "",
+        quantity: "",
+        price: "",
+        size: "",
+        color: "",
+      });
+      navigate("/user/cart");
+      dispatch(getSingleProductAction(id));
+    }
+    if (error) {
+      updateNotification("error", error?.message);
+    }
+  }, [isAdded, error]);
 
   return (
     <div className="w-full px-32 pb-6 md:px-10 sm:px-6 mt-8">

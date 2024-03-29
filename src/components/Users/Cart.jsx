@@ -1,21 +1,43 @@
 /* eslint-disable no-unused-vars */
 import React, { useEffect } from "react";
-import x from "../../assets/ig6.png";
 import remove from "../../assets/closeMenu.svg";
 import { useSelector, useDispatch } from "react-redux";
-import { getCartDataAction } from "../../redux/slices/cartSlice";
+import {
+  getCartDataAction,
+  removeFromCart,
+} from "../../redux/slices/cartSlice";
+import { useNotification } from "../../hooks";
 
 const Cart = () => {
   const dispatch = useDispatch();
+  const updateNotification = useNotification();
 
   useEffect(() => {
     dispatch(getCartDataAction());
   }, [dispatch]);
 
-  const { cart } = useSelector((state) => state?.cart);
+  const { cart, productMsg, error, isDeleted } = useSelector(
+    (state) => state?.cart
+  );
   const cartData = cart?.user?.cart;
-  console.log(cart);
-  console.log(cartData);
+
+  const handleRemoveFromCart = (id) => {
+    if (window.confirm("Are you sure you want to remove this product?")) {
+      dispatch(removeFromCart(id));
+    }
+    return;
+  };
+
+  useEffect(() => {
+    if (isDeleted) {
+      dispatch(getCartDataAction());
+      updateNotification("success", productMsg?.message);
+    }
+    if (error) {
+      updateNotification("error", error?.message);
+      dispatch(getCartDataAction());
+    }
+  }, [isDeleted, error]);
 
   return (
     <div className="w-full px-32 pb-6 md:px-10 sm:px-6 mt-8">
@@ -60,7 +82,7 @@ const Cart = () => {
                       />
                       <div className="content flex items-start flex-col space-y-2">
                         <p className="font-[Volkhov] text-xl tracking-tight text-[#484848] ">
-                          Product Name
+                          {product?.productId?.name}
                         </p>
                         <div className="space-y-1">
                           <p className="text-sm font-[Poppins] tracking-wide text-[#8A8A8A]">
@@ -91,7 +113,12 @@ const Cart = () => {
                     ₹ {product?.price * product?.quantity}
                   </td>
                   <td>
-                    <img src={remove} alt="remove" className="cursor-pointer" />
+                    <img
+                      onClick={() => handleRemoveFromCart(product?._id)}
+                      src={remove}
+                      alt="remove"
+                      className="cursor-pointer"
+                    />
                   </td>
                 </tr>
               ))}
