@@ -207,6 +207,7 @@ const Products = () => {
               <input
                 type="checkbox"
                 className="toggle"
+                checked={showAddProduct}
                 onChange={() => setShowAddProduct(!showAddProduct)}
               />
             </label>
