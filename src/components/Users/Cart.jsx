@@ -83,7 +83,7 @@ const Cart = () => {
       <h1 className="font-[Volkhov] text-3xl text-center">Shopping Cart</h1>
       <div className="cartProduct mt-4">
         {cartData?.length === 0 ? (
-          <div className="w-full h-full absolute top-0 left-0 bg-white">
+          <div className="w-full h-full  bg-white">
             <h1>Your Cart Is Empty</h1>
           </div>
         ) : (

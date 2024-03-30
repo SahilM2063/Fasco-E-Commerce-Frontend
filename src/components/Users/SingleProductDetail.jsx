@@ -88,9 +88,9 @@ const SingleProductDetail = () => {
   return (
     <div className="w-full px-32 pb-6 md:px-10 sm:px-6 mt-8">
       <div className="product w-full flex md:flex-col sm:flex-col justify-between md:gap-8 sm:gap-8">
-        <div className="image-container pr-20 md:px-10 sm:px-4 w-full flex sm:flex-col-reverse justify-between gap-4">
+        <div className="image-container max-h-[500px] pr-20 md:px-10 sm:px-4 w-full flex sm:flex-col-reverse justify-between gap-4">
           {product?.images.length > 1 && (
-            <div className="side-img w-[20%] sm:w-full flex flex-col sm:flex-row gap-4 sm:gap-3 sm:justify-center sm:px-4">
+            <div className="side-img w-[20%] md:w-[18%] h-full sm:w-full flex flex-col sm:flex-row gap-4 sm:gap-3 sm:justify-center sm:px-4">
               {product?.images?.map((img, index) => {
                 return (
                   <img
@@ -98,7 +98,7 @@ const SingleProductDetail = () => {
                     onMouseEnter={() => setMainProductImage(index)}
                     src={img}
                     alt="noImage"
-                    className="w-full sm:w-1/4 h-1/4 hover:border-[2px] hover:border-black p-[1px] cursor-pointer rounded-md object-top object-cover "
+                    className="w-full md:h-1/6 sm:w-1/4 h-1/4 hover:border-[2px] hover:border-black p-[1px] cursor-pointer rounded-md object-top object-cover "
                   />
                 );
               })}

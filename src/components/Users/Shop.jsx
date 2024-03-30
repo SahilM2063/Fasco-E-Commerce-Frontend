@@ -80,7 +80,7 @@ const Shop = () => {
 
   // pagination state
   const [currentPage, setCurrentPage] = useState(1);
-  const [perPageLimit, setPerPageLimit] = useState(3);
+  const [perPageLimit, setPerPageLimit] = useState(15);
 
   // handle selected  filters change
 
