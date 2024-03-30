@@ -8,6 +8,7 @@ import {
   updateCartAction,
 } from "../../redux/slices/cartSlice";
 import { useNotification } from "../../hooks";
+import emptyCartIllustration from "../../assets/empty_cart_illustration.svg";
 
 const Cart = () => {
   const dispatch = useDispatch();
@@ -83,8 +84,13 @@ const Cart = () => {
       <h1 className="font-[Volkhov] text-3xl text-center">Shopping Cart</h1>
       <div className="cartProduct mt-4">
         {cartData?.length === 0 ? (
-          <div className="w-full h-full  bg-white">
-            <h1>Your Cart Is Empty</h1>
+          <div className="w-full h-full flex flex-col justify-center gap-4 items-center bg-white select-none">
+            <img
+              src={emptyCartIllustration}
+              alt="cart_empty"
+              className="w-1/3"
+            />
+            <p className="text-sm font-[poppins]">Your cart is empty!</p>
           </div>
         ) : (
           <table className="w-full whitespace-nowrap">
