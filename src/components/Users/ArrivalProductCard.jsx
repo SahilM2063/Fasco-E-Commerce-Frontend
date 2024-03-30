@@ -30,7 +30,7 @@ const ArrivalProductCard = () => {
         (4.1k) Customer Reviews
       </p>
       <div className="price_stocks w-full flex justify-between items-center mt-2">
-        <h2 className="text-2xl font-extrabold text-[#484848]">$95.50</h2>
+        <h2 className="text-2xl font-extrabold text-[#484848]">₹ 95.50</h2>
         <span className="text-sm text-red-500">Almost Sold Out</span>
       </div>
     </div>

@@ -433,13 +433,15 @@ const Shop = () => {
               <div
                 key={index}
                 onClick={() => navigate(`/product/${product?._id}`)}
-                className="card w-full h-[400px] sm:h-[300px] flex flex-col justify-between items-center font-[Poppins] rounded-lg overflow-hidden cursor-pointer"
+                className="card group w-full h-[400px] sm:h-[300px] flex flex-col justify-between items-center font-[Poppins] rounded-lg overflow-hidden cursor-pointer"
               >
-                <img
-                  src={product?.images[0]}
-                  alt="product_img"
-                  className="w-full h-[300px] sm:h-[200px] object-cover"
-                />
+                <div className="w-full h-[300px] sm:h-[200px] overflow-hidden">
+                  <img
+                    src={product?.images[0]}
+                    alt="product_img"
+                    className="w-full h-full object-cover group-hover:scale-105 transition-all"
+                  />
+                </div>
                 <div className="w-full flex-1 items-start justify-between mt-4">
                   <div>
                     <h5 className="font-bold sm:text-sm tracking-wide text-[#484848]">
@@ -452,7 +454,7 @@ const Shop = () => {
                 </div>
                 <div className="price_stocks w-full flex justify-between items-center ">
                   <h2 className="text-2xl sm:text-lg font-extrabold text-[#484848]">
-                    ${product?.price}
+                    ₹ {product?.price}
                   </h2>
                   <span className="text-sm sm:text-[10px] text-red-500">
                     Almost Sold Out
