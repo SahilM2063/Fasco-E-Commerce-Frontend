@@ -6,12 +6,11 @@ import { getSingleProductAction } from "../../redux/slices/productSlice";
 import filledStar from "../../assets/filledStar.svg";
 import emptyStar from "../../assets/emptyStar.svg";
 import { addToCartAction } from "../../redux/slices/cartSlice";
-import { useNotification } from "../../hooks";
+import { toast } from "react-toastify";
 
 const SingleProductDetail = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const updateNotification = useNotification();
   const { id } = useParams();
 
   const rating = 1;
@@ -66,7 +65,7 @@ const SingleProductDetail = () => {
 
   useEffect(() => {
     if (isAdded) {
-      updateNotification("success", productMsg?.message);
+      toast.success(productMsg?.message);
       setCountVal(1);
       setSelectedSize();
       setSelectedColor();
@@ -81,7 +80,7 @@ const SingleProductDetail = () => {
       dispatch(getSingleProductAction(id));
     }
     if (error) {
-      updateNotification("error", error?.message);
+      toast.error(error?.message);
     }
   }, [isAdded, error]);
 

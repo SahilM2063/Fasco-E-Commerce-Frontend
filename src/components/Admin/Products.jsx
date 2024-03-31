@@ -12,14 +12,13 @@ import {
   getAllProductsAction,
 } from "../../redux/slices/productSlice";
 import { useDispatch, useSelector } from "react-redux";
-import { useNotification } from "../../hooks";
+import { toast } from "react-toastify";
 import editSvg from "./assets/edit.svg";
 import deleteSvg from "./assets/delete.svg";
 import UpdateProduct from "./UpdateProduct";
 
 const Products = () => {
   const dispatch = useDispatch();
-  const updateNotification = useNotification();
   const [showAddProduct, setShowAddProduct] = useState(false);
   const [showUpdateModal, setShowUpdateModal] = useState(false);
   const [currentProduct, setCurrentProduct] = useState({});
@@ -104,7 +103,7 @@ const Products = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (imgErrs.length > 0) {
-      return updateNotification("error", imgErrs[0]);
+      return toast.error(imgErrs[0]);
     }
     dispatch(
       createProductAction({
@@ -140,7 +139,7 @@ const Products = () => {
   useEffect(() => {
     dispatch(getAllProductsAction());
     if (isAdded) {
-      updateNotification("success", "Product created successfully");
+      toast.success("Product created successfully");
       setFormData({
         name: "",
         description: "",
@@ -159,10 +158,10 @@ const Products = () => {
     }
     if (isDeleted) {
       dispatch(getAllProductsAction());
-      updateNotification("success", "Product deleted successfully");
+      toast.success("Product deleted successfully");
     }
     if (error) {
-      updateNotification("error", error?.message);
+      toast.error(error?.message);
       setFormData({
         name: "",
         description: "",

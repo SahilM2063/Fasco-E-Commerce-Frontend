@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { isValidEmail } from "../../../utils/helper";
-import { useNotification } from "../../../hooks";
+import { toast } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
 import { sendResetPassEmail } from "../../../redux/slices/userSlice";
 
@@ -14,24 +14,23 @@ const validateEmailInfo = (email) => {
 
 const ResetPassEmail = () => {
   const [email, setEmail] = useState("");
-  const updateNotification = useNotification();
   const dispatch = useDispatch();
   const { error, user, loading } = useSelector((state) => state.users);
 
   const handleSubmit = (e) => {
     e.preventDefault();
     const { ok, error } = validateEmailInfo(email);
-    if (!ok) return updateNotification("warning", error);
+    if (!ok) return toast.warn(error);
     dispatch(sendResetPassEmail(email));
     setEmail("");
   };
 
   useEffect(() => {
     if (error) {
-      updateNotification("error", error?.message);
+      toast.error(error?.message);
     }
     if (user?.msg) {
-      updateNotification("success", user?.msg);
+      toast.success(user?.msg);
     }
   }, [error, user]);
 

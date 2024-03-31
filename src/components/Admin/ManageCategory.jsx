@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 import React, { useEffect, useState } from "react";
-import { useNotification } from "../../hooks";
+import { toast } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
 import {
   createCategoryAction,
@@ -10,7 +10,6 @@ import {
 } from "../../redux/slices/categorySlice";
 
 export const AddCategory = ({ setShowAddCategory, showAddCategory }) => {
-  const updateNotification = useNotification();
   const dispatch = useDispatch();
   const [categoryFormData, setCategoryFormData] = useState({
     name: "",
@@ -38,14 +37,14 @@ export const AddCategory = ({ setShowAddCategory, showAddCategory }) => {
 
   useEffect(() => {
     if (isAdded) {
-      updateNotification("success", category?.message);
+      toast.success(category?.message);
       setCategoryFormData({ name: "", image: "" });
       setShowAddCategory(false);
       setCatPoster("");
       dispatch(getAllCategoriesAction());
     }
     if (error) {
-      updateNotification("error", error?.message);
+      toast.error(error?.message);
       setCategoryFormData({ name: "", image: "" });
       setShowAddCategory(false);
       setCatPoster("");
@@ -129,7 +128,6 @@ export const UpdateCategory = ({
 }) => {
   // console.log(currentCategory);
   const dispatch = useDispatch();
-  const updateNotification = useNotification();
 
   const [categoryFormData, setCategoryFormData] = useState({
     name: "",
@@ -170,12 +168,12 @@ export const UpdateCategory = ({
     if (isUpdated) {
       dispatch(getAllCategoriesAction());
       setShowUpdateCategory(false);
-      updateNotification("success", category?.message);
+      toast.success(category?.message);
     }
     if (error) {
       dispatch(getAllCategoriesAction());
       setShowUpdateCategory(false);
-      updateNotification("error", error?.message);
+      toast.error(error?.message);
     }
   }, [isUpdated, error]);
 

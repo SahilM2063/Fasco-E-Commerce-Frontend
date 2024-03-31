@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 import React, { useEffect, useState } from "react";
-import { useNotification } from "../../../hooks";
+import { toast } from "react-toastify";
 import { useSelector, useDispatch } from "react-redux";
 import { resetPassword } from "../../../redux/slices/userSlice";
 import { useParams } from "react-router-dom";
@@ -23,7 +23,6 @@ const validatePasswordInfo = ({ password, confirmPassword }) => {
 const ResetPassword = () => {
   const [formData, setformData] = useState(defaultData);
   const { password, confirmPassword } = formData;
-  const updateNotification = useNotification();
   const dispatch = useDispatch();
   const { error, loading, user } = useSelector((state) => state.users);
   const { id, token } = useParams();
@@ -36,17 +35,17 @@ const ResetPassword = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     const { ok, error } = validatePasswordInfo(formData);
-    if (!ok) return updateNotification("warning", error);
+    if (!ok) return toast.warn(error);
     dispatch(resetPassword({ id, token, ...formData }));
     setformData(defaultData);
   };
 
   useEffect(() => {
     if (error) {
-      updateNotification("error", error?.message);
+      toast.error(error);
     }
     if (user?.msg) {
-      updateNotification("success", user?.msg);
+      toast.success(user?.msg);
       navigate("/user/login");
     }
   }, [error, user]);

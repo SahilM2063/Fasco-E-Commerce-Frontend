@@ -7,7 +7,7 @@ import {
   updateProductAction,
 } from "../../redux/slices/productSlice";
 import { useDispatch, useSelector } from "react-redux";
-import { useNotification } from "../../hooks";
+import { toast } from "react-toastify";
 
 const UpdateProduct = ({
   showUpdateModal,
@@ -36,7 +36,6 @@ const UpdateProduct = ({
   });
   const [productUrl, setProductUrl] = useState("");
   const [imgErrs, setImgErrs] = useState([]);
-  const updateNotification = useNotification();
 
   useEffect(() => {
     setFormData({ ...currentProduct });
@@ -114,7 +113,7 @@ const UpdateProduct = ({
   const handleUpdateSubmit = (e) => {
     e.preventDefault();
     if (imgErrs.length > 0) {
-      updateNotification("error", imgErrs[0]);
+      toast.error(imgErrs[0]);
       return;
     }
     console.log(formData);
@@ -138,7 +137,7 @@ const UpdateProduct = ({
 
   useEffect(() => {
     if (isUpdated) {
-      updateNotification("success", "Product updated successfully");
+      toast.success("Product updated successfully");
       setFormData({
         name: "",
         description: "",
@@ -155,7 +154,7 @@ const UpdateProduct = ({
       setShowUpdateModal(false);
     }
     if (error) {
-      updateNotification("error", error);
+      toast.error(error);
     }
   }, [isUpdated, error]);
 

@@ -4,7 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import registerImg from "./assets/registerImg.png";
 import { useDispatch, useSelector } from "react-redux";
 import { registerUserAction } from "../../../redux/slices/userSlice";
-import { useNotification } from "../../../hooks";
+import { toast } from "react-toastify";
 import { isValidEmail } from "../../../utils/helper";
 
 const defaultData = {
@@ -36,15 +36,12 @@ const validateUserInfo = ({ firstName, lastName, email, password }) => {
 };
 
 const Register = () => {
-  const updateNotification = useNotification();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [formData, setFormData] = useState(defaultData);
 
   const { firstName, lastName, email, password } = formData;
-  const { user, error, loading } = useSelector(
-    (state) => state?.users
-  );
+  const { user, error, loading } = useSelector((state) => state?.users);
 
   const onChangeHandler = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -53,14 +50,14 @@ const Register = () => {
   const onSubmitHandler = (e) => {
     e.preventDefault();
     const { ok, error } = validateUserInfo(formData);
-    if (!ok) return updateNotification("warning", error);
+    if (!ok) return toast.warn(error);
     dispatch(registerUserAction(formData));
     setFormData(defaultData);
   };
 
   useEffect(() => {
     if (user?.msg) {
-      updateNotification("success", user?.msg);
+      toast.success(user?.msg);
       if (user?.userFound?.isAdmin) {
         return navigate("/admin/dashboard");
       } else {
@@ -68,10 +65,9 @@ const Register = () => {
       }
     }
     if (error) {
-      updateNotification("error", error?.message);
+      toast.error(error?.message);
     }
   }, [error, user]);
-
 
   return (
     <div className="wrapper w-full h-[calc(100vh-104px)] px-32 md:px-10 sm:px-6 py-4">

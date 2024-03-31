@@ -14,7 +14,6 @@ import {
   deleteBrandAction,
   getAllBrandsAction,
 } from "../../redux/slices/brandSlice.js";
-import { useNotification } from "../../hooks";
 import { AddCategory, UpdateCategory } from "./ManageCategory.jsx";
 import { AddBrand, UpdateBrand } from "./ManageBrand.jsx";
 import { AddColor, UpdateColor } from "./ManageColors.jsx";
@@ -22,10 +21,10 @@ import {
   getAllColorsAction,
   deleteColorAction,
 } from "../../redux/slices/colorSlice.js";
+import { toast } from "react-toastify";
 
 const Manage = () => {
   const dispatch = useDispatch();
-  const updateNotifications = useNotification();
 
   // console.log(categories);
   useEffect(() => {
@@ -54,11 +53,11 @@ const Manage = () => {
 
   useEffect(() => {
     if (isDeleted) {
-      updateNotifications("success", category?.message);
+      toast.success(category?.message);
       dispatch(getAllCategoriesAction());
     }
     if (error) {
-      updateNotifications("error", error?.message);
+      toast.error(error?.message);
       dispatch(getAllCategoriesAction());
     }
   }, [isDeleted, error]);
@@ -83,11 +82,11 @@ const Manage = () => {
 
   useEffect(() => {
     if (brandData?.isDeleted) {
-      updateNotifications("success", brandData?.brand?.message);
+      toast.success(brandData?.brand?.message);
       dispatch(getAllBrandsAction());
     }
     if (brandData?.error) {
-      updateNotifications("error", brandData?.error?.message);
+      toast.error(brandData?.error?.message);
       dispatch(getAllBrandsAction());
     }
   }, [brandData?.isDeleted, brandData?.error]);
@@ -112,11 +111,11 @@ const Manage = () => {
 
   useEffect(() => {
     if (colorData?.isDeleted) {
-      updateNotifications("success", colorData?.color?.message);
+      toast.success(colorData?.color?.message);
       dispatch(getAllColorsAction());
     }
     if (colorData?.error) {
-      updateNotifications("error", colorData?.error?.message);
+      toast.error(colorData?.error?.message);
       dispatch(getAllColorsAction());
     }
   }, [colorData?.isDeleted, colorData?.error]);

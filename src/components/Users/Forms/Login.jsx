@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { loginUserAction } from "../../../redux/slices/userSlice.js";
 import googleSvg from "./assets/google.svg";
 import baseURL from "../../../utils/baseURL.js";
-import { useNotification } from "../../../hooks";
+import { toast } from "react-toastify";
 import { isValidEmail } from "../../../utils/helper.js";
 
 const defaultData = {
@@ -24,7 +24,6 @@ const validateUserInfo = ({ email, password }) => {
 };
 
 const Login = () => {
-  const updateNotification = useNotification();
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -41,14 +40,14 @@ const Login = () => {
   const onSubmitHandler = (e) => {
     e.preventDefault();
     const { ok, error } = validateUserInfo(formData);
-    if (!ok) return updateNotification("warning", error);
+    if (!ok) return toast.warn(error);
     dispatch(loginUserAction(formData));
     setFormData(defaultData);
   };
 
   useEffect(() => {
     if (userInfo?.msg) {
-      updateNotification("success", userInfo?.msg);
+      toast.success(userInfo?.msg);
       if (userInfo.userFound.isAdmin) {
         return navigate("/admin/dashboard");
       } else {
@@ -56,10 +55,9 @@ const Login = () => {
       }
     }
     if (error) {
-      updateNotification("error", error?.message);
+      toast.error(error?.message);
     }
   }, [error, userInfo]);
-
 
   return (
     <div className="wrapper w-full h-[calc(100vh-104px)] px-32 md:px-10 sm:px-6 py-4">

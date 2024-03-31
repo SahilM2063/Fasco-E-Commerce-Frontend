@@ -2,7 +2,7 @@
 /* eslint-disable no-unused-vars */
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useNotification } from "../../hooks";
+import { toast } from "react-toastify";
 import {
   createColorAction,
   getAllColorsAction,
@@ -11,7 +11,6 @@ import {
 
 export const AddColor = ({ setShowAddColor, showAddColor }) => {
   const dispatch = useDispatch();
-  const updateNotification = useNotification();
 
   const [colorFormData, setColorFormData] = useState({ name: "" });
 
@@ -29,13 +28,13 @@ export const AddColor = ({ setShowAddColor, showAddColor }) => {
 
   useEffect(() => {
     if (isAdded) {
-      updateNotification("success", color?.message);
+      toast.success(color?.message);
       dispatch(getAllColorsAction());
       setShowAddColor(false);
       setColorFormData({ name: "" });
     }
     if (error) {
-      updateNotification("error", error?.message);
+      toast.error(error?.message);
       dispatch(getAllColorsAction());
       setShowAddColor(false);
       setColorFormData({ name: "" });
@@ -100,7 +99,6 @@ export const UpdateColor = ({
   currentColor,
 }) => {
   const dispatch = useDispatch();
-  const updateNotification = useNotification();
 
   const [colorFormData, setColorFormData] = useState({ name: "" });
 
@@ -124,13 +122,13 @@ export const UpdateColor = ({
 
   useEffect(() => {
     if (isUpdated) {
-      updateNotification("success", color?.message);
+      toast.success(color?.message);
       dispatch(getAllColorsAction());
       setShowUpdateColor(false);
       setColorFormData({ name: "" });
     }
     if (error) {
-      updateNotification("error", error?.message);
+      toast.error(error?.message);
       dispatch(getAllColorsAction());
       setShowUpdateColor(false);
       setColorFormData({ name: "" });

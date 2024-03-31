@@ -7,12 +7,11 @@ import {
   removeFromCart,
   updateCartAction,
 } from "../../redux/slices/cartSlice";
-import { useNotification } from "../../hooks";
 import emptyCartIllustration from "../../assets/empty_cart_illustration.svg";
 import { toast } from "react-toastify";
+
 const Cart = () => {
   const dispatch = useDispatch();
-  const updateNotification = useNotification();
 
   useEffect(() => {
     dispatch(getCartDataAction());
@@ -36,7 +35,7 @@ const Cart = () => {
       toast.success(productMsg?.message);
     }
     if (error) {
-      updateNotification("error", error?.message);
+      toast.error(error?.message);
       dispatch(getCartDataAction());
     }
   }, [isDeleted, error]);

@@ -2,7 +2,7 @@
 /* eslint-disable no-unused-vars */
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useNotification } from "../../hooks";
+import { toast } from "react-toastify";
 import {
   createBrandAction,
   getAllBrandsAction,
@@ -11,7 +11,6 @@ import {
 
 export const AddBrand = ({ setShowAddBrand, showAddBrand }) => {
   const dispatch = useDispatch();
-  const updateNotification = useNotification();
 
   const [brandFormData, setBrandFormData] = useState({ name: "" });
 
@@ -29,13 +28,13 @@ export const AddBrand = ({ setShowAddBrand, showAddBrand }) => {
 
   useEffect(() => {
     if (isAdded) {
-      updateNotification("success", brand?.message);
+      toast.success(brand?.message);
       dispatch(getAllBrandsAction());
       setShowAddBrand(false);
       setBrandFormData({ name: "" });
     }
     if (error) {
-      updateNotification("error", error?.message);
+      toast.error(error?.message);
       dispatch(getAllBrandsAction());
       setShowAddBrand(false);
       setBrandFormData({ name: "" });
@@ -100,7 +99,6 @@ export const UpdateBrand = ({
   currentBrand,
 }) => {
   const dispatch = useDispatch();
-  const updateNotification = useNotification();
 
   const [brandFormData, setBrandFormData] = useState({ name: "" });
 
@@ -124,13 +122,13 @@ export const UpdateBrand = ({
 
   useEffect(() => {
     if (isUpdated) {
-      updateNotification("success", brand?.message);
+      toast.success(brand?.message);
       dispatch(getAllBrandsAction());
       setShowUpdateBrand(false);
       setBrandFormData({ name: "" });
     }
     if (error) {
-      updateNotification("error", error?.message);
+      toast.error(error?.message);
       dispatch(getAllBrandsAction());
       setShowUpdateBrand(false);
       setBrandFormData({ name: "" });

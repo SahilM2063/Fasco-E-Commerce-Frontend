@@ -8,12 +8,11 @@ import {
   userDeleteAction,
 } from "../../redux/slices/userSlice";
 import { useDispatch, useSelector } from "react-redux";
-import { useNotification } from "../../hooks";
+import { toast } from "react-toastify";
 import default1 from "./assets/default1.png";
 
 const Customers = () => {
   const dispatch = useDispatch();
-  const updateNotification = useNotification();
 
   useEffect(() => {
     dispatch(getAllUsersAction());
@@ -32,11 +31,11 @@ const Customers = () => {
 
   useEffect(() => {
     if (error) {
-      updateNotification("error", error?.message);
+      toast.error(error?.message);
       dispatch(getAllUsersAction());
     }
     if (user?.message) {
-      updateNotification("success", user?.message);
+      toast.success(user?.message);
       dispatch(getAllUsersAction());
     }
   }, [error, user]);
