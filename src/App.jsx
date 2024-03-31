@@ -21,6 +21,7 @@ import Manage from "./components/Admin/Manage.jsx";
 import Shop from "./components/Users/Shop.jsx";
 import SingleProductDetail from "./components/Users/SingleProductDetail.jsx";
 import Cart from "./components/Users/Cart.jsx";
+import AboutUs from "./components/Users/AboutUs.jsx";
 
 function App() {
   return (
@@ -31,6 +32,7 @@ function App() {
         <Route path="*" element={<NotFound />} />
         <Route path="/" element={<HomePage />} />
         <Route path="/shop" element={<Shop />} />
+        <Route path="/about-us" element={<AboutUs />} />
         <Route path="/product/:id" element={<SingleProductDetail />} />
         <Route path="/user/register" element={<Register />} />
         <Route path="/user/login" element={<Login />} />

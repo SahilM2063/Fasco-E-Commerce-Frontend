@@ -1,11 +1,12 @@
 /* eslint-disable no-unused-vars */
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import profile from "../../assets/profile.svg";
-import cart from "../../assets/cart.svg";
+import cartSvg from "../../assets/cart.svg";
 import menuSvg from "../../assets/menu.svg";
 import closeMenu from "../../assets/closeMenu.svg";
+import { getCartDataAction } from "../../redux/slices/cartSlice";
 
 const links = [
   {
@@ -21,16 +22,26 @@ const links = [
     href: "/category",
   },
   {
-    title: "New Arrivals",
-    href: "/new-arrivals",
+    title: "About Us",
+    href: "/about-us",
   },
 ];
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const dispatch = useDispatch();
 
   const isLoggedIn = useSelector((state) => state.users.isLoggedIn);
   // console.log(isLoggedIn)
+
+  // getting cart items length
+  const cart = useSelector((state) => state.cart?.cart?.user?.cart);
+
+  useEffect(() => {
+    if (isLoggedIn) {
+      dispatch(getCartDataAction());
+    }
+  }, [isLoggedIn, dispatch]);
 
   return (
     <>
@@ -52,8 +63,13 @@ const Navbar = () => {
               <img src={profile} alt="profile" className="w-6" />
             </Link>
             <Link to={"/user/cart"}>
-              <button className="p-3 md:p-2 bg-black text-white rounded-lg">
-                <img src={cart} alt="profile" className="w-4" />
+              <button className="indicator p-3 md:p-2 bg-black text-white rounded-lg">
+                {cart?.length > 0 && (
+                  <span className="indicator-item size-4 text-black bg-white rounded-full shadow-lg text-[11px] font-semibold flex items-center justify-center">
+                    {cart?.length}
+                  </span>
+                )}
+                <img src={cartSvg} alt="profile" className="w-4" />
               </button>
             </Link>
           </div>
@@ -113,8 +129,13 @@ const Navbar = () => {
                 <img src={profile} alt="profile" className="w-6" />
               </Link>
               <Link to={"/user/cart"}>
-                <button className="p-3 bg-black text-white rounded-lg">
-                  <img src={cart} alt="profile" className="w-4 md:w-5" />
+                <button className="indicator p-3 bg-black text-white rounded-lg">
+                  {cart?.length > 0 && (
+                    <span className="indicator-item size-4 text-black bg-white rounded-full shadow-md text-xs font-semibold flex items-center justify-center">
+                      {cart?.length}
+                    </span>
+                  )}
+                  <img src={cartSvg} alt="profile" className="w-4 md:w-5" />
                 </button>
               </Link>
             </div>

@@ -88,7 +88,7 @@ const Cart = () => {
             <img
               src={emptyCartIllustration}
               alt="cart_empty"
-              className="w-1/3"
+              className="w-1/3 md:w-1/2 sm:w-1/2"
             />
             <p className="text-sm font-[poppins]">Your cart is empty!</p>
           </div>
