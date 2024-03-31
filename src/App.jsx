@@ -22,12 +22,22 @@ import Shop from "./components/Users/Shop.jsx";
 import SingleProductDetail from "./components/Users/SingleProductDetail.jsx";
 import Cart from "./components/Users/Cart.jsx";
 import AboutUs from "./components/Users/AboutUs.jsx";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function App() {
   return (
     <div className="w-full min-h-[100vh] ">
       {/* Homepage/Hero component */}
       <Navbar />
+      <ToastContainer
+        position="top-right"
+        autoClose={3000}
+        hideProgressBar={true}
+        newestOnTop={false}
+        rtl={false}
+        theme="dark"
+      />
       <Routes>
         <Route path="*" element={<NotFound />} />
         <Route path="/" element={<HomePage />} />
