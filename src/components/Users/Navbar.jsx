@@ -59,7 +59,7 @@ const Navbar = () => {
         </div>
         {isLoggedIn && (
           <div className="buttons flex items-center gap-6 md:gap-4 text-sm md:text-sm md:hidden sm:hidden">
-            <Link to={"/user/customerProfile"}>
+            <Link to={"/user/customer"}>
               <img src={profile} alt="profile" className="w-6" />
             </Link>
             <Link to={"/user/cart"}>
@@ -125,7 +125,7 @@ const Navbar = () => {
           </div>
           {isLoggedIn && (
             <div className="buttons flex items-center gap-6 md:gap-8">
-              <Link to={"/user/customerProfile"}>
+              <Link to={"/user/customer"}>
                 <img src={profile} alt="profile" className="w-6" />
               </Link>
               <Link to={"/user/cart"}>

@@ -4,7 +4,6 @@ import { Routes, Route } from "react-router-dom";
 import HomePage from "./components/Users/HomePage.jsx";
 import Login from "./components/Users/Forms/Login.jsx";
 import AdminDashBoard from "./components/Admin/AdminDashBoard.jsx";
-import CustomerProfile from "./components/Users/CustomerProfile.jsx";
 import Navbar from "./components/Users/Navbar.jsx";
 import Register from "./components/Users/Forms/Register.jsx";
 import NotFound from "./components/NotFound.jsx";
@@ -24,6 +23,9 @@ import Cart from "./components/Users/Cart.jsx";
 import AboutUs from "./components/Users/AboutUs.jsx";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import CustomerDashboard from "./components/Users/CustomerDashboard.jsx";
+import Profile from "./components/Users/Profile.jsx";
+import OrderHistory from "./components/Users/OrderHistory.jsx";
 
 function App() {
   return (
@@ -47,7 +49,10 @@ function App() {
         <Route path="/user/register" element={<Register />} />
         <Route path="/user/login" element={<Login />} />
         <Route element={<AuthRoutes />}>
-          <Route path="/user/customerProfile" element={<CustomerProfile />} />
+          <Route path="/user/customer" element={<CustomerDashboard />}>
+            <Route path="" element={<Profile />} />
+            <Route path="order-history" element={<OrderHistory />} />
+          </Route>
           <Route path="/user/cart" element={<Cart />} />
         </Route>
         <Route path="/user/resetPassEmail" element={<ResetPassEmail />} />
