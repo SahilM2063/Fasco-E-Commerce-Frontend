@@ -10,6 +10,7 @@ import {
 import emptyCartIllustration from "../../assets/empty_cart_illustration.svg";
 import { toast } from "react-toastify";
 import ig1 from "../../assets/ig1.png";
+import { Link } from "react-router-dom";
 
 const Cart = () => {
   const dispatch = useDispatch();
@@ -129,9 +130,12 @@ const Cart = () => {
                           src={product?.productId?.images[0]}
                         />
                         <div className="content flex items-start flex-col space-y-2">
-                          <p className="font-[Volkhov] text-xl md:text-base tracking-tight text-[#484848] ">
+                          <Link
+                            to={`/product/${product?.productId?._id}`}
+                            className="font-[Volkhov] text-xl md:text-base tracking-tight text-[#484848] "
+                          >
                             {product?.productId?.name}
-                          </p>
+                          </Link>
                           <div className="space-y-1">
                             <p className="text-sm md:text-xs font-[Poppins] tracking-wide text-[#8A8A8A]">
                               Color : {product?.color}

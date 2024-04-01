@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import h1 from "../../assets/h1.png";
 import h2 from "../../assets/h2.png";
 import h3 from "../../assets/h3.png";
@@ -30,13 +30,30 @@ import t2 from "../../assets/t2.png";
 import nl1 from "../../assets/nl1.png";
 import nl2 from "../../assets/nl2.png";
 import { Link } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import { getAllProductsAction } from "../../redux/slices/productSlice";
 
 const arrivalsBtns = [
-  "Men's Fashion",
-  "Women's Fashion",
-  "Men's Accessories",
-  "Women's Accessories",
-  "Kid's Fashion",
+  {
+    name: "Men's Fashion",
+    value: "men fashion",
+  },
+  {
+    name: "Women's Fashion",
+    value: "women fashion",
+  },
+  {
+    name: "Men's Accessories",
+    value: "men accessoriess",
+  },
+  {
+    name: "Women's Accessories",
+    value: "women accessoriess",
+  },
+  {
+    name: "Kid's Fashion",
+    value: "kid fashion",
+  },
 ];
 
 const featuresArray = [
@@ -93,6 +110,8 @@ const testimonials = [
 const HomePage = () => {
   const [arrivalBtnActiveIndex, setArrivalBtnActiveIndex] = useState(0);
   const [currentTestimonialIndex, setCurrentTestimonialIndex] = useState(0);
+  const [currentCategory, setCurrentCategory] = useState("men fashion");
+  const dispatch = useDispatch();
 
   const prevCard = () => {
     const isFirstCard = currentTestimonialIndex === 0;
@@ -106,6 +125,14 @@ const HomePage = () => {
     const newIndex = isLastCard ? 0 : currentTestimonialIndex + 1;
     setCurrentTestimonialIndex(newIndex);
   };
+
+  useEffect(() => {
+    dispatch(getAllProductsAction());
+  }, [dispatch]);
+
+  const { products } = useSelector((state) => state?.products?.products);
+  console.log(products);
+  console.log(currentCategory);
 
   return (
     <>
@@ -160,32 +187,37 @@ const HomePage = () => {
             return (
               <button
                 key={i}
-                onClick={() => setArrivalBtnActiveIndex(i)}
+                onClick={() => {
+                  setArrivalBtnActiveIndex(i);
+                  setCurrentCategory(btn?.value);
+                }}
                 className={
                   arrivalBtnActiveIndex === i
                     ? `py-3 md:py-2 px-6 md:px-3 md:text-[12px] sm:px-4 sm:text-sm bg-black text-white rounded-lg select-none transition-all`
                     : `py-3 md:py-2 px-6 md:px-3 md:text-[12px] sm:px-4 sm:text-sm bg-[#FAFAFA] text-gray-500 rounded-lg select-none transition-all`
                 }
               >
-                {btn}
+                {btn?.name}
               </button>
             );
           })}
         </div>
 
         <div className="arr_section_cards sm:my-4 md:my-6 lg:my-8 w-full grid sm:flex sm:flex-col md:grid-cols-2 lg:grid-cols-3 gap-10 md:gap-6 sm:gap-4">
-          <ArrivalProductCard />
-          <ArrivalProductCard />
-          <ArrivalProductCard />
-          <ArrivalProductCard />
-          <ArrivalProductCard />
-          <ArrivalProductCard />
+          {products
+            ?.filter((product) => product?.category === currentCategory)
+            .slice(0, 6)
+            .map((product) => {
+              return (
+                <ArrivalProductCard key={product?._id} product={product} />
+              );
+            })}
         </div>
 
         <div className="w-full flex items-center justify-center mt-4">
-          <button className="py-3 md:py-2 px-10 md:px-4 bg-black text-white rounded-lg">
+          <Link to={"/shop"} className="py-3 md:py-2 px-10 md:px-4 bg-black text-white rounded-lg">
             View more
-          </button>
+          </Link>
         </div>
       </div>
 
@@ -215,9 +247,9 @@ const HomePage = () => {
             of Tommy Shelby and his gang with meticulously crafted suits, rugged
             outerwear, and vintage accessories.{" "}
           </p>
-          <button className="py-3 text-sm md:py-2 px-10 md:px-4 bg-black text-white rounded-lg mt-6">
+          <Link to={"/shop"} className="py-3 text-sm md:py-2 px-10 md:px-4 bg-black text-white rounded-lg mt-6">
             Explore now
-          </button>
+          </Link>
         </div>
       </div>
 

@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 /* eslint-disable no-unused-vars */
 import React from "react";
 import ac1 from "../../assets/ac1.png";
@@ -13,16 +14,20 @@ const rating_star = (
   </>
 );
 
-const ArrivalProductCard = () => {
+const ArrivalProductCard = ({ product }) => {
   return (
     <div className="card w-full border flex flex-col items-center p-5 font-[Poppins] rounded-lg select-none">
-      <img src={ac1} alt="product_img" className="w-full rounded-lg" />
+      <img
+        src={product?.images[0]}
+        alt="product_img"
+        className="w-full rounded-lg"
+      />
       <div className="w-full flex items-start justify-between my-4">
         <div>
           <h5 className="font-bold tracking-wide text-[#484848]">
-            Shiny dress
+            {product?.name}
           </h5>
-          <span className="text-sm text-[#8A8A8A]">Channel</span>
+          <span className="text-sm text-[#8A8A8A]">{product?.brand}</span>
         </div>
         <div className="stars flex">{rating_star}</div>
       </div>
@@ -30,7 +35,9 @@ const ArrivalProductCard = () => {
         (4.1k) Customer Reviews
       </p>
       <div className="price_stocks w-full flex justify-between items-center mt-2">
-        <h2 className="text-2xl font-extrabold text-[#484848]">₹ 95.50</h2>
+        <h2 className="text-2xl font-extrabold text-[#484848]">
+          ₹ {product?.price}
+        </h2>
         <span className="text-sm text-red-500">Almost Sold Out</span>
       </div>
     </div>
