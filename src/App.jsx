@@ -48,6 +48,7 @@ function App() {
         <Route path="/product/:id" element={<SingleProductDetail />} />
         <Route path="/user/register" element={<Register />} />
         <Route path="/user/login" element={<Login />} />
+
         <Route element={<AuthRoutes />}>
           <Route path="/user/customer" element={<CustomerDashboard />}>
             <Route path="" element={<Profile />} />
@@ -55,6 +56,7 @@ function App() {
           </Route>
           <Route path="/user/cart" element={<Cart />} />
         </Route>
+
         <Route path="/user/resetPassEmail" element={<ResetPassEmail />} />
         <Route
           path="/user/reset-password/:id/:token"
