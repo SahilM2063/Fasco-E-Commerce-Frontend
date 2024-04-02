@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import React from "react";
+import React, { useEffect, useState } from "react";
 import editPenSvg from "../../assets/editPen.svg";
 import defaultUser from "../../assets/default_user.png";
 import { useSelector } from "react-redux";
@@ -8,9 +8,33 @@ const Profile = () => {
   const { userFound } = useSelector(
     (state) => state?.users?.userAuth?.userInfo
   );
-  console.log(userFound);
 
-  const { firstName, lastName, email, createdAt, isAdmin, pfp } = userFound;
+  const [personalInfo, setPersonalInfo] = useState({
+    firstName: "",
+    lastName: "",
+    email: "",
+    gender: "",
+  });
+
+  useEffect(() => {
+    if (userFound) {
+      setPersonalInfo({
+        firstName: userFound?.firstName,
+        lastName: userFound?.lastName,
+        email: userFound?.email,
+        gender: userFound?.gender,
+      });
+    }
+  }, [userFound]);
+
+  const { firstName, lastName, email, gender } = personalInfo;
+  const { isAdmin, createdAt, pfp } = userFound;
+
+  const personalInfoChangeHandler = (e) => {
+    setPersonalInfo({ ...personalInfo, [e.target.name]: e.target.value });
+  };
+
+  console.log(personalInfo);
 
   return (
     <>
@@ -18,11 +42,11 @@ const Profile = () => {
         <div className="avatar-container w-full flex justify-between items-center  rounded-md p-4 sm:p-2">
           <div className="avatar-details flex items-center gap-6 sm:gap-4">
             <div className="avatar">
-              <div className="w-24 sm:w-20 rounded-full">
+              <div className="w-24 sm:w-20 rounded-full shadow-lg">
                 <img
                   src={pfp ? pfp : defaultUser}
                   alt="user"
-                  className="w-full"
+                  className="w-full "
                 />
               </div>
             </div>
@@ -44,7 +68,7 @@ const Profile = () => {
             </button>
           </div>
         </div>
-        <hr className="my-4"/>
+        <hr className="my-4" />
         <div className="personal-info w-full p-4 sm:p-2">
           <h1 className="font-[Poppins] text-[#484848] text-xl font-semibold mb-6">
             Personal Information
@@ -60,6 +84,7 @@ const Profile = () => {
                   type="text"
                   name="firstName"
                   value={firstName}
+                  onChange={personalInfoChangeHandler}
                 />
               </div>
               <div className="space-y-1 flex-1 sm:w-full">
@@ -71,10 +96,11 @@ const Profile = () => {
                   type="text"
                   name="lastName"
                   value={lastName}
+                  onChange={personalInfoChangeHandler}
                 />
               </div>
             </div>
-            <div className="input-boxes flex sm:flex-col items-center justify-between gap-4">
+            <div className="input-boxes flex sm:flex-col items-start justify-between gap-4 mb-4">
               <div className="space-y-1 flex-1 sm:w-full">
                 <label className="text-sm text-gray-500/95 font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
                   Email
@@ -84,9 +110,10 @@ const Profile = () => {
                   type="email"
                   name="email"
                   value={email}
+                  onChange={personalInfoChangeHandler}
                 />
               </div>
-              <div className="space-y-1 flex-1 sm:w-full">
+              <div className="space-y-4 flex-1 sm:w-full">
                 <label className="text-sm text-gray-500/95 font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
                   Gender
                 </label>
@@ -97,6 +124,9 @@ const Profile = () => {
                       type="radio"
                       id="male"
                       name="gender"
+                      value="male"
+                      checked={gender === "male"}
+                      onChange={personalInfoChangeHandler}
                     />
                     <label htmlFor="male" className="cursor-pointer text-sm">
                       Male
@@ -108,6 +138,9 @@ const Profile = () => {
                       type="radio"
                       id="female"
                       name="gender"
+                      value="female"
+                      checked={gender === "female"}
+                      onChange={personalInfoChangeHandler}
                     />
                     <label htmlFor="female" className="cursor-pointer text-sm">
                       Female
@@ -119,6 +152,9 @@ const Profile = () => {
                       type="radio"
                       id="other"
                       name="gender"
+                      value="other"
+                      checked={gender === "other"}
+                      onChange={personalInfoChangeHandler}
                     />
                     <label htmlFor="other" className="cursor-pointer text-sm">
                       Other
@@ -127,6 +163,9 @@ const Profile = () => {
                 </div>
               </div>
             </div>
+            <button className="w-[50%] py-2 bg-black text-white rounded-lg border-[1px] border-black">
+              save
+            </button>
           </div>
 
           <h1 className="font-[Poppins] text-[#484848] text-xl font-semibold my-6">
