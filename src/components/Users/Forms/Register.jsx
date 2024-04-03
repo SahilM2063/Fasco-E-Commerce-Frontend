@@ -6,6 +6,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { registerUserAction } from "../../../redux/slices/userSlice";
 import { toast } from "react-toastify";
 import { isValidEmail } from "../../../utils/helper";
+import openEye from "../../../assets/openEye.svg";
+import closeEye from "../../../assets/closeEye.svg";
 
 const defaultData = {
   firstName: "",
@@ -38,6 +40,8 @@ const validateUserInfo = ({ firstName, lastName, email, password }) => {
 const Register = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [passFieldVisibility, setPassFieldVisibility] = useState(false);
+
   const [formData, setFormData] = useState(defaultData);
 
   const { firstName, lastName, email, password } = formData;
@@ -61,7 +65,7 @@ const Register = () => {
       if (user?.userFound?.isAdmin) {
         return navigate("/admin/dashboard");
       } else {
-        return navigate("/user/customerProfile");
+        return navigate("/");
       }
     }
     if (error) {
@@ -119,14 +123,24 @@ const Register = () => {
               onChange={onChangeHandler}
               className="w-full outline-none border-b-2 border-gray-400 py-2 mb-8 sm:mb-6 text-sm text-[#484848]"
             />
-            <input
-              type="password"
-              name="password"
-              placeholder="Password"
-              value={password}
-              onChange={onChangeHandler}
-              className="w-full outline-none border-b-2 border-gray-400 py-2 text-sm text-[#484848]"
-            />
+            <div className="w-full border-b-2 flex justify-between items-center border-gray-400 py-2 text-sm text-[#484848]">
+              <input
+                type={passFieldVisibility ? "text" : "password"}
+                name="password"
+                placeholder="Password"
+                value={password}
+                onChange={onChangeHandler}
+                className="flex-1 outline-none"
+              />
+              {password.length === 0 ? null : (
+                <img
+                  src={passFieldVisibility ? openEye : closeEye}
+                  alt="eye"
+                  className="w-5 cursor-pointer"
+                  onClick={() => setPassFieldVisibility(!passFieldVisibility)}
+                />
+              )}
+            </div>
             <p className="w-full text-[12px] mt-4 mb-6 sm:mb-8">
               Already have an account ?{" "}
               <Link to={"/user/login"} className="hover:underline">

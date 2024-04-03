@@ -8,6 +8,8 @@ import googleSvg from "./assets/google.svg";
 import baseURL from "../../../utils/baseURL.js";
 import { toast } from "react-toastify";
 import { isValidEmail } from "../../../utils/helper.js";
+import openEye from "../../../assets/openEye.svg";
+import closeEye from "../../../assets/closeEye.svg";
 
 const defaultData = {
   email: "",
@@ -26,6 +28,7 @@ const validateUserInfo = ({ email, password }) => {
 const Login = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [passFieldVisibility, setPassFieldVisibility] = useState(false);
 
   const [formData, setFormData] = useState(defaultData);
   const { email, password } = formData;
@@ -51,7 +54,7 @@ const Login = () => {
       if (userInfo.userFound.isAdmin) {
         return navigate("/admin/dashboard");
       } else {
-        return navigate("/user/customerProfile");
+        return navigate("/user/customer");
       }
     }
     if (error) {
@@ -89,14 +92,24 @@ const Login = () => {
               autoFocus
               className="w-full outline-none border-b-2 border-gray-400 py-2 mb-8 text-sm text-[#484848]"
             />
-            <input
-              type="password"
-              name="password"
-              placeholder="Password"
-              value={password}
-              onChange={onChangeHandler}
-              className="w-full outline-none border-b-2 border-gray-400 py-2 text-sm text-[#484848]"
-            />
+            <div className="w-full border-b-2 flex justify-between items-center border-gray-400 py-2 text-sm text-[#484848]">
+              <input
+                type={passFieldVisibility ? "text" : "password"}
+                name="password"
+                placeholder="Password"
+                value={password}
+                onChange={onChangeHandler}
+                className="flex-1 outline-none"
+              />
+              {password.length === 0 ? null : (
+                <img
+                  src={passFieldVisibility ? openEye : closeEye}
+                  alt="eye"
+                  className="w-5 cursor-pointer"
+                  onClick={() => setPassFieldVisibility(!passFieldVisibility)}
+                />
+              )}
+            </div>
             <p className="w-full text-[12px] mt-4">
               <Link to={"/user/resetPassEmail"} className="hover:underline">
                 Forget password ?

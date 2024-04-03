@@ -5,6 +5,8 @@ import { useSelector, useDispatch } from "react-redux";
 import { resetPassword } from "../../../redux/slices/userSlice";
 import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import openEye from "../../../assets/openEye.svg";
+import closeEye from "../../../assets/closeEye.svg";
 
 const defaultData = {
   password: "",
@@ -22,6 +24,7 @@ const validatePasswordInfo = ({ password, confirmPassword }) => {
 
 const ResetPassword = () => {
   const [formData, setformData] = useState(defaultData);
+  const [passFieldVisibility, setPassFieldVisibility] = useState(false);
   const { password, confirmPassword } = formData;
   const dispatch = useDispatch();
   const { error, loading, user } = useSelector((state) => state.users);
@@ -63,27 +66,47 @@ const ResetPassword = () => {
             <label className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
               New Password
             </label>
-            <input
-              className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
-              placeholder="Password"
-              type="password"
-              name="password"
-              value={password}
-              onChange={onChangeHandler}
-            />
+            <div className="w-full border-b-2 flex justify-between items-center border-gray-400 py-2 text-sm text-[#484848]">
+              <input
+                type={passFieldVisibility ? "text" : "password"}
+                name="password"
+                placeholder="Password"
+                value={password}
+                onChange={onChangeHandler}
+                className="flex-1 outline-none"
+              />
+              {password.length === 0 ? null : (
+                <img
+                  src={passFieldVisibility ? openEye : closeEye}
+                  alt="eye"
+                  className="w-5 cursor-pointer"
+                  onClick={() => setPassFieldVisibility(!passFieldVisibility)}
+                />
+              )}
+            </div>
           </div>
           <div className="space-y-2">
             <label className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
               Confirm Password
             </label>
-            <input
-              className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
-              placeholder="Confirm Password"
-              type="password"
-              name="confirmPassword"
-              value={confirmPassword}
-              onChange={onChangeHandler}
-            />
+            <div className="w-full border-b-2 flex justify-between items-center border-gray-400 py-2 text-sm text-[#484848]">
+              <input
+                type={passFieldVisibility ? "text" : "password"}
+                name="password"
+                placeholder="Password"
+                value={confirmPassword}
+                onChange={onChangeHandler}
+                className="flex-1 outline-none"
+              />
+              {confirmPassword.length === 0 ? null : (
+                <img
+                  src={passFieldVisibility ? openEye : closeEye}
+                  alt="eye"
+                  className="w-5 cursor-pointer"
+                  onClick={() => setPassFieldVisibility(!passFieldVisibility)}
+                />
+              )}
+            </div>
           </div>
         </div>
         <button
