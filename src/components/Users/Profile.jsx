@@ -35,6 +35,7 @@ const Profile = () => {
         email: user?.email,
         gender: user?.gender,
       });
+      setSelectedImage(user?.pfp ? user.pfp : defaultUser);
     }
   }, [user]);
 
@@ -54,14 +55,53 @@ const Profile = () => {
   }, [isUpdated, error]);
 
   const { firstName, lastName, email, gender } = personalInfo;
+  const [selectedImage, setSelectedImage] = useState(
+    user?.pfp ? user.pfp : defaultUser
+  );
+  const [updatedImage, setUpdatedImage] = useState(user?.pfp ? user.pfp : "");
+  const [fileErrs, setFileErrs] = useState([]);
 
   const personalInfoChangeHandler = (e) => {
-    setPersonalInfo({ ...personalInfo, [e.target.name]: e.target.value });
+    setPersonalInfo({
+      ...personalInfo,
+      [e.target.name]: e.target.value,
+    });
   };
 
   const handlePersonalProfileSubmit = (e) => {
     e.preventDefault();
-    dispatch(updateUserProfileAction({ ...personalInfo, id: user?._id }));
+    if (fileErrs.length > 0) {
+      return toast.error(fileErrs[0]);
+    }
+    console.log(personalInfo, updatedImage);
+    dispatch(
+      updateUserProfileAction({
+        ...personalInfo,
+        id: user?._id,
+        pfp: updatedImage,
+      })
+    );
+  };
+
+  const handleImageChange = (e) => {
+    if (e.target.files && e.target.files[0]) {
+      const errs = [];
+      const file = e.target.files[0];
+      if (file?.size > 1000000) {
+        errs.push(`${file.name} is too large!`);
+      }
+      if (!file?.type?.startsWith("image/")) {
+        errs.push(`${file.name} is not an image!`);
+      }
+      setFileErrs(errs);
+      const fileURL = URL.createObjectURL(file);
+      setSelectedImage(fileURL);
+      setUpdatedImage(file);
+    }
+  };
+
+  const triggerFileInput = () => {
+    document.getElementById("imageInput").click();
   };
 
   return (
@@ -72,9 +112,17 @@ const Profile = () => {
             <div className="avatar">
               <div className="w-24 sm:w-20 rounded-full shadow-lg">
                 <img
-                  src={user?.pfp ? user.pfp : defaultUser}
+                  src={selectedImage}
                   alt="user"
-                  className="w-full "
+                  className="w-full hover:bg-opacity-60"
+                  onClick={triggerFileInput}
+                  style={{ cursor: "pointer" }}
+                />
+                <input
+                  type="file"
+                  id="imageInput"
+                  style={{ display: "none" }}
+                  onChange={handleImageChange}
                 />
               </div>
             </div>
