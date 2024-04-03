@@ -8,8 +8,10 @@ import {
   getSingleUserProfile,
   updateUserAddressAction,
   updateUserProfileAction,
+  userDeleteAction,
 } from "../../redux/slices/userSlice";
 import { toast } from "react-toastify";
+import { Link } from "react-router-dom";
 
 const Profile = () => {
   const dispatch = useDispatch();
@@ -156,10 +158,17 @@ const Profile = () => {
     document.getElementById("imageInput").click();
   };
 
+  const handleAccountDelete = () => {
+    if (window.confirm("Are you sure you want to delete your account?")) {
+      dispatch(userDeleteAction(user?._id));
+    }
+    return;
+  };
+
   return (
     <>
       <div className="sm:overflow-x-scroll scrollbar-hide">
-        <div className="avatar-container w-full flex justify-between items-center  rounded-md p-4 sm:p-2">
+        <div className="avatar-container w-full flex justify-between items-start rounded-md p-4 sm:p-2">
           <div className="avatar-details flex items-center gap-6 sm:gap-4">
             <div className="avatar">
               <div className="w-24 sm:w-20 rounded-full shadow-lg">
@@ -190,6 +199,21 @@ const Profile = () => {
               </p>
             </div>
           </div>
+          {user?.isAdmin ? (
+            <Link
+              to="/admin/dashboard"
+              className="px-3 py-2 bg-black text-white rounded-lg border-[1px] border-black"
+            >
+              Admin Dashboard
+            </Link>
+          ) : (
+            <div
+              onClick={handleAccountDelete}
+              className="py-1.5 px-3 rounded-md bg-red-500 text-white border-[1px] border-red-500 cursor-pointer"
+            >
+              Delete Account
+            </div>
+          )}
         </div>
         <hr className="my-4" />
         <div className="personal-info w-full p-4 sm:p-2">

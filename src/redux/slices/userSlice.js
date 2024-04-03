@@ -172,6 +172,7 @@ export const userDeleteAction = createAsyncThunk("users/userDelete", async (id, 
     }
 })
 
+
 export const logoutUserAction = createAsyncThunk("users/logoutUser", async (_, { rejectWithValue, getState, dispatch }) => {
     try {
         localStorage.removeItem("userInfo");
