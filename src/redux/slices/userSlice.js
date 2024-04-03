@@ -92,11 +92,24 @@ export const updateUserProfileAction = createAsyncThunk("users/updateUserProfile
         const token = getState()?.users?.userAuth?.userInfo?.token
         const config = {
             headers: {
-                Authorization: `Bearer ${token}`
+                Authorization: `Bearer ${token}`,
+                'Content-Type': 'multipart/form-data'
             }
         }
 
-        const { firstName, lastName, email, gender, pfp, id } = payload
+        console.log(payload)
+
+        // form data
+        const formData = new FormData();
+        formData.append("firstName", payload.firstName);
+        formData.append("lastName", payload.lastName);
+        formData.append("email", payload.email);
+        formData.append("gender", payload.gender);
+        formData.append("pfp", payload.pfp);
+
+        console.log(formData)
+
+        const { id } = payload
         const { data } = await axios.put(`${baseURL}/users/${id}`, payload, config)
         return data
     } catch (error) {
@@ -240,7 +253,7 @@ const userSlice = createSlice({
         builder.addCase(updateUserProfileAction.pending, (state) => {
             state.loading = true;
             state.error = null;
-            state.user = {};
+            // state.user = {};
             state.isUpdated = false;
         });
         builder.addCase(updateUserProfileAction.fulfilled, (state, action) => {
