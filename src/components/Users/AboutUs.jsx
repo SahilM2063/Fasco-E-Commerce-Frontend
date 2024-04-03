@@ -129,7 +129,7 @@ const AboutUs = () => {
                 className="w-full outline-none p-2 md:text-xs border-[#CBCBCB] border rounded-md text-sm resize-none focus:border-[#000]"
               />
             </div>
-            <button className="py-3 md:py-2 md:text-xs sm:text-xs px-12 md:px-8 bg-black text-white rounded-lg uppercase text-sm tracking-wide">
+            <button className="py-3 sm:w-full md:py-2 md:text-xs sm:text-xs px-12 md:px-8 bg-black text-white rounded-lg uppercase text-sm tracking-wide">
               Send Message
             </button>
           </div>

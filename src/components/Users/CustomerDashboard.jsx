@@ -1,7 +1,8 @@
 /* eslint-disable no-unused-vars */
 import React, { useEffect, useState } from "react";
-import { Link, Outlet, useLocation } from "react-router-dom";
+import { Link, Outlet, useLocation, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
+import { logoutUserAction } from "../../redux/slices/userSlice";
 
 const sideBarLinks = [
   {
@@ -53,10 +54,19 @@ const sideBarLinks = [
 ];
 
 const CustomerDashboard = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [activeLinkIndex, setActiveLinkIndex] = useState(0);
   const [loading, setLoading] = useState(true);
 
-  const {userFound} = useSelector((state) => state?.users?.userAuth?.userInfo);
+  const isLoggedIn = useSelector((state) => state?.users?.isLoggedIn);
+  if (!isLoggedIn) {
+    navigate("/");
+  }
+
+  const userFound = useSelector(
+    (state) => state?.users?.userAuth?.userInfo?.userFound
+  );
 
   const location = useLocation();
 
@@ -80,6 +90,13 @@ const CustomerDashboard = () => {
       setActiveLinkIndex(index);
     }
   }, [location.pathname]);
+
+  const handleLogout = () => {
+    if (window.confirm("Are you sure you want to logout?")) {
+      dispatch(logoutUserAction());
+    }
+    return;
+  };
 
   return (
     <div>
@@ -123,6 +140,12 @@ const CustomerDashboard = () => {
                 {sideBarLinks[activeLinkIndex].label}
               </h1>
             </div>
+            <button
+              onClick={handleLogout}
+              className="py-1.5 px-3 rounded-md bg-red-500 text-white border-[1px] border-red-500"
+            >
+              Logout
+            </button>
           </div>
           <main className="h-full flex flex-1 flex-col gap-4 p-4 md:gap-8 md:p-6">
             <Outlet />
