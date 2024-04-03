@@ -11,6 +11,7 @@ const initialState = {
     users: [],
     user: {},
     profile: {},
+    isUpdated: false,
     userAuth: {
         loading: false,
         error: null,
@@ -85,6 +86,41 @@ export const resetPassword = createAsyncThunk(
         }
     }
 );
+
+export const updateUserProfileAction = createAsyncThunk("users/updateUserProfile", async (payload, { rejectWithValue, getState, dispatch }) => {
+    try {
+        const token = getState()?.users?.userAuth?.userInfo?.token
+        const config = {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        }
+
+        const { firstName, lastName, email, gender, pfp, id } = payload
+        const { data } = await axios.put(`${baseURL}/users/${id}`, payload, config)
+        return data
+    } catch (error) {
+        console.log(error)
+        return rejectWithValue(error?.response?.data)
+    }
+})
+
+// get user profile
+export const getSingleUserProfile = createAsyncThunk("users/getSingleUserProfile", async (_, { rejectWithValue, getState, dispatch }) => {
+    try {
+        const token = getState()?.users?.userAuth?.userInfo?.token
+        const config = {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        }
+        const { data } = await axios.get(`${baseURL}/users/profile`, config)
+        return data
+    } catch (error) {
+        console.log(error)
+        return rejectWithValue(error?.response?.data)
+    }
+})
 
 export const userDeleteAction = createAsyncThunk("users/userDelete", async (id, { rejectWithValue, getState, dispatch }) => {
     try {
@@ -180,6 +216,41 @@ const userSlice = createSlice({
             state.loading = false;
             state.error = action.payload;
         });
+
+        // get user profile
+        builder.addCase(getSingleUserProfile.pending, (state) => {
+            state.loading = true;
+            state.error = null;
+            state.user = {};
+        });
+        builder.addCase(getSingleUserProfile.fulfilled, (state, action) => {
+            state.loading = false;
+            state.user = action.payload;
+        });
+        builder.addCase(getSingleUserProfile.rejected, (state, action) => {
+            state.loading = false;
+            state.error = action.payload;
+            state.user = {};
+        })
+
+        // update user profile
+        builder.addCase(updateUserProfileAction.pending, (state) => {
+            state.loading = true;
+            state.error = null;
+            state.user = {};
+            state.isUpdated = false;
+        });
+        builder.addCase(updateUserProfileAction.fulfilled, (state, action) => {
+            state.loading = false;
+            state.user = action.payload;
+            state.isUpdated = true;
+        })
+        builder.addCase(updateUserProfileAction.rejected, (state, action) => {
+            state.loading = false;
+            state.error = action.payload;
+            state.user = {};
+            state.isUpdated = false;
+        })
 
         // delete user
         builder.addCase(userDeleteAction.pending, (state) => {

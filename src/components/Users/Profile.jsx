@@ -1,10 +1,16 @@
+/* eslint-disable react/prop-types */
 /* eslint-disable no-unused-vars */
 import React, { useEffect, useState } from "react";
 import editPenSvg from "../../assets/editPen.svg";
 import defaultUser from "../../assets/default_user.png";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import {
+  getSingleUserProfile,
+  updateUserProfileAction,
+} from "../../redux/slices/userSlice";
 
 const Profile = () => {
+  const dispatch = useDispatch();
   const { userFound } = useSelector(
     (state) => state?.users?.userAuth?.userInfo
   );
@@ -17,6 +23,7 @@ const Profile = () => {
   });
 
   useEffect(() => {
+    dispatch(getSingleUserProfile(userFound?._id));
     if (userFound) {
       setPersonalInfo({
         firstName: userFound?.firstName,
@@ -34,7 +41,10 @@ const Profile = () => {
     setPersonalInfo({ ...personalInfo, [e.target.name]: e.target.value });
   };
 
-  console.log(personalInfo);
+  const handlePersonalProfileSubmit = (e) => {
+    e.preventDefault();
+    dispatch(updateUserProfileAction({ ...personalInfo, id: userFound?._id }));
+  };
 
   return (
     <>
@@ -163,7 +173,10 @@ const Profile = () => {
                 </div>
               </div>
             </div>
-            <button className="w-[50%] py-2 bg-black text-white rounded-lg border-[1px] border-black">
+            <button
+              onClick={handlePersonalProfileSubmit}
+              className="w-[50%] py-2 bg-black text-white rounded-lg border-[1px] border-black"
+            >
               save
             </button>
           </div>
