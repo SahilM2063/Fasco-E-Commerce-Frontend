@@ -9,6 +9,7 @@ import {
   updateUserAddressAction,
   updateUserProfileAction,
   userDeleteAction,
+  userSelfDeleteAction,
 } from "../../redux/slices/userSlice";
 import { toast } from "react-toastify";
 import { Link } from "react-router-dom";
@@ -160,7 +161,7 @@ const Profile = () => {
 
   const handleAccountDelete = () => {
     if (window.confirm("Are you sure you want to delete your account?")) {
-      dispatch(userDeleteAction(user?._id));
+      dispatch(userSelfDeleteAction(user?._id));
     }
     return;
   };

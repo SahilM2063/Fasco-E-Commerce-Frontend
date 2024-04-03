@@ -172,6 +172,25 @@ export const userDeleteAction = createAsyncThunk("users/userDelete", async (id, 
     }
 })
 
+// user self delete account
+
+export const userSelfDeleteAction = createAsyncThunk("users/userSelfDelete", async (id, { rejectWithValue, getState, dispatch }) => {
+    try {
+        const token = getState()?.users?.userAuth?.userInfo?.token
+        const config = {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        }
+        const { data } = await axios.delete(`${baseURL}/users/${id}`, config)
+        localStorage.removeItem("userInfo");
+        return data
+    } catch (error) {
+        console.log(error)
+        return rejectWithValue(error?.response?.data)
+    }
+})
+
 
 export const logoutUserAction = createAsyncThunk("users/logoutUser", async (_, { rejectWithValue, getState, dispatch }) => {
     try {
@@ -329,6 +348,23 @@ const userSlice = createSlice({
             state.user = action.payload;
         });
         builder.addCase(userDeleteAction.rejected, (state, action) => {
+            state.loading = false;
+            state.error = action.payload;
+            state.user = {};
+        })
+
+        // suicide 
+        builder.addCase(userSelfDeleteAction.pending, (state) => {
+            state.loading = true;
+            state.error = null;
+            state.user = {};
+        });
+        builder.addCase(userSelfDeleteAction.fulfilled, (state, action) => {
+            state.loading = false;
+            state.user = action.payload;
+            state.isLoggedIn = false;
+        });
+        builder.addCase(userSelfDeleteAction.rejected, (state, action) => {
             state.loading = false;
             state.error = action.payload;
             state.user = {};
