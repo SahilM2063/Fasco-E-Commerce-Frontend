@@ -6,6 +6,7 @@ import defaultUser from "../../assets/default_user.png";
 import { useSelector, useDispatch } from "react-redux";
 import {
   getSingleUserProfile,
+  updateUserAddressAction,
   updateUserProfileAction,
 } from "../../redux/slices/userSlice";
 import { toast } from "react-toastify";
@@ -18,6 +19,14 @@ const Profile = () => {
     lastName: "",
     email: "",
     gender: "",
+  });
+  const [addressInfo, setAddressInfo] = useState({
+    address: "",
+    city: "",
+    state: "",
+    country: "",
+    postalCode: "",
+    phoneNumber: "",
   });
 
   const { user, message } = useSelector((state) => state?.users?.user);
@@ -36,6 +45,14 @@ const Profile = () => {
         gender: user?.gender,
       });
       setSelectedImage(user?.pfp ? user.pfp : defaultUser);
+      setAddressInfo({
+        address: user?.shippingAddress?.address || "",
+        city: user?.shippingAddress?.city || "",
+        state: user?.shippingAddress?.state || "",
+        country: user?.shippingAddress?.country || "",
+        postalCode: user?.shippingAddress?.postalCode || "",
+        phoneNumber: user?.shippingAddress?.phoneNumber || "",
+      });
     }
   }, [user]);
 
@@ -47,6 +64,14 @@ const Profile = () => {
         email: user?.email,
         gender: user?.gender,
       });
+      setAddressInfo({
+        address: user?.shippingAddress?.address || "",
+        city: user?.shippingAddress?.city || "",
+        state: user?.shippingAddress?.state || "",
+        country: user?.shippingAddress?.country || "",
+        postalCode: user?.shippingAddress?.postalCode || "",
+        phoneNumber: user?.shippingAddress?.phoneNumber || "",
+      });
       toast.success(message);
     }
     if (error) {
@@ -55,6 +80,9 @@ const Profile = () => {
   }, [isUpdated, error]);
 
   const { firstName, lastName, email, gender } = personalInfo;
+  const { address, city, state, country, postalCode, phoneNumber } =
+    addressInfo;
+
   const [selectedImage, setSelectedImage] = useState(
     user?.pfp ? user.pfp : defaultUser
   );
@@ -64,6 +92,13 @@ const Profile = () => {
   const personalInfoChangeHandler = (e) => {
     setPersonalInfo({
       ...personalInfo,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  const addressInfoChangeHandler = (e) => {
+    setAddressInfo({
+      ...addressInfo,
       [e.target.name]: e.target.value,
     });
   };
@@ -79,6 +114,23 @@ const Profile = () => {
         ...personalInfo,
         id: user?._id,
         pfp: updatedImage,
+      })
+    );
+  };
+
+  const handleAddressInfoSubmit = (e) => {
+    e.preventDefault();
+    console.log({
+      ...addressInfo,
+      firstName: user?.firstName,
+      lastName: user?.lastName,
+    });
+    dispatch(
+      updateUserAddressAction({
+        ...addressInfo,
+        firstName: user?.firstName,
+        lastName: user?.lastName,
+        id: user?._id,
       })
     );
   };
@@ -255,6 +307,8 @@ const Profile = () => {
                   className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
                   type="text"
                   name="address"
+                  value={address}
+                  onChange={addressInfoChangeHandler}
                 />
               </div>
               <div className="space-y-1 flex-1 sm:w-full">
@@ -265,18 +319,22 @@ const Profile = () => {
                   className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
                   type="text"
                   name="city"
+                  value={city}
+                  onChange={addressInfoChangeHandler}
                 />
               </div>
             </div>
             <div className="input-boxes flex sm:flex-col items-center justify-between gap-4 mb-2">
               <div className="space-y-1 flex-1 sm:w-full">
                 <label className="text-sm text-gray-500/95 font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-                  Province
+                  State
                 </label>
                 <input
                   className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
                   type="text"
-                  name="province"
+                  name="state"
+                  value={state}
+                  onChange={addressInfoChangeHandler}
                 />
               </div>
               <div className="space-y-1 flex-1 sm:w-full">
@@ -287,10 +345,12 @@ const Profile = () => {
                   className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
                   type="number"
                   name="postalCode"
+                  value={postalCode}
+                  onChange={addressInfoChangeHandler}
                 />
               </div>
             </div>
-            <div className="input-boxes flex sm:flex-col items-center justify-between gap-4">
+            <div className="input-boxes flex sm:flex-col items-center justify-between gap-4 mb-4">
               <div className="space-y-1 flex-1 sm:w-full">
                 <label className="text-sm text-gray-500/95 font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
                   Country
@@ -299,6 +359,8 @@ const Profile = () => {
                   className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
                   type="text"
                   name="country"
+                  value={country}
+                  onChange={addressInfoChangeHandler}
                 />
               </div>
               <div className="space-y-1 flex-1 sm:w-full">
@@ -309,9 +371,17 @@ const Profile = () => {
                   className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
                   type="number"
                   name="phoneNumber"
+                  value={phoneNumber}
+                  onChange={addressInfoChangeHandler}
                 />
               </div>
             </div>
+            <button
+              onClick={handleAddressInfoSubmit}
+              className="w-[calc(50%-8px)] py-2 bg-black text-white rounded-lg border-[1px] border-black"
+            >
+              {loading ? "Saving..." : "Save"}
+            </button>
           </div>
         </div>
       </div>

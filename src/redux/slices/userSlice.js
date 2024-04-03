@@ -118,6 +118,25 @@ export const updateUserProfileAction = createAsyncThunk("users/updateUserProfile
     }
 })
 
+// update user address
+
+export const updateUserAddressAction = createAsyncThunk("users/updateUserAddress", async (payload, { rejectWithValue, getState, dispatch }) => {
+    try {
+        const token = getState()?.users?.userAuth?.userInfo?.token
+        const config = {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        }
+        const { id } = payload;
+        const { data } = await axios.put(`${baseURL}/users/update-shipping/${id}`, payload, config)
+        return data
+    } catch (error) {
+        console.log(error)
+        return rejectWithValue(error?.response?.data)
+    }
+})
+
 // get user profile
 export const getSingleUserProfile = createAsyncThunk("users/getSingleUserProfile", async (_, { rejectWithValue, getState, dispatch }) => {
     try {
@@ -262,6 +281,25 @@ const userSlice = createSlice({
             state.isUpdated = true;
         })
         builder.addCase(updateUserProfileAction.rejected, (state, action) => {
+            state.loading = false;
+            state.error = action.payload;
+            state.user = {};
+            state.isUpdated = false;
+        })
+
+        // update user address
+        builder.addCase(updateUserAddressAction.pending, (state) => {
+            state.loading = true;
+            state.error = null;
+            // state.user = {};
+            state.isUpdated = false;
+        });
+        builder.addCase(updateUserAddressAction.fulfilled, (state, action) => {
+            state.loading = false;
+            state.user = action.payload;
+            state.isUpdated = true;
+        });
+        builder.addCase(updateUserAddressAction.rejected, (state, action) => {
             state.loading = false;
             state.error = action.payload;
             state.user = {};
