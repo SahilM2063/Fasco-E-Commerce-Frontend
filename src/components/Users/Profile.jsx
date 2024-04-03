@@ -8,12 +8,10 @@ import {
   getSingleUserProfile,
   updateUserProfileAction,
 } from "../../redux/slices/userSlice";
+import { toast } from "react-toastify";
 
 const Profile = () => {
   const dispatch = useDispatch();
-  const { userFound } = useSelector(
-    (state) => state?.users?.userAuth?.userInfo
-  );
 
   const [personalInfo, setPersonalInfo] = useState({
     firstName: "",
@@ -22,20 +20,40 @@ const Profile = () => {
     gender: "",
   });
 
+  const { user, message } = useSelector((state) => state?.users?.user);
+  const { loading, error, isUpdated } = useSelector((state) => state?.users);
+
   useEffect(() => {
-    dispatch(getSingleUserProfile(userFound?._id));
-    if (userFound) {
+    dispatch(getSingleUserProfile());
+  }, [dispatch]);
+
+  useEffect(() => {
+    if (user) {
       setPersonalInfo({
-        firstName: userFound?.firstName,
-        lastName: userFound?.lastName,
-        email: userFound?.email,
-        gender: userFound?.gender,
+        firstName: user?.firstName,
+        lastName: user?.lastName,
+        email: user?.email,
+        gender: user?.gender,
       });
     }
-  }, [userFound]);
+  }, [user]);
+
+  useEffect(() => {
+    if (isUpdated) {
+      setPersonalInfo({
+        firstName: user?.firstName,
+        lastName: user?.lastName,
+        email: user?.email,
+        gender: user?.gender,
+      });
+      toast.success(message);
+    }
+    if (error) {
+      toast.error(error);
+    }
+  }, [isUpdated, error]);
 
   const { firstName, lastName, email, gender } = personalInfo;
-  const { isAdmin, createdAt, pfp } = userFound;
 
   const personalInfoChangeHandler = (e) => {
     setPersonalInfo({ ...personalInfo, [e.target.name]: e.target.value });
@@ -43,7 +61,7 @@ const Profile = () => {
 
   const handlePersonalProfileSubmit = (e) => {
     e.preventDefault();
-    dispatch(updateUserProfileAction({ ...personalInfo, id: userFound?._id }));
+    dispatch(updateUserProfileAction({ ...personalInfo, id: user?._id }));
   };
 
   return (
@@ -54,7 +72,7 @@ const Profile = () => {
             <div className="avatar">
               <div className="w-24 sm:w-20 rounded-full shadow-lg">
                 <img
-                  src={pfp ? pfp : defaultUser}
+                  src={user?.pfp ? user.pfp : defaultUser}
                   alt="user"
                   className="w-full "
                 />
@@ -65,10 +83,10 @@ const Profile = () => {
                 {firstName + " " + lastName}
               </h1>
               <p className="text-xs badge badge-ghost">
-                {isAdmin ? "Admin" : "User"}
+                {user?.isAdmin ? "Admin" : "User"}
               </p>
               <p className="text-[10px] italic text-gray-500/65 tracking-wide">
-                Joined at {createdAt.slice(0, 10)}
+                Joined at {user?.createdAt && user.createdAt.slice(0, 10)}
               </p>
             </div>
           </div>

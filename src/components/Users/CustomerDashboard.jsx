@@ -56,6 +56,8 @@ const CustomerDashboard = () => {
   const [activeLinkIndex, setActiveLinkIndex] = useState(0);
   const [loading, setLoading] = useState(true);
 
+  const {userFound} = useSelector((state) => state?.users?.userAuth?.userInfo);
+
   const location = useLocation();
 
   useEffect(() => {

@@ -222,15 +222,18 @@ const userSlice = createSlice({
             state.loading = true;
             state.error = null;
             state.user = {};
+            state.isUpdated = false;
         });
         builder.addCase(getSingleUserProfile.fulfilled, (state, action) => {
             state.loading = false;
             state.user = action.payload;
+            state.isUpdated = false;
         });
         builder.addCase(getSingleUserProfile.rejected, (state, action) => {
             state.loading = false;
             state.error = action.payload;
             state.user = {};
+            state.isUpdated = false;
         })
 
         // update user profile
