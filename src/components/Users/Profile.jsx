@@ -138,11 +138,6 @@ const Profile = () => {
               </p>
             </div>
           </div>
-          <div className="edit">
-            <button className="border rounded-3xl sm:rounded-2xl sm:text-xs font-[Poppins] flex items-center gap-2 sm:gap-1 px-4 py-2 sm:px-2">
-              Edit <img src={editPenSvg} alt="edit" className="w-4 sm:w-3" />
-            </button>
-          </div>
         </div>
         <hr className="my-4" />
         <div className="personal-info w-full p-4 sm:p-2">
@@ -241,9 +236,9 @@ const Profile = () => {
             </div>
             <button
               onClick={handlePersonalProfileSubmit}
-              className="w-[50%] py-2 bg-black text-white rounded-lg border-[1px] border-black"
+              className="w-[calc(50%-8px)] py-2 bg-black text-white rounded-lg border-[1px] border-black"
             >
-              save
+              {loading ? "Saving..." : "Save"}
             </button>
           </div>
 
