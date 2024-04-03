@@ -9,7 +9,7 @@ import {
 } from "../../redux/slices/userSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
-import default1 from "./assets/default1.png";
+import defaultUser from "../../assets/default_user.png";
 
 const Customers = () => {
   const dispatch = useDispatch();
@@ -42,7 +42,7 @@ const Customers = () => {
 
   // pagination state
   const [currentPage, setCurrentPage] = useState(1);
-  const [perPageLimit, setPerPageLimit] = useState(1);
+  const [perPageLimit, setPerPageLimit] = useState(10);
 
   // pagination logic
   const totalPages = Math.ceil(users?.length / perPageLimit);
@@ -147,7 +147,7 @@ export const TrComponent = ({ id, user, handleUserDelete }) => {
           <img
             className="shadow-md rounded-full object-cover w-10 h-10 mr-3"
             alt="product image"
-            src={user?.image ? user?.image : default1}
+            src={user?.pfp ? user?.pfp : defaultUser}
           />
           <div className="flex flex-col items-start justify-center gap-1">
             <p>{user?.firstName + " " + user?.lastName}</p>

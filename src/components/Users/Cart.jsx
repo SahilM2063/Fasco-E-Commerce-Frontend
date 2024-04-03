@@ -201,9 +201,12 @@ const Cart = () => {
                     />
                   </div>
                   <div className="content flex-1 flex flex-col gap-1 justify-between">
-                    <h1 className="font-[Poppins] font-semibold text-md">
+                    <Link
+                      to={`/product/${product?.productId?._id}`}
+                      className="font-[Poppins] font-semibold text-md"
+                    >
                       {product?.productId?.name}
-                    </h1>
+                    </Link>
                     <span className="text-[10px] font-semibold font-[Poppins]">
                       Color : {product?.color}
                     </span>
