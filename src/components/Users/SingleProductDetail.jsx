@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 /* eslint-disable no-unused-vars */
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
@@ -8,6 +9,7 @@ import emptyStar from "../../assets/emptyStar.svg";
 import { addToCartAction } from "../../redux/slices/cartSlice";
 import { toast } from "react-toastify";
 import { createReviewAction } from "../../redux/slices/reviewSlice";
+import defaultPfp from "../../assets/default_user.png";
 
 const SingleProductDetail = () => {
   const dispatch = useDispatch();
@@ -352,6 +354,18 @@ const SingleProductDetail = () => {
             </form>
           </div>
         )}
+        {product?.reviews?.length ? (
+          product?.reviews?.map((review) => (
+            <>
+              <ReviewComponent key={review._id} review={review} />
+              <hr />
+            </>
+          ))
+        ) : (
+          <p className="text-center text-xl font-[Poppins] font-semibold">
+            No reviews yet
+          </p>
+        )}
       </div>
     </div>
   );
@@ -367,4 +381,27 @@ const renderStars = (rating) => {
     <img key={`empty_${index}`} src={emptyStar} alt="Empty Star" />
   ));
   return [...filledStars, ...emptyStars];
+};
+
+export const ReviewComponent = ({ review }) => {
+  return (
+    <div className="w-full flex justify-between items-start my-4  py-4">
+      <div className="pfp-container w-[10%]">
+        <img
+          src={review?.user?.pfp || defaultPfp}
+          alt="pfp"
+          className="size-20 object-cover rounded-full"
+        />
+      </div>
+      <div className="review-details flex-1 flex flex-col items-start gap-4 font-[Poppins]">
+        <span className="font-semibold text-xl">
+          {review?.user?.firstName + " " + review?.user?.lastName}
+        </span>
+        <p className="w-full text-sm">{review?.comment}</p>
+      </div>
+      <div className="flex items-center gap-1">
+        {renderStars(review?.rating)}
+      </div>
+    </div>
+  );
 };
