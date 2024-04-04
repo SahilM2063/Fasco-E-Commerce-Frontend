@@ -26,6 +26,9 @@ const SingleProductDetail = () => {
   }, [dispatch]);
 
   const { product } = useSelector((state) => state?.products?.product);
+  const { userFound } = useSelector(
+    (state) => state?.users?.userAuth?.userInfo
+  );
   // console.log(product);
 
   const [countVal, setCountVal] = useState(1);
@@ -51,10 +54,10 @@ const SingleProductDetail = () => {
     });
   }, [countVal, selectedSize, selectedColor, product]);
 
-  console.log(productData);
+  // console.log(productData);
 
   const handleAddToCart = () => {
-    console.log(productData);
+    // console.log(productData);
     dispatch(addToCartAction(productData));
   };
 
@@ -82,6 +85,11 @@ const SingleProductDetail = () => {
       toast.error(error?.message);
     }
   }, [isAdded, error]);
+
+  // rating start
+  const hasAlreadyRated = product?.reviews?.some(
+    (review) => review?.user === userFound?._id
+  );
 
   // rating box
   const [ratingData, setRatingData] = useState({
@@ -172,9 +180,9 @@ const SingleProductDetail = () => {
               {product?.name}
             </h1>
             <div className="flex items-center">
-              {/* {renderStars(rating)} */}
+              {renderStars(product?.rating)}
               <span className="ml-3 text-sm font-semibold font-[Poppins]">
-                (3)
+                ({product?.reviews?.length})
               </span>
             </div>
           </div>
@@ -311,38 +319,39 @@ const SingleProductDetail = () => {
         <h1 className="font-[Volkhov] text-xl font-semibold">
           Customer Reviews
         </h1>
-
-        <div className="review_form w-full mt-4">
-          <form className="space-y-4">
-            <div className="flex items-center gap-1">
-              {[1, 2, 3, 4, 5].map((star, index) => (
-                <img
-                  key={index}
-                  src={index < selectedStar ? filledStar : emptyStar}
-                  alt={`Star ${star}`}
-                  onClick={() => handleStarClick(index + 1)}
-                  className="star w-6 cursor-pointer"
-                />
-              ))}
-            </div>
-            <textarea
-              className="w-full outline-none border-[1px] focus:border-black border-gray-300 p-4 rounded-md resize-none placeholder:font-[Poppins]"
-              rows={4}
-              value={comment}
-              onChange={(e) =>
-                setRatingData({ ...ratingData, comment: e.target.value })
-              }
-              placeholder={"Write a review..."}
-            ></textarea>
-            <button
-              type="submit"
-              onClick={handleReviewSubmit}
-              className="text-white bg-black px-4 py-3 rounded-md text-sm"
-            >
-              {reviewLoading ? "Submitting..." : "Submit"}
-            </button>
-          </form>
-        </div>
+        {!hasAlreadyRated && (
+          <div className="review_form w-full mt-4">
+            <form className="space-y-4">
+              <div className="flex items-center gap-1">
+                {[1, 2, 3, 4, 5].map((star, index) => (
+                  <img
+                    key={index}
+                    src={index < selectedStar ? filledStar : emptyStar}
+                    alt={`Star ${star}`}
+                    onClick={() => handleStarClick(index + 1)}
+                    className="star w-6 cursor-pointer"
+                  />
+                ))}
+              </div>
+              <textarea
+                className="w-full outline-none border-[1px] focus:border-black border-gray-300 p-4 rounded-md resize-none placeholder:font-[Poppins]"
+                rows={4}
+                value={comment}
+                onChange={(e) =>
+                  setRatingData({ ...ratingData, comment: e.target.value })
+                }
+                placeholder={"Write a review..."}
+              ></textarea>
+              <button
+                type="submit"
+                onClick={handleReviewSubmit}
+                className="text-white bg-black px-4 py-3 rounded-md text-sm"
+              >
+                {reviewLoading ? "Submitting..." : "Submit"}
+              </button>
+            </form>
+          </div>
+        )}
       </div>
     </div>
   );
