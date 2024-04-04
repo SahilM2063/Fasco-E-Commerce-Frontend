@@ -264,13 +264,13 @@ const Cart = () => {
         <hr className="w-full my-4 outline-none border-black" />
         <div className="w-full mt-8 flex justify-between items-start">
           <div className="coupon-details space-y-2">
-            <h1 className="font-[Poppins] font-semibold text-lg">
+            <h1 className="font-[Volkhov] font-semibold text-lg">
               Have a coupon ?
             </h1>
             <p className="text-[13px] font-[Poppins] text-[#6C7275]">
               Add your code for an instant cart discount
             </p>
-            <div className="max-w-[30%] flex gap-3 px-3 justify-between items-center border border-[#6C7275] rounded-md font-[Poppins]">
+            <div className="flex gap-3 px-3 justify-between items-center border border-[#6C7275] rounded-md font-[Poppins]">
               <img src={couponSvg} alt="couponSvg" className="w-6" />
               <input
                 type="text"
@@ -280,10 +280,56 @@ const Cart = () => {
               <button className="text-sm">Apply</button>
             </div>
           </div>
-          <div className="cart-summery">
-            <h1>Cart Summery</h1>
-            <p>Total Items : {cartData?.length}</p>
-            <p>Total Price : {totalCartValue}</p>
+          <div className="cart-summery w-[40%]  border border-[#6C7275]/50 rounded-md p-4">
+            <h1 className="font-[Volkhov] font-semibold text-xl mb-4">
+              Cart Summery
+            </h1>
+            <div className="flex flex-col items-start gap-2">
+              <div className="flex justify-between items-center w-full">
+                <span className="font-[Poppins] text-black/70 tracking-wide text-sm">
+                  Total Items
+                </span>
+                <span className="font-[Poppins] font-semibold text-sm">
+                  {cartData?.length}
+                </span>
+              </div>
+              <div className="flex justify-between items-center w-full">
+                <span className="font-[Poppins] text-black/70 tracking-wide text-sm">
+                  Shipping Charge
+                </span>
+                <span className="font-[Poppins] font-semibold text-sm">
+                  ₹ {0}
+                </span>
+              </div>
+              <div className="flex justify-between items-center w-full">
+                <span className="font-[Poppins] text-black/70 tracking-wide text-sm">
+                  SubTotal
+                </span>
+                <span className="font-[Poppins] font-semibold text-sm">
+                  ₹ {totalCartValue}
+                </span>
+              </div>
+              <div className="flex justify-between items-center w-full">
+                <span className="font-[Poppins] text-black/70 tracking-wide text-sm">
+                  Coupon Discount
+                </span>
+                <span className="font-[Poppins] font-semibold text-sm">
+                  50% off
+                </span>
+              </div>
+              <hr className="w-full my-4 outline-none border-black" />
+              <div className="flex justify-between items-center w-full">
+                <span className="font-[Poppins] text-black/70 tracking-wide font-semibold text-lg">
+                  Total
+                </span>
+                <span className="font-[Poppins] font-semibold text-xl">
+                  ₹ {totalCartValue}
+                </span>
+              </div>
+              <button className="w-full bg-black rounded-md text-white py-2 font-[Poppins] mt-2">
+                Checkout
+              </button>
+            </div> 
           </div>
         </div>
       </div>
