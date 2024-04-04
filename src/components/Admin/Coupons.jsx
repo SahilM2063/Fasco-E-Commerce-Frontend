@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   createCouponAction,
   deleteCouponAction,
-  geAllCouponsAction,
+  getAllCouponsAction,
   updateCouponAction,
 } from "../../redux/slices/couponSlice.js";
 import { toast } from "react-toastify";
@@ -16,7 +16,7 @@ const Coupons = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(geAllCouponsAction());
+    dispatch(getAllCouponsAction());
   }, [dispatch]);
 
   const { coupons } = useSelector((state) => state?.coupons?.coupons);
@@ -45,7 +45,7 @@ const Coupons = () => {
     }
     if (isDeleted) {
       toast.success("Coupon deleted successfully");
-      dispatch(geAllCouponsAction());
+      dispatch(getAllCouponsAction());
     }
   }, [error, isDeleted, deletedCoupon]);
 
@@ -262,7 +262,7 @@ export const AddCoupon = ({ showAddCoupon, setShowAddCoupon }) => {
     if (isAdded) {
       toast.success(coupon?.message);
       setShowAddCoupon(false);
-      dispatch(geAllCouponsAction());
+      dispatch(getAllCouponsAction());
       setCouponFormData({
         code: "",
         discount: 0,
@@ -408,10 +408,11 @@ export const UpdateCoupon = ({
     if (isUpdated) {
       toast.success(coupon?.message);
       setShowUpdateCoupon(false);
-      dispatch(geAllCouponsAction());
+      dispatch(getAllCouponsAction());
     }
     if (error) {
       toast.error(error?.message);
+      dispatch(getAllCouponsAction());
     }
   }, [isUpdated, coupon, error]);
 

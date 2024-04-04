@@ -14,7 +14,7 @@ const initialState = {
     isUpdated: false,
 };
 
-export const geAllCouponsAction = createAsyncThunk(
+export const getAllCouponsAction = createAsyncThunk(
     "coupons/getAllCoupons", async (payload, { rejectWithValue, getState, dispatch }) => {
         try {
             const token = getState()?.users?.userAuth?.userInfo?.token;
@@ -94,18 +94,18 @@ const couponSlice = createSlice({
     initialState,
     extraReducers: (builder) => {
         // get all coupons
-        builder.addCase(geAllCouponsAction.pending, (state, action) => {
+        builder.addCase(getAllCouponsAction.pending, (state, action) => {
             state.isAdded = false;
             state.isUpdated = false;
             state.isDeleted = false;
             state.loading = true;
             state.error = null;
         });
-        builder.addCase(geAllCouponsAction.fulfilled, (state, action) => {
+        builder.addCase(getAllCouponsAction.fulfilled, (state, action) => {
             state.loading = false;
             state.coupons = action?.payload;
         });
-        builder.addCase(geAllCouponsAction.rejected, (state, action) => {
+        builder.addCase(getAllCouponsAction.rejected, (state, action) => {
             state.loading = false;
             state.error = action?.payload;
         })
