@@ -4,7 +4,11 @@ import React, { useEffect, useState } from "react";
 import editSvg from "./assets/edit.svg";
 import deleteSvg from "./assets/delete.svg";
 import { useDispatch, useSelector } from "react-redux";
-import { geAllCouponsAction } from "../../redux/slices/couponSlice.js";
+import {
+  createCouponAction,
+  geAllCouponsAction,
+} from "../../redux/slices/couponSlice.js";
+import { toast } from "react-toastify";
 
 const Coupons = () => {
   const dispatch = useDispatch();
@@ -174,6 +178,48 @@ export const TrComponent = ({ id, coupon, setShowUpdateCoupon }) => {
 };
 
 export const AddCoupon = ({ showAddCoupon, setShowAddCoupon }) => {
+  const dispatch = useDispatch();
+  const [couponFormData, setCouponFormData] = useState({
+    code: "",
+    discount: 0,
+    startDate: "",
+    endDate: "",
+  });
+
+  const { code, discount, startDate, endDate } = couponFormData;
+
+  const handleAddCouponChange = (e) => {
+    setCouponFormData({
+      ...couponFormData,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  const handleAddCouponSubmit = (e) => {
+    e.preventDefault();
+    dispatch(createCouponAction(couponFormData));
+  };
+
+  const { loading, isAdded, coupon, error } = useSelector(
+    (state) => state?.coupons
+  );
+
+  useEffect(() => {
+    if (isAdded) {
+      toast.success(coupon?.message);
+      setShowAddCoupon(false);
+      setCouponFormData({
+        code: "",
+        discount: 0,
+        startDate: "",
+        endDate: "",
+      });
+    }
+    if (error) {
+      toast.error(error?.message);
+    }
+  }, [isAdded, coupon, error]);
+
   return (
     showAddCoupon && (
       <div className="w-full h-full fixed top-0 left-0 z-50 bg-black/50 backdrop-blur-sm">
@@ -193,6 +239,8 @@ export const AddCoupon = ({ showAddCoupon, setShowAddCoupon }) => {
                     placeholder="Enter coupon code"
                     type="text"
                     name="code"
+                    value={code}
+                    onChange={handleAddCouponChange}
                     autoFocus
                   />
                 </div>
@@ -203,8 +251,10 @@ export const AddCoupon = ({ showAddCoupon, setShowAddCoupon }) => {
                   <input
                     className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
                     placeholder="Enter discount"
-                    type="text"
+                    type="number"
                     name="discount"
+                    value={discount}
+                    onChange={handleAddCouponChange}
                   />
                 </div>
               </div>
@@ -217,6 +267,8 @@ export const AddCoupon = ({ showAddCoupon, setShowAddCoupon }) => {
                     className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
                     type="date"
                     name="startDate"
+                    value={startDate}
+                    onChange={handleAddCouponChange}
                   />
                 </div>
                 <div className="space-y-1 flex-1">
@@ -227,15 +279,22 @@ export const AddCoupon = ({ showAddCoupon, setShowAddCoupon }) => {
                     className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
                     type="date"
                     name="endDate"
+                    value={endDate}
+                    onChange={handleAddCouponChange}
                   />
                 </div>
               </div>
               <div className="flex items-center gap-4 mt-2">
-                <button className="w-full sm:w-full py-2 space-y-2 bg-black text-white rounded-lg ">
-                  Add
+                <button
+                  onClick={handleAddCouponSubmit}
+                  className="w-full sm:w-full py-2 space-y-2 bg-black text-white rounded-lg "
+                >
+                  {loading ? "Adding..." : "Add"}
                 </button>
                 <button
-                  onClick={() => setShowAddCoupon(false)}
+                  onClick={() => {
+                    setShowAddCoupon(false);
+                  }}
                   className="w-full sm:w-full py-2 space-y-2 bg-black text-white rounded-lg "
                 >
                   Cancel
