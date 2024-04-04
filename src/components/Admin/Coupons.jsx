@@ -6,6 +6,7 @@ import deleteSvg from "./assets/delete.svg";
 import { useDispatch, useSelector } from "react-redux";
 import {
   createCouponAction,
+  deleteCouponAction,
   geAllCouponsAction,
   updateCouponAction,
 } from "../../redux/slices/couponSlice.js";
@@ -23,6 +24,30 @@ const Coupons = () => {
   const [showAddCoupon, setShowAddCoupon] = useState(false);
   const [showUpdateCoupon, setShowUpdateCoupon] = useState(false);
   const [currentCoupon, setCurrentCoupon] = useState();
+
+  const handleDeleteCoupon = (id) => {
+    if (window.confirm("Are you sure you want to delete this coupon?")) {
+      dispatch(deleteCouponAction(id));
+    }
+    return;
+  };
+
+  const {
+    loading,
+    error,
+    isDeleted,
+    coupon: deletedCoupon,
+  } = useSelector((state) => state?.coupons);
+
+  useEffect(() => {
+    if (error) {
+      toast.error(error?.message);
+    }
+    if (isDeleted) {
+      toast.success("Coupon deleted successfully");
+      dispatch(geAllCouponsAction());
+    }
+  }, [error, isDeleted, deletedCoupon]);
 
   // pagination state
   const [currentPage, setCurrentPage] = useState(1);
@@ -73,7 +98,7 @@ const Coupons = () => {
               </th>
               <th className="text-left font-[poppins] font-semibold">Status</th>
               <th className="text-left font-[poppins] font-semibold">
-                Duration
+                Duration Left
               </th>
               <th className="text-left font-[poppins] font-semibold">
                 Start Date
@@ -95,6 +120,7 @@ const Coupons = () => {
                   id={index}
                   setShowUpdateCoupon={setShowUpdateCoupon}
                   setCurrentCoupon={setCurrentCoupon}
+                  handleDeleteCoupon={handleDeleteCoupon}
                 />
               );
             })}
@@ -147,7 +173,10 @@ export const TrComponent = ({
   coupon,
   setShowUpdateCoupon,
   setCurrentCoupon,
+  handleDeleteCoupon,
 }) => {
+  const dispatch = useDispatch();
+
   return (
     <tr className="h-16 text-sm leading-none text-gray-700 border-b border-t border-gray-200 bg-white hover:bg-gray-100 font-[Poppins]">
       <td className="pl-4 font-semibold">{id + 1}</td>
@@ -171,7 +200,7 @@ export const TrComponent = ({
         </div>
       </td>
       <td>
-        <p className="mr-16">4 days</p>
+        <p className="mr-16">{coupon?.daysLeft}</p>
       </td>
       <td>
         <p className="mr-16">{coupon?.startDate.slice(0, 10)}</p>
@@ -190,7 +219,10 @@ export const TrComponent = ({
           >
             <img src={editSvg} alt="editSvg" className="w-5" />
           </button>
-          <button className="rounded-md focus:outline-none">
+          <button
+            onClick={() => handleDeleteCoupon(coupon?._id)}
+            className="rounded-md focus:outline-none"
+          >
             <img src={deleteSvg} alt="deleteSvg" className="w-6" />
           </button>
         </div>
@@ -230,6 +262,7 @@ export const AddCoupon = ({ showAddCoupon, setShowAddCoupon }) => {
     if (isAdded) {
       toast.success(coupon?.message);
       setShowAddCoupon(false);
+      dispatch(geAllCouponsAction());
       setCouponFormData({
         code: "",
         discount: 0,
