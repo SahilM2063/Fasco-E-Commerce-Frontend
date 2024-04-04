@@ -52,6 +52,24 @@ export const createCouponAction = createAsyncThunk("coupons/createCoupon", async
     }
 })
 
+export const updateCouponAction = createAsyncThunk("coupons/updateCoupon", async (payload, { rejectWithValue, getState, dispatch }) => {
+    try {
+        const token = getState()?.users?.userAuth?.userInfo?.token;
+        const config = {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        }
+        const { data } = await axios.put(`${baseURL}/coupons/${payload._id}`, payload, config);
+        return data;
+    } catch (error) {
+        if (!error?.response) {
+            throw error;
+        }
+        return rejectWithValue(error?.response?.data);
+    }
+})
+
 
 const couponSlice = createSlice({
     name: "brands",
@@ -90,6 +108,24 @@ const couponSlice = createSlice({
             state.coupon = {};
         })
 
+        // update coupon
+        builder.addCase(updateCouponAction.pending, (state, action) => {
+            state.loading = true;
+            state.isUpdated = false;
+            state.coupon = {};
+            state.error = null;
+        });
+        builder.addCase(updateCouponAction.fulfilled, (state, action) => {
+            state.loading = false;
+            state.isUpdated = true;
+            state.coupon = action?.payload;
+        });
+        builder.addCase(updateCouponAction.rejected, (state, action) => {
+            state.loading = false;
+            state.error = action?.payload;
+            state.isUpdated = false;
+            state.coupon = {};
+        })
     }
 })
 

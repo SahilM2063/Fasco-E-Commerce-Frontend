@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   createCouponAction,
   geAllCouponsAction,
+  updateCouponAction,
 } from "../../redux/slices/couponSlice.js";
 import { toast } from "react-toastify";
 
@@ -21,6 +22,7 @@ const Coupons = () => {
 
   const [showAddCoupon, setShowAddCoupon] = useState(false);
   const [showUpdateCoupon, setShowUpdateCoupon] = useState(false);
+  const [currentCoupon, setCurrentCoupon] = useState();
 
   // pagination state
   const [currentPage, setCurrentPage] = useState(1);
@@ -44,7 +46,7 @@ const Coupons = () => {
         <span>Coupons</span>
         <button
           onClick={() => setShowAddCoupon(true)}
-          className="px-4 bg-black rounded-md text-white py-2 font-[Poppins] mt-2"
+          className="px-4 text-sm bg-black rounded-md text-white py-2 font-[Poppins] mt-2"
         >
           Create Coupon
         </button>
@@ -56,6 +58,7 @@ const Coupons = () => {
       <UpdateCoupon
         setShowUpdateCoupon={setShowUpdateCoupon}
         showUpdateCoupon={showUpdateCoupon}
+        currentCoupon={currentCoupon}
       />
       <div className="bg-white mt-4 rounded-lg border overflow-x-auto scrollbar-hide">
         <table className="w-full whitespace-nowrap">
@@ -73,10 +76,10 @@ const Coupons = () => {
                 Duration
               </th>
               <th className="text-left font-[poppins] font-semibold">
-                Start <br /> Date
+                Start Date
               </th>
               <th className="text-left font-[poppins] font-semibold">
-                End <br /> Date
+                End Date
               </th>
               <th className="text-left w-32 font-[poppins] font-semibold">
                 Actions
@@ -91,6 +94,7 @@ const Coupons = () => {
                   key={coupon?._id}
                   id={index}
                   setShowUpdateCoupon={setShowUpdateCoupon}
+                  setCurrentCoupon={setCurrentCoupon}
                 />
               );
             })}
@@ -138,7 +142,12 @@ const Coupons = () => {
 
 export default Coupons;
 
-export const TrComponent = ({ id, coupon, setShowUpdateCoupon }) => {
+export const TrComponent = ({
+  id,
+  coupon,
+  setShowUpdateCoupon,
+  setCurrentCoupon,
+}) => {
   return (
     <tr className="h-16 text-sm leading-none text-gray-700 border-b border-t border-gray-200 bg-white hover:bg-gray-100 font-[Poppins]">
       <td className="pl-4 font-semibold">{id + 1}</td>
@@ -149,7 +158,17 @@ export const TrComponent = ({ id, coupon, setShowUpdateCoupon }) => {
         <p className="mr-16 pl-10">{coupon?.discount}%</p>
       </td>
       <td>
-        <p className="mr-16">{coupon?.isExpired ? "Expired" : "Active"}</p>
+        <div className="">
+          {coupon?.isExpired ? (
+            <div className="flex items-center justify-center w-20 h-6 bg-red-100 rounded-full mr-8">
+              <p className="text-xs leading-3 text-red-600">Expired</p>
+            </div>
+          ) : (
+            <div className="flex items-center justify-center w-20 h-6 bg-green-100 rounded-full mr-8">
+              <p className="text-xs leading-3 text-green-600">Active</p>
+            </div>
+          )}
+        </div>
       </td>
       <td>
         <p className="mr-16">4 days</p>
@@ -163,7 +182,10 @@ export const TrComponent = ({ id, coupon, setShowUpdateCoupon }) => {
       <td>
         <div className="flex items-center gap-8 md:gap-4 sm:gap-4">
           <button
-            onClick={() => setShowUpdateCoupon(true)}
+            onClick={() => {
+              setShowUpdateCoupon(true);
+              setCurrentCoupon(coupon);
+            }}
             className="rounded-md focus:outline-none"
           >
             <img src={editSvg} alt="editSvg" className="w-5" />
@@ -308,7 +330,58 @@ export const AddCoupon = ({ showAddCoupon, setShowAddCoupon }) => {
   );
 };
 
-export const UpdateCoupon = ({ showUpdateCoupon, setShowUpdateCoupon }) => {
+export const UpdateCoupon = ({
+  showUpdateCoupon,
+  setShowUpdateCoupon,
+  currentCoupon,
+}) => {
+  const dispatch = useDispatch();
+  const [couponFormData, setCouponFormData] = useState({});
+  useEffect(() => {
+    if (currentCoupon) {
+      const formattedStartDate = new Date(currentCoupon.startDate)
+        .toISOString()
+        .split("T")[0];
+      const formattedEndDate = new Date(currentCoupon.endDate)
+        .toISOString()
+        .split("T")[0];
+      setCouponFormData({
+        ...currentCoupon,
+        startDate: formattedStartDate,
+        endDate: formattedEndDate,
+      });
+    }
+  }, [currentCoupon]);
+
+  const { code, discount, startDate, endDate } = couponFormData;
+
+  const handleUpdateCouponChange = (e) => {
+    setCouponFormData({
+      ...couponFormData,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  const handleUpdateCouponSubmit = (e) => {
+    e.preventDefault();
+    dispatch(updateCouponAction(couponFormData));
+  };
+
+  const { loading, error, isUpdated, coupon } = useSelector(
+    (state) => state?.coupons
+  );
+
+  useEffect(() => {
+    if (isUpdated) {
+      toast.success(coupon?.message);
+      setShowUpdateCoupon(false);
+      dispatch(geAllCouponsAction());
+    }
+    if (error) {
+      toast.error(error?.message);
+    }
+  }, [isUpdated, coupon, error]);
+
   return (
     showUpdateCoupon && (
       <div className="w-full h-full fixed top-0 left-0 z-50 bg-black/50 backdrop-blur-sm">
@@ -328,6 +401,8 @@ export const UpdateCoupon = ({ showUpdateCoupon, setShowUpdateCoupon }) => {
                     placeholder="Enter coupon code"
                     type="text"
                     name="code"
+                    value={code}
+                    onChange={handleUpdateCouponChange}
                     autoFocus
                   />
                 </div>
@@ -340,6 +415,8 @@ export const UpdateCoupon = ({ showUpdateCoupon, setShowUpdateCoupon }) => {
                     placeholder="Enter discount"
                     type="text"
                     name="discount"
+                    value={discount}
+                    onChange={handleUpdateCouponChange}
                   />
                 </div>
               </div>
@@ -352,6 +429,8 @@ export const UpdateCoupon = ({ showUpdateCoupon, setShowUpdateCoupon }) => {
                     className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
                     type="date"
                     name="startDate"
+                    value={startDate}
+                    onChange={handleUpdateCouponChange}
                   />
                 </div>
                 <div className="space-y-1 flex-1">
@@ -362,12 +441,17 @@ export const UpdateCoupon = ({ showUpdateCoupon, setShowUpdateCoupon }) => {
                     className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
                     type="date"
                     name="endDate"
+                    value={endDate}
+                    onChange={handleUpdateCouponChange}
                   />
                 </div>
               </div>
               <div className="flex items-center gap-4 mt-2">
-                <button className="w-full sm:w-full py-2 space-y-2 bg-black text-white rounded-lg ">
-                  Add
+                <button
+                  onClick={handleUpdateCouponSubmit}
+                  className="w-full sm:w-full py-2 space-y-2 bg-black text-white rounded-lg "
+                >
+                  {loading ? "Updating..." : "Update"}
                 </button>
                 <button
                   onClick={() => setShowUpdateCoupon(false)}
