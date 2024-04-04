@@ -7,13 +7,12 @@ import filledStar from "../../assets/filledStar.svg";
 import emptyStar from "../../assets/emptyStar.svg";
 import { addToCartAction } from "../../redux/slices/cartSlice";
 import { toast } from "react-toastify";
+import { createReviewAction } from "../../redux/slices/reviewSlice";
 
 const SingleProductDetail = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { id } = useParams();
-
-  const rating = 1;
 
   useEffect(() => {
     dispatch(getSingleProductAction(id));
@@ -85,16 +84,56 @@ const SingleProductDetail = () => {
   }, [isAdded, error]);
 
   // rating box
-  const [showRatingBox, setShowRatingBox] = useState(false);
-
+  const [ratingData, setRatingData] = useState({
+    rating: 0,
+    comment: "",
+  });
+  const { rating, comment } = ratingData;
   // rating star selection
   const [selectedStar, setSelectedStar] = useState(0);
 
   const handleStarClick = (index) => {
     setSelectedStar(index);
+    setRatingData({
+      ...ratingData,
+      rating: index,
+    });
   };
 
-  console.log(selectedStar);
+  const handleReviewSubmit = (e) => {
+    e.preventDefault();
+    if (rating === 0) {
+      toast.error("Please select a rating");
+      return;
+    }
+    if (comment === "") {
+      toast.error("Please enter a comment");
+      return;
+    }
+    dispatch(createReviewAction({ ...ratingData, productId: id }));
+  };
+
+  const {
+    loading: reviewLoading,
+    error: reviewError,
+    isAdded: reviewIsAdded,
+    review,
+  } = useSelector((state) => state?.reviews);
+
+  useEffect(() => {
+    if (reviewIsAdded) {
+      toast.success(review?.message);
+      setRatingData({
+        rating: 0,
+        comment: "",
+      });
+      setSelectedStar(0);
+      dispatch(getSingleProductAction(id));
+    }
+    if (reviewError) {
+      toast.error(reviewError?.message);
+    }
+  }, [reviewIsAdded, reviewError]);
 
   return (
     <div className="w-full px-32 pb-6 md:px-10 sm:px-6 mt-8">
@@ -133,7 +172,7 @@ const SingleProductDetail = () => {
               {product?.name}
             </h1>
             <div className="flex items-center">
-              {renderStars(rating)}
+              {/* {renderStars(rating)} */}
               <span className="ml-3 text-sm font-semibold font-[Poppins]">
                 (3)
               </span>
@@ -267,41 +306,43 @@ const SingleProductDetail = () => {
           </div>
         </div>
       </div>
-      <div className="reviews w-full mt-14 pt-4 border-t-[1px] border-[#484848]/70 px-10">
-        <div className="flex items-center justify-between font-[Poppins]">
-          <h1 className="font-[Volkhov] text-xl font-semibold">
-            Customer Reviews
-          </h1>
-          <button
-            onClick={() => setShowRatingBox(!showRatingBox)}
-            className="text-white bg-black px-4 py-3 rounded-md text-sm"
-          >
-            {showRatingBox ? "Cancel" : "Write a review"}
-          </button>
-        </div>
 
-        {showRatingBox && (
-          <div className="review_form w-full mt-4">
-            <form className="space-y-4">
-              <div className="flex items-center gap-1">
-                {[1, 2, 3, 4, 5].map((star, index) => (
-                  <img
-                    key={index}
-                    src={index < selectedStar ? filledStar : emptyStar}
-                    alt={`Star ${star}`}
-                    onClick={() => handleStarClick(index + 1)}
-                    className="star w-6 cursor-pointer"
-                  />
-                ))}
-              </div>
-              <textArea
-                className="w-full outline-none border-[1px] focus:border-black border-gray-300 p-4 rounded-md resize-none placeholder:font-[Poppins]"
-                rows={4}
-                placeholder={"Write a review..."}
-              />
-            </form>
-          </div>
-        )}
+      <div className="reviews w-full mt-14 pt-4 border-t-[1px] border-[#484848]/70 md:px-10">
+        <h1 className="font-[Volkhov] text-xl font-semibold">
+          Customer Reviews
+        </h1>
+
+        <div className="review_form w-full mt-4">
+          <form className="space-y-4">
+            <div className="flex items-center gap-1">
+              {[1, 2, 3, 4, 5].map((star, index) => (
+                <img
+                  key={index}
+                  src={index < selectedStar ? filledStar : emptyStar}
+                  alt={`Star ${star}`}
+                  onClick={() => handleStarClick(index + 1)}
+                  className="star w-6 cursor-pointer"
+                />
+              ))}
+            </div>
+            <textarea
+              className="w-full outline-none border-[1px] focus:border-black border-gray-300 p-4 rounded-md resize-none placeholder:font-[Poppins]"
+              rows={4}
+              value={comment}
+              onChange={(e) =>
+                setRatingData({ ...ratingData, comment: e.target.value })
+              }
+              placeholder={"Write a review..."}
+            ></textarea>
+            <button
+              type="submit"
+              onClick={handleReviewSubmit}
+              className="text-white bg-black px-4 py-3 rounded-md text-sm"
+            >
+              {reviewLoading ? "Submitting..." : "Submit"}
+            </button>
+          </form>
+        </div>
       </div>
     </div>
   );

@@ -3,7 +3,7 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 import baseURL from "../../utils/baseURL.js";
 
-// initial state for product
+// initial state for coupons
 const initialState = {
     coupons: [],
     coupon: {},
