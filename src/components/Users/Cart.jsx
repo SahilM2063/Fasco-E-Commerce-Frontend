@@ -9,7 +9,7 @@ import {
 } from "../../redux/slices/cartSlice";
 import emptyCartIllustration from "../../assets/empty_cart_illustration.svg";
 import { toast } from "react-toastify";
-import ig1 from "../../assets/ig1.png";
+import couponSvg from "../../assets/coupon.svg";
 import { Link } from "react-router-dom";
 
 const Cart = () => {
@@ -18,11 +18,16 @@ const Cart = () => {
   useEffect(() => {
     dispatch(getCartDataAction());
   }, [dispatch]);
+  const [quantities, setQuantities] = useState({});
 
   const { cart, loading, productMsg, error, isDeleted } = useSelector(
     (state) => state?.cart
   );
   const cartData = cart?.user?.cart;
+
+  const [totalCartValue, setTotalCartValue] = useState(
+    cart?.user?.totalCartValue
+  );
 
   const handleRemoveFromCart = (id) => {
     if (window.confirm("Are you sure you want to remove this product?")) {
@@ -69,8 +74,6 @@ const Cart = () => {
     }
   };
 
-  const [quantities, setQuantities] = useState({});
-
   const setQuantity = (id, quantity) => {
     setQuantities({
       ...quantities,
@@ -78,7 +81,16 @@ const Cart = () => {
     });
   };
 
-  const { isUpdated } = useSelector((state) => state?.cart);
+  // for updating cart total
+  useEffect(() => {
+    if (cartData) {
+      const newTotal = cartData.reduce((acc, product) => {
+        const quantity = quantities[product._id] || product.quantity;
+        return acc + product.price * quantity;
+      }, 0);
+      setTotalCartValue(newTotal);
+    }
+  }, [cartData, quantities]);
 
   return (
     <div className="w-full px-32 pb-6 md:px-10 sm:px-6 mt-8">
@@ -249,6 +261,31 @@ const Cart = () => {
             </div>
           </>
         )}
+        <hr className="w-full my-4 outline-none border-black" />
+        <div className="w-full mt-8 flex justify-between items-start">
+          <div className="coupon-details space-y-2">
+            <h1 className="font-[Poppins] font-semibold text-lg">
+              Have a coupon ?
+            </h1>
+            <p className="text-[13px] font-[Poppins] text-[#6C7275]">
+              Add your code for an instant cart discount
+            </p>
+            <div className="max-w-[30%] flex gap-3 px-3 justify-between items-center border border-[#6C7275] rounded-md font-[Poppins]">
+              <img src={couponSvg} alt="couponSvg" className="w-6" />
+              <input
+                type="text"
+                className="flex-1 h-full py-3 outline-none border-none text-sm placeholder:text-[#6C7275]"
+                placeholder="Coupon Code"
+              />
+              <button className="text-sm">Apply</button>
+            </div>
+          </div>
+          <div className="cart-summery">
+            <h1>Cart Summery</h1>
+            <p>Total Items : {cartData?.length}</p>
+            <p>Total Price : {totalCartValue}</p>
+          </div>
+        </div>
       </div>
     </div>
   );

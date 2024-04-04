@@ -203,14 +203,14 @@ const Profile = () => {
           {user?.isAdmin ? (
             <Link
               to="/admin/dashboard"
-              className="px-3 py-2 bg-black text-white rounded-lg border-[1px] border-black"
+              className="sm:text-[11px] sm:self-end px-3 sm:px-2 py-2 sm:py-1.5 bg-black text-white rounded-lg sm:rounded-md border-[1px] border-black"
             >
               Admin Dashboard
             </Link>
           ) : (
             <div
               onClick={handleAccountDelete}
-              className="py-1.5 px-3 rounded-md bg-red-500 text-white border-[1px] border-red-500 cursor-pointer"
+              className="sm:text-[11px] sm:self-end py-1.5 px-3 sm:px-2 rounded-md bg-red-500 text-white border-[1px] border-red-500 cursor-pointer"
             >
               Delete Account
             </div>
