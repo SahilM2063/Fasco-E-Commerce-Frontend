@@ -84,6 +84,18 @@ const SingleProductDetail = () => {
     }
   }, [isAdded, error]);
 
+  // rating box
+  const [showRatingBox, setShowRatingBox] = useState(false);
+
+  // rating star selection
+  const [selectedStar, setSelectedStar] = useState(0);
+
+  const handleStarClick = (index) => {
+    setSelectedStar(index);
+  };
+
+  console.log(selectedStar);
+
   return (
     <div className="w-full px-32 pb-6 md:px-10 sm:px-6 mt-8">
       <div className="product w-full flex md:flex-col sm:flex-col justify-between md:gap-8 sm:gap-8">
@@ -254,6 +266,42 @@ const SingleProductDetail = () => {
             </div>
           </div>
         </div>
+      </div>
+      <div className="reviews w-full mt-14 pt-4 border-t-[1px] border-[#484848]/70 px-10">
+        <div className="flex items-center justify-between font-[Poppins]">
+          <h1 className="font-[Volkhov] text-xl font-semibold">
+            Customer Reviews
+          </h1>
+          <button
+            onClick={() => setShowRatingBox(!showRatingBox)}
+            className="text-white bg-black px-4 py-3 rounded-md text-sm"
+          >
+            {showRatingBox ? "Cancel" : "Write a review"}
+          </button>
+        </div>
+
+        {showRatingBox && (
+          <div className="review_form w-full mt-4">
+            <form className="space-y-4">
+              <div className="flex items-center gap-1">
+                {[1, 2, 3, 4, 5].map((star, index) => (
+                  <img
+                    key={index}
+                    src={index < selectedStar ? filledStar : emptyStar}
+                    alt={`Star ${star}`}
+                    onClick={() => handleStarClick(index + 1)}
+                    className="star w-6 cursor-pointer"
+                  />
+                ))}
+              </div>
+              <textArea
+                className="w-full outline-none border-[1px] focus:border-black border-gray-300 p-4 rounded-md resize-none placeholder:font-[Poppins]"
+                rows={4}
+                placeholder={"Write a review..."}
+              />
+            </form>
+          </div>
+        )}
       </div>
     </div>
   );
