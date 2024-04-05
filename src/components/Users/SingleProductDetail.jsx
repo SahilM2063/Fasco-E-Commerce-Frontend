@@ -31,7 +31,8 @@ const SingleProductDetail = () => {
   const { userFound } = useSelector(
     (state) => state?.users?.userAuth?.userInfo
   );
-  // console.log(product);
+  console.log(product?.reviews);
+  console.log(userFound);
 
   const [countVal, setCountVal] = useState(1);
   const [mainProductImage, setMainProductImage] = useState(0);
@@ -88,10 +89,18 @@ const SingleProductDetail = () => {
     }
   }, [isAdded, error]);
 
-  // rating start
-  const hasAlreadyRated = product?.reviews?.some(
-    (review) => review?.user === userFound?._id
-  );
+  // check is user already reviewed this project
+  const [isAlreadyReviewed, setIsAlreadyReviewed] = useState(false);
+  useEffect(() => {
+    const reviewed = product?.reviews?.find(
+      (review) => review?.user?._id === userFound?._id
+    );
+    if (reviewed) {
+      setIsAlreadyReviewed(true);
+    }
+  }, [product, userFound]);
+
+  console.log(isAlreadyReviewed);
 
   // rating box
   const [ratingData, setRatingData] = useState({
@@ -321,7 +330,8 @@ const SingleProductDetail = () => {
         <h1 className="font-[Volkhov] text-xl font-semibold">
           Customer Reviews
         </h1>
-        {!hasAlreadyRated && (
+
+        {isAlreadyReviewed ? null : (
           <div className="review_form w-full mt-4">
             <form className="space-y-4">
               <div className="flex items-center gap-1">
@@ -331,12 +341,12 @@ const SingleProductDetail = () => {
                     src={index < selectedStar ? filledStar : emptyStar}
                     alt={`Star ${star}`}
                     onClick={() => handleStarClick(index + 1)}
-                    className="star w-6 cursor-pointer"
+                    className="star w-6 cursor-pointer sm:w-4"
                   />
                 ))}
               </div>
               <textarea
-                className="w-full outline-none border-[1px] focus:border-black border-gray-300 p-4 rounded-md resize-none placeholder:font-[Poppins]"
+                className="w-full outline-none border-[1px] focus:border-black border-gray-300 p-4 sm:p-2 rounded-md sm:text-xs sm:placeholder:text-xs resize-none placeholder:font-[Poppins]"
                 rows={4}
                 value={comment}
                 onChange={(e) =>
@@ -347,7 +357,7 @@ const SingleProductDetail = () => {
               <button
                 type="submit"
                 onClick={handleReviewSubmit}
-                className="text-white bg-black px-4 py-3 rounded-md text-sm"
+                className="text-white bg-black px-4 py-3 sm:py-2 sm:text-xs rounded-md text-sm"
               >
                 {reviewLoading ? "Submitting..." : "Submit"}
               </button>
@@ -362,7 +372,7 @@ const SingleProductDetail = () => {
             </>
           ))
         ) : (
-          <p className="text-center text-xl font-[Poppins] font-semibold">
+          <p className="text-center text-xl sm:text-sm font-[Poppins] font-semibold">
             No reviews yet
           </p>
         )}
@@ -375,31 +385,43 @@ export default SingleProductDetail;
 
 const renderStars = (rating) => {
   const filledStars = Array.from({ length: rating }, (_, index) => (
-    <img key={`filled_${index}`} src={filledStar} alt="Filled Star" />
+    <img
+      key={`filled_${index}`}
+      src={filledStar}
+      alt="Filled Star"
+      className="md:w-3 sm:w-3"
+    />
   ));
   const emptyStars = Array.from({ length: 5 - rating }, (_, index) => (
-    <img key={`empty_${index}`} src={emptyStar} alt="Empty Star" />
+    <img
+      key={`empty_${index}`}
+      src={emptyStar}
+      alt="Empty Star"
+      className="md:w-3 sm:w-3"
+    />
   ));
   return [...filledStars, ...emptyStars];
 };
 
 export const ReviewComponent = ({ review }) => {
   return (
-    <div className="w-full flex justify-between items-start my-4  py-4">
+    <div className="w-full flex justify-between items-start md:gap-2 sm:gap-2 my-4 py-4 md:py-2">
       <div className="pfp-container w-[10%]">
         <img
           src={review?.user?.pfp || defaultPfp}
           alt="pfp"
-          className="size-20 object-cover rounded-full"
+          className="size-20 md:size-12 sm:size-10 object-cover rounded-full"
         />
       </div>
-      <div className="review-details flex-1 flex flex-col items-start gap-4 font-[Poppins]">
-        <span className="font-semibold text-xl">
+      <div className="review-details flex-1 flex flex-col items-start gap-4 md:gap-2 sm:gap-2 font-[Poppins]">
+        <span className="font-semibold text-xl md:text-lg sm:text-sm">
           {review?.user?.firstName + " " + review?.user?.lastName}
         </span>
-        <p className="w-full text-sm">{review?.comment}</p>
+        <p className="w-full text-sm md:text-xs sm:text-[10px]">
+          {review?.comment}
+        </p>
       </div>
-      <div className="flex items-center gap-1">
+      <div className="flex items-center gap-1 sm:gap-0 md:gap-0">
         {renderStars(review?.rating)}
       </div>
     </div>
