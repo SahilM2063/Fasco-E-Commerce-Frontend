@@ -89,20 +89,17 @@ const SingleProductDetail = () => {
     }
   }, [isAdded, error]);
 
-  // check is user already reviewed this project
+  // check is user already reviewed this project ---------------------------------------------------------
   const [isAlreadyReviewed, setIsAlreadyReviewed] = useState(false);
   useEffect(() => {
-    const reviewed = product?.reviews?.find(
-      (review) => review?.user?._id === userFound?._id
+    setIsAlreadyReviewed(
+      product?.reviews?.find((review) => review?.user?._id === userFound?._id)
     );
-    if (reviewed) {
-      setIsAlreadyReviewed(true);
-    }
-  }, [product, userFound]);
+  }, [product, userFound, dispatch]);
 
   console.log(isAlreadyReviewed);
 
-  // rating box
+  // rating box --------------------------------------------------------------------------------------------
   const [ratingData, setRatingData] = useState({
     rating: 0,
     comment: "",
