@@ -11,6 +11,7 @@ import emptyCartIllustration from "../../assets/empty_cart_illustration.svg";
 import { toast } from "react-toastify";
 import couponSvg from "../../assets/coupon.svg";
 import { Link } from "react-router-dom";
+import { getCouponByName } from "../../redux/slices/couponSlice";
 
 const Cart = () => {
   const dispatch = useDispatch();
@@ -26,6 +27,9 @@ const Cart = () => {
   const cartData = cart?.user?.cart;
 
   const [totalCartValue, setTotalCartValue] = useState(
+    cart?.user?.totalCartValue
+  );
+  const [discountedCartValue, setDiscountedCartValue] = useState(
     cart?.user?.totalCartValue
   );
 
@@ -81,16 +85,51 @@ const Cart = () => {
     });
   };
 
-  // for updating cart total
+  // coupon management
+  const [couponCode, setCouponCode] = useState("");
+  const [appliedCoupon, setAppliedCoupon] = useState(null);
+
+  const applyCoupon = (e) => {
+    e.preventDefault();
+    if (!couponCode) {
+      return toast.error("Please enter coupon code");
+    }
+    // console.log(couponCode);
+    dispatch(getCouponByName({ code: couponCode }));
+  };
+  const { coupon, error: couponError } = useSelector((state) => state?.coupons);
+
+  useEffect(() => {
+    if (couponError) {
+      toast.error(couponError?.message);
+    }
+    if (coupon?.coupon && !coupon?.coupon?.isExpired) {
+      toast.success(coupon?.message);
+      setAppliedCoupon(coupon?.coupon);
+    }
+  }, [coupon, couponError]);
+
+  console.log(appliedCoupon);
+
+  // for updating cart total with appliedCoupon
   useEffect(() => {
     if (cartData) {
-      const newTotal = cartData.reduce((acc, product) => {
+      let newTotal = cartData.reduce((acc, product) => {
         const quantity = quantities[product._id] || product.quantity;
         return acc + product.price * quantity;
       }, 0);
-      setTotalCartValue(newTotal);
+      setTotalCartValue(newTotal); // Update total cart value
+
+      // Check if a coupon is applied and not expired
+      if (appliedCoupon && !appliedCoupon.isExpired) {
+        const discountAmount = newTotal * (appliedCoupon.discount / 100);
+        const discountedValue = newTotal - discountAmount;
+        setDiscountedCartValue(discountedValue.toFixed(2)); // Update discounted cart value
+      } else {
+        setDiscountedCartValue(newTotal); // If no coupon, discounted value is the same as total
+      }
     }
-  }, [cartData, quantities]);
+  }, [cartData, quantities, appliedCoupon]);
 
   return (
     <div className="w-full px-32 pb-6 md:px-10 sm:px-6 mt-8">
@@ -243,7 +282,7 @@ const Cart = () => {
                       </button>
                     </div>
                   </div>
-                  <div className="flex h-full flex-col justify-between items-center">
+                  <div className="flex h-full flex-col justify-between items-center gap-2">
                     <span className="text-md font-semibold font-[Poppins]">
                       ₹{" "}
                       {product?.price *
@@ -253,7 +292,7 @@ const Cart = () => {
                       onClick={() => handleRemoveFromCart(product?._id)}
                       src={remove}
                       alt="remove"
-                      className="cursor-pointer w-8"
+                      className="cursor-pointer w-8 self-end"
                     />
                   </div>
                 </div>
@@ -272,17 +311,32 @@ const Cart = () => {
                 <p className="text-[13px] md:text-[10px] font-[Poppins] text-[#6C7275]">
                   Add your code for an instant cart discount
                 </p>
-                <div className="flex gap-3 px-3 justify-between items-center border border-[#6C7275] rounded-md font-[Poppins]">
+                <div
+                  className={`flex gap-3 px-3 justify-between items-center border border-[#6C7275] rounded-md font-[Poppins] ${
+                    appliedCoupon && "border border-green-500"
+                  }`}
+                >
                   <img src={couponSvg} alt="couponSvg" className="w-6 md:w-4" />
                   <input
                     type="text"
-                    className="flex-1 h-full py-3 md:py-2 outline-none border-none text-sm md:text-xs placeholder:text-[#6C7275]"
+                    className="flex-1 h-full py-3 md:py-2 bg-transparent outline-none border-none text-sm md:text-xs placeholder:text-[#6C7275] uppercase "
                     placeholder="Coupon Code"
+                    value={couponCode || appliedCoupon?.code}
+                    disabled={appliedCoupon && true}
+                    onChange={(e) =>
+                      setCouponCode(e.target.value.toUpperCase())
+                    }
                   />
-                  <button className="text-sm md:text-xs">Apply</button>
+                  <button
+                    disabled={appliedCoupon && true}
+                    onClick={applyCoupon}
+                    className="text-sm md:text-xs"
+                  >
+                    Apply
+                  </button>
                 </div>
               </div>
-              <div className="cart-summery w-[40%] md:flex-1 sm:w-full border border-black rounded-md p-4">
+              <div className="cart-summery w-[40%] md:flex-1 sm:w-full border border-[#6C7275] rounded-md p-4">
                 <h1 className="font-[Volkhov] font-semibold text-xl mb-4">
                   Cart Summery
                 </h1>
@@ -300,7 +354,10 @@ const Cart = () => {
                       Shipping Charge
                     </span>
                     <span className="font-[Poppins] font-semibold text-sm">
-                      ₹ {0}
+                      Free{" "}
+                      <span className="text-[#6C7275] line-through font-thin">
+                        ₹ 40
+                      </span>
                     </span>
                   </div>
                   <div className="flex justify-between items-center w-full">
@@ -316,7 +373,13 @@ const Cart = () => {
                       Coupon Discount
                     </span>
                     <span className="font-[Poppins] font-semibold text-sm">
-                      50% off
+                      {appliedCoupon ? (
+                        appliedCoupon?.discount + "% off"
+                      ) : (
+                        <span className="text-red-500 text-xs font-thin">
+                          no coupon applied
+                        </span>
+                      )}
                     </span>
                   </div>
                   <hr className="w-full my-4 outline-none border-black" />
@@ -325,7 +388,7 @@ const Cart = () => {
                       Total
                     </span>
                     <span className="font-[Poppins] font-semibold text-xl">
-                      ₹ {totalCartValue}
+                      ₹ {discountedCartValue}
                     </span>
                   </div>
                   <button className="w-full bg-black rounded-md text-white py-2 font-[Poppins] mt-2">

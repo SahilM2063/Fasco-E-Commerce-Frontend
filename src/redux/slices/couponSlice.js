@@ -88,6 +88,24 @@ export const deleteCouponAction = createAsyncThunk("coupons/deleteCoupon", async
     }
 })
 
+export const getCouponByName = createAsyncThunk("coupons/getCouponByName", async (payload, { rejectWithValue, getState, dispatch }) => {
+    try {
+        const token = getState()?.users?.userAuth?.userInfo?.token;
+        const config = {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        }
+        const { data } = await axios.post(`${baseURL}/coupons`, payload, config);
+        return data;
+    } catch (error) {
+        if (!error?.response) {
+            throw error;
+        }
+        return rejectWithValue(error?.response?.data);
+    }
+})
+
 
 const couponSlice = createSlice({
     name: "brands",
@@ -164,6 +182,22 @@ const couponSlice = createSlice({
             state.loading = false;
             state.error = action?.payload;
             state.isDeleted = false;
+            state.coupon = {};
+        });
+
+        // get coupon by name
+        builder.addCase(getCouponByName.pending, (state, action) => {
+            state.loading = true;
+            state.coupon = {};
+            state.error = null;
+        });
+        builder.addCase(getCouponByName.fulfilled, (state, action) => {
+            state.loading = false;
+            state.coupon = action?.payload;
+        });
+        builder.addCase(getCouponByName.rejected, (state, action) => {
+            state.loading = false;
+            state.error = action?.payload;
             state.coupon = {};
         })
     }
