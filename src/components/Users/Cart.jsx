@@ -327,13 +327,24 @@ const Cart = () => {
                       setCouponCode(e.target.value.toUpperCase())
                     }
                   />
-                  <button
-                    disabled={appliedCoupon && true}
-                    onClick={applyCoupon}
-                    className="text-sm md:text-xs"
-                  >
-                    Apply
-                  </button>
+                  {!appliedCoupon && (
+                    <button
+                      onClick={applyCoupon}
+                      className="text-sm md:text-xs"
+                    >
+                      Apply
+                    </button>
+                  )}
+                  {appliedCoupon && (
+                    <button
+                      onClick={() => {
+                        setAppliedCoupon(null);
+                      }}
+                      className="text-sm md:text-xs"
+                    >
+                      remove
+                    </button>
+                  )}
                 </div>
               </div>
               <div className="cart-summery w-[40%] md:flex-1 sm:w-full border border-[#6C7275] rounded-md p-4">
