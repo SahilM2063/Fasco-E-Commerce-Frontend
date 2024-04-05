@@ -26,6 +26,7 @@ import "react-toastify/dist/ReactToastify.css";
 import CustomerDashboard from "./components/Users/CustomerDashboard.jsx";
 import Profile from "./components/Users/Profile.jsx";
 import OrderHistory from "./components/Users/OrderHistory.jsx";
+import OrderComponent from "./components/Users/OrderComponent.jsx";
 
 function App() {
   return (
@@ -55,6 +56,7 @@ function App() {
             <Route path="order-history" element={<OrderHistory />} />
           </Route>
           <Route path="/user/cart" element={<Cart />} />
+          <Route path="/user/checkout" element={<OrderComponent />} />
         </Route>
 
         <Route path="/user/resetPassEmail" element={<ResetPassEmail />} />

@@ -118,7 +118,7 @@ const Cart = () => {
         const quantity = quantities[product._id] || product.quantity;
         return acc + product.price * quantity;
       }, 0);
-      setTotalCartValue(newTotal); // Update total cart value
+      setTotalCartValue(newTotal.toFixed(2)); // Update total cart value
 
       // Check if a coupon is applied and not expired
       if (appliedCoupon && !appliedCoupon.isExpired) {
@@ -126,7 +126,7 @@ const Cart = () => {
         const discountedValue = newTotal - discountAmount;
         setDiscountedCartValue(discountedValue.toFixed(2)); // Update discounted cart value
       } else {
-        setDiscountedCartValue(newTotal); // If no coupon, discounted value is the same as total
+        setDiscountedCartValue(newTotal.toFixed(2)); // If no coupon, discounted value is the same as total
       }
     }
   }, [cartData, quantities, appliedCoupon]);
@@ -339,6 +339,7 @@ const Cart = () => {
                     <button
                       onClick={() => {
                         setAppliedCoupon(null);
+                        setCouponCode("");
                       }}
                       className="text-sm md:text-xs"
                     >
@@ -362,13 +363,10 @@ const Cart = () => {
                   </div>
                   <div className="flex justify-between items-center w-full">
                     <span className="font-[Poppins] text-black/70 tracking-wide text-sm">
-                      Shipping Charge
+                      Shipping
                     </span>
                     <span className="font-[Poppins] font-semibold text-sm">
-                      Free{" "}
-                      <span className="text-[#6C7275] line-through font-thin">
-                        ₹ 40
-                      </span>
+                      Free
                     </span>
                   </div>
                   <div className="flex justify-between items-center w-full">
@@ -379,20 +377,16 @@ const Cart = () => {
                       ₹ {totalCartValue}
                     </span>
                   </div>
-                  <div className="flex justify-between items-center w-full">
-                    <span className="font-[Poppins] text-black/70 tracking-wide text-sm">
-                      Coupon Discount
-                    </span>
-                    <span className="font-[Poppins] font-semibold text-sm">
-                      {appliedCoupon ? (
-                        appliedCoupon?.discount + "% off"
-                      ) : (
-                        <span className="text-red-500 text-xs font-thin">
-                          no coupon applied
-                        </span>
-                      )}
-                    </span>
-                  </div>
+                  {appliedCoupon && (
+                    <div className="flex justify-between items-center w-full">
+                      <span className="font-[Poppins] text-black/70 tracking-wide text-sm">
+                        {appliedCoupon?.code}
+                      </span>
+                      <span className="font-[Poppins] font-semibold text-sm text-green-400">
+                        - ₹ {totalCartValue - discountedCartValue}
+                      </span>
+                    </div>
+                  )}
                   <hr className="w-full my-4 outline-none border-black" />
                   <div className="flex justify-between items-center w-full">
                     <span className="font-[Poppins] text-black/70 tracking-wide font-semibold text-lg">
@@ -402,9 +396,12 @@ const Cart = () => {
                       ₹ {discountedCartValue}
                     </span>
                   </div>
-                  <button className="w-full bg-black rounded-md text-white py-2 font-[Poppins] mt-2">
+                  <Link
+                    to={"/user/checkout"}
+                    className="w-full text-center bg-black rounded-md text-white py-2 font-[Poppins] mt-2"
+                  >
                     Checkout
-                  </button>
+                  </Link>
                 </div>
               </div>
             </div>
