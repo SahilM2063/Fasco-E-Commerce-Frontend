@@ -106,10 +106,20 @@ export const getCouponByName = createAsyncThunk("coupons/getCouponByName", async
     }
 })
 
-
 const couponSlice = createSlice({
     name: "brands",
     initialState,
+    reducers: {
+        resetCoupon: (state) => {
+            state.isAdded = false;
+            state.isUpdated = false;
+            state.isDeleted = false;
+            state.coupon = {};
+            state.coupons = [];
+            state.error = null;
+            state.loading = false;
+        },
+    },
     extraReducers: (builder) => {
         // get all coupons
         builder.addCase(getAllCouponsAction.pending, (state, action) => {
@@ -203,5 +213,6 @@ const couponSlice = createSlice({
     }
 })
 
+export const { resetCoupon } = couponSlice.actions
 
 export default couponSlice.reducer

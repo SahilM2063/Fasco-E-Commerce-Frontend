@@ -11,7 +11,7 @@ import emptyCartIllustration from "../../assets/empty_cart_illustration.svg";
 import { toast } from "react-toastify";
 import couponSvg from "../../assets/coupon.svg";
 import { Link } from "react-router-dom";
-import { getCouponByName } from "../../redux/slices/couponSlice";
+import { getCouponByName, resetCoupon } from "../../redux/slices/couponSlice";
 
 const Cart = () => {
   const dispatch = useDispatch();
@@ -321,7 +321,7 @@ const Cart = () => {
                     type="text"
                     className="flex-1 h-full py-3 md:py-2 bg-transparent outline-none border-none text-sm md:text-xs placeholder:text-[#6C7275] uppercase "
                     placeholder="Coupon Code"
-                    value={couponCode || appliedCoupon?.code}
+                    value={appliedCoupon ? appliedCoupon?.code : couponCode}
                     disabled={appliedCoupon && true}
                     onChange={(e) =>
                       setCouponCode(e.target.value.toUpperCase())
@@ -338,8 +338,9 @@ const Cart = () => {
                   {appliedCoupon && (
                     <button
                       onClick={() => {
-                        setAppliedCoupon(null);
+                        setAppliedCoupon();
                         setCouponCode("");
+                        dispatch(resetCoupon());
                       }}
                       className="text-sm md:text-xs"
                     >
