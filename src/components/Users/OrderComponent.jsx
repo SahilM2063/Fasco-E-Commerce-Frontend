@@ -6,6 +6,7 @@ import cross from "../../assets/cross.svg";
 import { Link } from "react-router-dom";
 import { updateUserAddressAction } from "../../redux/slices/userSlice";
 import { toast } from "react-toastify";
+import { createOrderAction } from "../../redux/slices/orderSlice";
 
 const OrderComponent = () => {
   const dispatch = useDispatch();
@@ -93,11 +94,18 @@ const OrderComponent = () => {
     if (!cart?.user?.hasShippingAddress) {
       return toast.error("Please add a shipping address first");
     }
-    // console.log({
-    //   shippingAddress: cart?.user?.shippingAddress,
-    //   orderItems: cartData,
-    //   totalValue: discountedValue,
-    // });
+    console.log({
+      shippingAddress: cart?.user?.shippingAddress,
+      orderItems: cartData,
+      totalValue: discountedValue,
+    });
+    dispatch(
+      createOrderAction({
+        shippingAddress: cart?.user?.shippingAddress,
+        orderItems: cartData,
+        totalValue: discountedValue,
+      })
+    );
   };
 
   return (
