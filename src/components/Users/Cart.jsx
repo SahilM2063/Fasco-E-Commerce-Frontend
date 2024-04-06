@@ -401,7 +401,7 @@ const Cart = () => {
                     to={"/user/checkout"}
                     className="w-full text-center bg-black rounded-md text-white py-2 font-[Poppins] mt-2"
                   >
-                    Checkout
+                    Proceed To Checkout
                   </Link>
                 </div>
               </div>
