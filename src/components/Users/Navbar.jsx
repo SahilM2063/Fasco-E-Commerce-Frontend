@@ -99,11 +99,11 @@ const Navbar = () => {
       <div
         className={
           isMenuOpen
-            ? `sideBar visible md:w-full md:h-full md:fixed md:top-0 md:right-0 md:bg-black/5 md:backdrop-blur-sm z-[900]`
+            ? `sideBar visible md:w-full md:h-full md:fixed md:top-0 md:right-0 md:bg-black/5 md:backdrop-blur-sm z-50`
             : `-right-full hidden`
         }
       >
-        <section className="w-[40%] sm:w-[60%] h-full bg-white absolute top-0 right-0 p-8 flex flex-col justify-between gap-6 lg:hidden">
+        <section className="w-[40%] sm:w-[60%] h-full bg-white absolute top-0 right-0 p-8 flex flex-col justify-between z-50 gap-6 lg:hidden">
           <div className="menuBtn self-end">
             <img
               onClick={() => setIsMenuOpen(false)}
