@@ -28,6 +28,7 @@ import Profile from "./components/Users/Profile.jsx";
 import OrderHistory from "./components/Users/OrderHistory.jsx";
 import OrderComponent from "./components/Users/OrderComponent.jsx";
 import OrderSuccess from "./components/Users/OrderSuccess.jsx";
+import OrderFailed from "./components/Users/OrderFailed.jsx";
 
 function App() {
   return (
@@ -59,6 +60,7 @@ function App() {
           <Route path="/user/cart" element={<Cart />} />
           <Route path="/user/checkout" element={<OrderComponent />} />
           <Route path="/user/payment/success" element={<OrderSuccess />} />
+          <Route path="/user/payment/failed" element={<OrderFailed />} />
         </Route>
 
         <Route path="/user/resetPassEmail" element={<ResetPassEmail />} />
