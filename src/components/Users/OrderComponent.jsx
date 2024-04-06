@@ -22,7 +22,7 @@ const OrderComponent = () => {
 
   const coupon = useSelector((state) => state?.coupons?.coupon);
   const couponData = coupon?.coupon;
-  console.log(couponData);
+  // console.log(couponData);
 
   const totalValue = cartData?.reduce(
     (acc, item) => acc + item?.productId?.price * item?.quantity,
@@ -30,7 +30,7 @@ const OrderComponent = () => {
   );
   const offedValue = totalValue * (couponData?.discount / 100);
   const discountedValue = totalValue - (offedValue || 0);
-  console.log(totalValue, offedValue, discountedValue);
+  // console.log(totalValue, offedValue, discountedValue);
 
   // shipping address
   const [shippingAddress, setShippingAddress] = useState({
@@ -87,6 +87,18 @@ const OrderComponent = () => {
       });
     }
   }, [error, isUpdated]);
+
+  const handlePayment = (e) => {
+    e.preventDefault();
+    if (!cart?.user?.hasShippingAddress) {
+      return toast.error("Please add a shipping address first");
+    }
+    // console.log({
+    //   shippingAddress: cart?.user?.shippingAddress,
+    //   orderItems: cartData,
+    //   totalValue: discountedValue,
+    // });
+  };
 
   return (
     <div className="w-full px-32 pb-6 md:px-10 sm:px-6 mt-8">
@@ -265,7 +277,10 @@ const OrderComponent = () => {
             <p className="text-lg font-semibold">Total</p>
             <span className="text-lg font-semibold">₹ {discountedValue}</span>
           </div>
-          <button className="w-full py-3 bg-black rounded-md text-white mt-4 sm:mt-2">
+          <button
+            onClick={handlePayment}
+            className="w-full py-3 bg-black rounded-md text-white mt-4 sm:mt-2"
+          >
             Complete Payment
           </button>
         </div>
