@@ -22,8 +22,7 @@ export const createOrderAction = createAsyncThunk("order/createOrder", async (pa
                 Authorization: `Bearer ${token}`,
             },
         }
-        const { shippingAddress, totalPrice, orderItems } = payload
-        console.log(shippingAddress, totalPrice, orderItems)
+        console.log(payload)
         const { data } = await axios.post(`${baseURL}/orders/create-order`, payload, config);
         return data;
     } catch (error) {

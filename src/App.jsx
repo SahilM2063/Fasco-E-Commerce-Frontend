@@ -27,6 +27,7 @@ import CustomerDashboard from "./components/Users/CustomerDashboard.jsx";
 import Profile from "./components/Users/Profile.jsx";
 import OrderHistory from "./components/Users/OrderHistory.jsx";
 import OrderComponent from "./components/Users/OrderComponent.jsx";
+import OrderSuccess from "./components/Users/OrderSuccess.jsx";
 
 function App() {
   return (
@@ -57,6 +58,7 @@ function App() {
           </Route>
           <Route path="/user/cart" element={<Cart />} />
           <Route path="/user/checkout" element={<OrderComponent />} />
+          <Route path="/user/payment/success" element={<OrderSuccess />} />
         </Route>
 
         <Route path="/user/resetPassEmail" element={<ResetPassEmail />} />

@@ -252,7 +252,7 @@ const OrderComponent = () => {
         )}
 
         {/* order summery */}
-        <div className="w-full rounded-lg p-8 bg-[#F9F9F9] border border-[#8A8A8A] ">
+        <div className="w-full rounded-lg px-8 py-6 bg-[#F9F9F9] border border-[#8A8A8A] ">
           <h1 className="font-[Volkhov] font-semibold text-xl mb-6">
             Order Details
           </h1>
