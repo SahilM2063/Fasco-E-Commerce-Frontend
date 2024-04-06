@@ -24,6 +24,15 @@ const OrderComponent = () => {
   const couponData = coupon?.coupon;
   console.log(couponData);
 
+  const totalValue = cartData?.reduce(
+    (acc, item) => acc + item?.productId?.price * item?.quantity,
+    0
+  );
+  const offedValue = totalValue * (couponData?.discount / 100);
+  const discountedValue = totalValue - (offedValue || 0);
+  console.log(totalValue, offedValue, discountedValue);
+
+  // shipping address
   const [shippingAddress, setShippingAddress] = useState({
     address: "",
     city: "",
@@ -246,8 +255,7 @@ const OrderComponent = () => {
               <div className="w-full flex justify-between items-center">
                 <p className="flex items-center">{couponData?.code}</p>
                 <span className="text-sm font-semibold text-green-400">
-                  - ₹{" "}
-                  {(cart?.user?.totalCartValue * couponData?.discount) / 100}
+                  - ₹{offedValue}
                 </span>
               </div>
             ) : null}
@@ -255,15 +263,9 @@ const OrderComponent = () => {
           <hr className="w-full my-4 outline-none border-black" />
           <div className="w-full flex justify-between items-center font-[Poppins]">
             <p className="text-lg font-semibold">Total</p>
-            <span className="text-lg font-semibold">
-              ₹{" "}
-              {cartData?.reduce(
-                (acc, item) => acc + item?.productId?.price * item?.quantity,
-                0
-              )}
-            </span>
+            <span className="text-lg font-semibold">₹ {discountedValue}</span>
           </div>
-          <button className="w-full py-3 bg-black rounded-md text-white mt-8 sm:mt-2">
+          <button className="w-full py-3 bg-black rounded-md text-white mt-4 sm:mt-2">
             Complete Payment
           </button>
         </div>
