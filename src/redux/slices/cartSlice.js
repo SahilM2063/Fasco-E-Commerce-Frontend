@@ -84,6 +84,22 @@ export const removeFromCart = createAsyncThunk("cart/removeFromCart", async (id,
     }
 })
 
+export const clearCartAction = createAsyncThunk("cart/clearCart", async (payload, { rejectWithValue, getState, dispatch }) => {
+    try {
+        const token = getState()?.users?.userAuth?.userInfo?.token;
+        const config = {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        }
+        const { data } = await axios.delete(`${baseURL}/cart/clearCart`, config);
+        return data;
+    } catch (error) {
+        console.log(error)
+        return rejectWithValue(error?.response?.data);
+    }
+})
+
 const cartSlice = createSlice({
     name: "cart",
     initialState,
@@ -162,6 +178,25 @@ const cartSlice = createSlice({
             state.error = action.payload;
             state.isDeleted = false;
             state.productMsg = {};
+        });
+
+        // clear whole cart
+        builder.addCase(clearCartAction.pending, (state) => {
+            state.loading = true;
+            state.error = null;
+            state.isDeleted = false;
+            state.cart = [];
+        });
+        builder.addCase(clearCartAction.fulfilled, (state, action) => {
+            state.loading = false;
+            state.isDeleted = true;
+            state.cart = action.payload;
+        });
+        builder.addCase(clearCartAction.rejected, (state, action) => {
+            state.loading = false;
+            state.error = action.payload;
+            state.isDeleted = false;
+            state.cart = [];
         })
     },
 })

@@ -22,9 +22,8 @@ export const createOrderAction = createAsyncThunk("order/createOrder", async (pa
                 Authorization: `Bearer ${token}`,
             },
         }
-        console.log(payload)
         const { data } = await axios.post(`${baseURL}/orders/create-order`, payload, config);
-        return data;
+        return window.open(data?.url, "_blank");
     } catch (error) {
         if (!error?.response) {
             throw error;
