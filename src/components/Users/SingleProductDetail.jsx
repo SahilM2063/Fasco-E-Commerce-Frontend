@@ -212,14 +212,8 @@ const SingleProductDetail = () => {
           </p>
           <div className="flex flex-col items-start justify-start gap-2">
             <p className="text-sm font-[Poppins]">
-              {product?.qtyLeft <= Math.floor(product?.totalQty / 2) ? (
-                <span>
-                  Only{" "}
-                  <span className="font-semibold text-[#484848]">
-                    {product?.qtyLeft}
-                  </span>{" "}
-                  left in stock
-                </span>
+              {product?.qtyLeft <= 0 ? (
+                <span className="text-red-500 font-semibold">Out of stock</span>
               ) : (
                 <>
                   <span className="font-semibold text-[#484848]">
@@ -229,11 +223,13 @@ const SingleProductDetail = () => {
                 </>
               )}
             </p>
-            <progress
-              className="progress  progress-[#8A8A8A] w-full bg-slate-300/55 h-1"
-              value={product?.qtyLeft}
-              max={product?.totalQty}
-            ></progress>
+            {product?.qtyLeft <= 0 ? null : (
+              <progress
+                className="progress  progress-[#8A8A8A] w-full bg-slate-300/55 h-1"
+                value={product?.qtyLeft}
+                max={product?.totalQty}
+              ></progress>
+            )}
           </div>
           <div className="sizes space-y-2">
             <label className="font-[Poppins] font-semibold text-[#484848]">
@@ -285,6 +281,9 @@ const SingleProductDetail = () => {
               <div className="counter w-[120px] h-[40px] border-[1px] border-[#d5d5d5] rounded-md flex justify-between items-center">
                 <button
                   onClick={() => {
+                    if (product?.qtyLeft <= 0) {
+                      return toast.error("Product out of stock");
+                    }
                     if (countVal <= 1) {
                       return setCountVal(1);
                     }
@@ -295,12 +294,15 @@ const SingleProductDetail = () => {
                   -
                 </button>
                 <span className="flex-1 h-full font-[poppins] font-semibold flex justify-center items-center text-[#484848]">
-                  {countVal}
+                  {product?.qtyLeft <= 0 ? 0 : countVal}
                 </span>
                 <button
                   onClick={() => {
+                    if (product?.qtyLeft <= 0) {
+                      return toast.error("Product out of stock");
+                    }
                     if (countVal >= 8 && countVal < product?.qtyLeft) {
-                      return setCountVal(8);
+                      return setCountVal(Math.min(product?.qtyLeft, 8));
                     }
                     if (countVal >= product?.qtyLeft) {
                       return setCountVal(product?.qtyLeft);
@@ -314,6 +316,7 @@ const SingleProductDetail = () => {
               </div>
               <button
                 onClick={handleAddToCart}
+                disabled={product?.qtyLeft <= 0}
                 className="addtocart flex-1 h-[40px] text-white bg-black rounded-md font-[Poppins]"
               >
                 Add to cart
