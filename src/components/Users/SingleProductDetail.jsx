@@ -188,9 +188,9 @@ const SingleProductDetail = () => {
               {product?.name}
             </h1>
             <div className="flex items-center">
-              {renderStars(product?.rating)}
+              {renderStars(product?.averageRating)}
               <span className="ml-3 text-sm font-semibold font-[Poppins]">
-                ({product?.reviews?.length})
+                ({product?.totalReviews})
               </span>
             </div>
           </div>

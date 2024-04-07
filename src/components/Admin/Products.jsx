@@ -541,7 +541,7 @@ export const TrComponent = ({
           </div>
         ) : (
           <div className="flex items-center justify-center w-20 h-6 bg-red-100 rounded-full mr-8">
-            <p className="text-xs leading-3 text-red-600">Out of stock</p>
+            <p className="text-[10px] leading-3 text-red-600">Out of stock</p>
           </div>
         )}
       </td>

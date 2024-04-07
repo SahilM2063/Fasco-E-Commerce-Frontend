@@ -456,9 +456,18 @@ const Shop = () => {
                   <h2 className="text-2xl sm:text-lg font-extrabold text-[#484848]">
                     ₹ {product?.price}
                   </h2>
-                  <span className="text-sm sm:text-[10px] text-red-500">
-                    Almost Sold Out
-                  </span>
+
+                  {product?.qtyLeft > 0 ? (
+                    <span className="text-sm sm:text-[10px] text-green-500">
+                      {" "}
+                      In Stock{" "}
+                    </span>
+                  ) : (
+                    <span className="text-sm sm:text-[10px] text-red-500">
+                      {" "}
+                      Out of Stock
+                    </span>
+                  )}
                 </div>
               </div>
             );
