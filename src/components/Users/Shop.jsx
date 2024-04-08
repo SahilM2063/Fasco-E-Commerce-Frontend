@@ -205,7 +205,7 @@ const Shop = () => {
     } else if (selectedSortOption === "Oldest") {
       return new Date(a.createdAt) - new Date(b.createdAt);
     } else if (selectedSortOption === "Best Rating") {
-      return b.rating - a.rating;
+      return b.averageRating - a.averageRating;
     } else {
       return 0;
     }
@@ -401,7 +401,7 @@ const Shop = () => {
       </div>
 
       <div className="main flex-1 min-h-screen h-full pl-8 sm:pl-1">
-        <div className="w-full mb-4 flex justify-between items-center">
+        <div className="sorter w-full mb-4 flex justify-between items-center">
           <select
             onChange={(e) => handleSortChange(e.target.value)}
             className="font-[Poppins] text-sm border outline-none p-1 rounded-sm cursor-pointer"

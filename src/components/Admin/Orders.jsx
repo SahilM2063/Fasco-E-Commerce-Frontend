@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllOrders } from "../../redux/slices/orderSlice";
+import card from "./assets/card.svg";
 
 const Orders = () => {
   const dispatch = useDispatch();
@@ -41,9 +42,7 @@ const Orders = () => {
             <th className="text-left font-[poppins] font-semibold">
               Ordered By
             </th>
-            <th className="text-left font-[poppins] font-semibold">
-              Date
-            </th>
+            <th className="text-left font-[poppins] font-semibold">Date</th>
             <th className="text-left leading-6 font-[poppins] font-semibold">
               Price <br /> (INR)
             </th>
@@ -118,15 +117,30 @@ export const TrComponent = ({ order, id }) => {
         <p className="mr-10">{order?.totalPrice}</p>
       </td>
       <td>
-        <p className="mr-8 ">
+        <p className="mr-12 ">
           {order?.orderItems?.reduce((acc, item) => acc + item?.quantity, 0)}
         </p>
       </td>
       <td>
-        <p className="mr-8">{order?.paymentStatus}</p>
+        {order?.paymentStatus === "paid" ? (
+          <div className="flex items-center justify-center w-20 h-6 bg-green-100 rounded-full mr-8">
+            <p className="text-xs leading-3 text-green-600">Paid</p>
+          </div>
+        ) : (
+          <div className="flex items-center justify-center w-20 h-6 bg-red-100 rounded-full mr-8">
+            <p className="text-[11px] leading-3 text-red-600">Not paid</p>
+          </div>
+        )}
       </td>
       <td>
-        <p className="mr-8">{order?.paymentMethod}</p>
+        {order?.paymentMethod === "card" ? (
+          <p className="mr-8 flex items-center gap-2">
+            {" "}
+            <img src={card} alt="card" className="w-5" /> {order?.paymentMethod}
+          </p>
+        ) : (
+          <p className="mr-8 flex items-center gap-2">{order?.paymentMethod}</p>
+        )}
       </td>
     </tr>
   );
