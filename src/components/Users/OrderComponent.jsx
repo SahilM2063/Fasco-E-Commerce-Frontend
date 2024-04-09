@@ -97,13 +97,13 @@ const OrderComponent = () => {
     console.log({
       shippingAddress: cart?.user?.shippingAddress,
       orderItems: cartData,
-      totalValue: discountedValue,
+      totalValue: discountedValue.toFixed(2),
     });
     dispatch(
       createOrderAction({
         shippingAddress: cart?.user?.shippingAddress,
         orderItems: cartData,
-        totalValue: discountedValue,
+        totalValue: discountedValue.toFixed(2),
       })
     );
   };
@@ -283,7 +283,7 @@ const OrderComponent = () => {
           <hr className="w-full my-4 outline-none border-black" />
           <div className="w-full flex justify-between items-center font-[Poppins]">
             <p className="text-lg font-semibold">Total</p>
-            <span className="text-lg font-semibold">₹ {discountedValue}</span>
+            <span className="text-lg font-semibold">₹ {(discountedValue).toFixed(2)}</span>
           </div>
           <button
             onClick={handlePayment}

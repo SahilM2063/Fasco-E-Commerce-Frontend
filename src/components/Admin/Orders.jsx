@@ -6,6 +6,29 @@ import { getAllOrders } from "../../redux/slices/orderSlice";
 import card from "./assets/card.svg";
 import dots from "./assets/dots.svg";
 
+const orderStatusOptions = [
+  {
+    name: "Paid",
+    value: "paid",
+  },
+  {
+    name: "Pending",
+    value: "pending",
+  },
+  {
+    name: "Shipped",
+    value: "shipped",
+  },
+  {
+    name: "Delivered",
+    value: "delivered",
+  },
+  {
+    name: "Cancelled",
+    value: "cancelled",
+  },
+];
+
 const Orders = () => {
   const dispatch = useDispatch();
 
@@ -30,6 +53,17 @@ const Orders = () => {
   const endIndex = startIndex + perPageLimit;
 
   const paginatedOrders = orders?.slice(startIndex, endIndex);
+
+  const [openMenuId, setOpenMenuId] = useState(null);
+
+  // Function to handle menu open
+  const handleMenuOpen = (orderId) => {
+    setOpenMenuId(orderId);
+  };
+
+  const updateOrderStatus = (orderId, status) => {
+    console.log(orderId, status);
+  };
 
   return (
     <div>
@@ -58,7 +92,16 @@ const Orders = () => {
         </thead>
         <tbody className="w-full">
           {paginatedOrders?.map((order, index) => {
-            return <TrComponent order={order} key={order?._id} id={index} />;
+            return (
+              <TrComponent
+                order={order}
+                key={order?._id}
+                id={index}
+                onMenuOpen={handleMenuOpen}
+                isMenuOpen={openMenuId === order._id}
+                updateOrderStatus={updateOrderStatus}
+              />
+            );
           })}
         </tbody>
       </table>
@@ -101,7 +144,13 @@ const Orders = () => {
 
 export default Orders;
 
-export const TrComponent = ({ order, id }) => {
+export const TrComponent = ({
+  order,
+  id,
+  onMenuOpen,
+  isMenuOpen,
+  updateOrderStatus,
+}) => {
   return (
     <tr className="h-16 text-sm leading-none text-gray-700 border-b border-t border-gray-200 bg-white hover:bg-gray-100 font-[Poppins]">
       <td className="pl-4 md:pl-2 font-semibold">{id + 1}</td>
@@ -139,9 +188,34 @@ export const TrComponent = ({ order, id }) => {
         )}
       </td>
       <td className="relative">
-        <div className="cursor-pointer rounded-full w-8 h-8 bg-white shadow-lg flex items-center justify-center">
+        <div
+          onClick={() => {
+            if (isMenuOpen) {
+              onMenuOpen(null);
+            } else {
+              onMenuOpen(order._id);
+            }
+          }}
+          className="cursor-pointer rounded-full w-8 h-8 bg-white shadow-lg flex items-center justify-center"
+        >
           <img src={dots} alt="dots" className="w-4" />
         </div>
+        {isMenuOpen && (
+          <ul className="w-[100px] p-2 py-3 bg-white absolute top-0 right-full  z-[1] flex flex-col items-start gap-2 shadow-md rounded-md">
+            {orderStatusOptions.map((option, index) => (
+              <li
+                onClick={() => {
+                  onMenuOpen(null);
+                  updateOrderStatus(order._id, option.value);
+                }}
+                key={index}
+                className="text-[13px] w-full cursor-pointer"
+              >
+                {option.name}
+              </li>
+            ))}
+          </ul>
+        )}
       </td>
     </tr>
   );

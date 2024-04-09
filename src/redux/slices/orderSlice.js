@@ -48,6 +48,24 @@ export const getAllOrders = createAsyncThunk("order/getAllOrders", async (payloa
         }
         return rejectWithValue(error?.response?.data);
     }
+});
+
+export const updateOrderAction = createAsyncThunk("order/updateOrder", async (payload, { rejectWithValue, getState, dispatch }) => {
+    try {
+        const token = getState()?.users?.userAuth?.userInfo?.token;
+        const config = {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        }
+        const { data } = await axios.put(`${baseURL}/orders/update-order`, payload, config);
+        return data;
+    } catch (error) {
+        if (!error?.response) {
+            throw error;
+        }
+        return rejectWithValue(error?.response?.data);
+    }
 })
 
 const orderSlice = createSlice({
