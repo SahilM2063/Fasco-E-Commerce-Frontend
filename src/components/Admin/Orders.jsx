@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllOrders } from "../../redux/slices/orderSlice";
 import card from "./assets/card.svg";
+import dots from "./assets/dots.svg";
 
 const Orders = () => {
   const dispatch = useDispatch();
@@ -32,27 +33,27 @@ const Orders = () => {
 
   return (
     <div>
-      <table className="w-full whitespace-nowrap">
+      <table className="w-full whitespace-nowrap overflow-hidden rounded-md ">
         <thead>
           <tr className="h-20 w-full text-sm leading-none bg-slate-100/90">
-            <th className="text-left pl-4 font-[poppins] font-semibold">#</th>
-            <th className="text-left pl-4 font-[poppins] font-semibold">
-              OrderNo
+            <th className="text-left pl-4 md:pl-2 font-[poppins] font-semibold">
+              #
             </th>
-            <th className="text-left font-[poppins] font-semibold">
-              Ordered By
+            <th className="text-left pl-4 md:pl-2 font-[poppins] font-semibold">
+              OrderNo
             </th>
             <th className="text-left font-[poppins] font-semibold">Date</th>
             <th className="text-left leading-6 font-[poppins] font-semibold">
               Price <br /> (INR)
             </th>
             <th className="text-left font-[poppins] font-semibold">Quantity</th>
-            <th className="text-left font-[poppins] font-semibold">
-              Payment Status
+            <th className="text-left leading-6  font-[poppins] font-semibold">
+              Payment <br /> Status
             </th>
-            <th className="text-left font-[poppins] font-semibold">
-              Payment mode
+            <th className="text-left leading-6  font-[poppins] font-semibold">
+              Payment <br /> mode
             </th>
+            <th className="text-left font-[poppins] font-semibold">Action</th>
           </tr>
         </thead>
         <tbody className="w-full">
@@ -103,18 +104,13 @@ export default Orders;
 export const TrComponent = ({ order, id }) => {
   return (
     <tr className="h-16 text-sm leading-none text-gray-700 border-b border-t border-gray-200 bg-white hover:bg-gray-100 font-[Poppins]">
-      <td className="pl-4 font-semibold">{id + 1}</td>
-      <td className="pl-4">#{order?.orderNumber}</td>
-      <td>
-        <p className="">
-          {order?.user?.firstName + " " + order?.user?.lastName}
-        </p>
-      </td>
+      <td className="pl-4 md:pl-2 font-semibold">{id + 1}</td>
+      <td className="pl-4 md:pl-2 md:text-xs">#{order?.orderNumber}</td>
       <td>
         <p className="mr-8">{order?.createdAt.slice(0, 10)}</p>
       </td>
       <td>
-        <p className="mr-10">{order?.totalPrice}</p>
+        <p className="mr-10 md:mr-6">{order?.totalPrice}</p>
       </td>
       <td>
         <p className="mr-12 ">
@@ -134,13 +130,18 @@ export const TrComponent = ({ order, id }) => {
       </td>
       <td>
         {order?.paymentMethod === "card" ? (
-          <p className="mr-8 flex items-center gap-2">
+          <p className="mr-4 flex items-center gap-2">
             {" "}
             <img src={card} alt="card" className="w-5" /> {order?.paymentMethod}
           </p>
         ) : (
-          <p className="mr-8 flex items-center gap-2">{order?.paymentMethod}</p>
+          <p className="mr-4 flex items-center gap-2">{order?.paymentMethod}</p>
         )}
+      </td>
+      <td className="relative">
+        <div className="cursor-pointer rounded-full w-8 h-8 bg-white shadow-lg flex items-center justify-center">
+          <img src={dots} alt="dots" className="w-4" />
+        </div>
       </td>
     </tr>
   );

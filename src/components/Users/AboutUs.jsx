@@ -82,8 +82,8 @@ const AboutUs = () => {
           </div>
         </div>
 
-        <div className="about-card h-[400px] md:h-[300px] sm:h-auto w-full mt-16 flex sm:flex-col-reverse justify-between items-center sm:gap-8 rounded-tr-lg rounded-br-lg sm:rounded-tl-lg overflow-hidden">
-          <div className="content w-[50%] sm:w-full font-[Poppins] h-full flex flex-col justify-between items-start gap-4 pr-10 md:pr-4 sm:pr-0">
+        <div className="about-card h-[360px] md:h-[300px] sm:h-auto w-full mt-16 flex sm:flex-col-reverse justify-between items-center sm:gap-8 rounded-tr-lg rounded-br-lg sm:rounded-tl-lg overflow-hidden">
+          <div className="content w-[50%] sm:w-full font-[Poppins] h-full flex flex-col justify-start items-start gap-6 pr-10 md:pr-4 sm:pr-0">
             <div className="inp-elem flex flex-col w-full font-[Poppins] space-y-1">
               <label
                 htmlFor="name"

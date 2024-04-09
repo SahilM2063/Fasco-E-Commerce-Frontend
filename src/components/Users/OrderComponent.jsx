@@ -61,7 +61,7 @@ const OrderComponent = () => {
     );
   };
 
-  const { loading, error, isUpdated } = useSelector((state) => state?.users);
+  const { error, isUpdated } = useSelector((state) => state?.users);
   useEffect(() => {
     if (isUpdated) {
       toast.success("Address updated successfully");
