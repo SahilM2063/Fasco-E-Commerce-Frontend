@@ -103,6 +103,9 @@ const Cart = () => {
     if (couponError) {
       toast.error(couponError?.message);
     }
+    if(coupon?.coupon && coupon?.coupon?.isExpired) {
+      toast.error("Coupon is expired");
+    }
     if (coupon?.coupon && !coupon?.coupon?.isExpired) {
       toast.success(coupon?.message);
       setAppliedCoupon(coupon?.coupon);
@@ -384,7 +387,7 @@ const Cart = () => {
                         {appliedCoupon?.code}
                       </span>
                       <span className="font-[Poppins] font-semibold text-sm text-green-400">
-                        - ₹ {totalCartValue - discountedCartValue}
+                        - ₹ {(totalCartValue - discountedCartValue).toFixed(2)}
                       </span>
                     </div>
                   )}
