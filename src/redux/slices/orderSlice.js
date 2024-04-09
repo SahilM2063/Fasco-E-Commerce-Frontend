@@ -58,7 +58,7 @@ export const updateOrderAction = createAsyncThunk("order/updateOrder", async (pa
                 Authorization: `Bearer ${token}`,
             },
         }
-        const { data } = await axios.put(`${baseURL}/orders/update-order`, payload, config);
+        const { data } = await axios.put(`${baseURL}/orders/update/${payload._id}`, payload, config);
         return data;
     } catch (error) {
         if (!error?.response) {
@@ -103,6 +103,24 @@ const orderSlice = createSlice({
         builder.addCase(getAllOrders.rejected, (state, action) => {
             state.loading = false;
             state.error = action?.payload;
+            state.orders = [];
+        });
+
+        builder.addCase(updateOrderAction.pending, (state, action) => {
+            state.loading = true;
+            state.isUpdated = false;
+            state.error = null;
+            state.orders = [];
+        });
+        builder.addCase(updateOrderAction.fulfilled, (state, action) => {
+            state.loading = false;
+            state.isUpdated = true;
+            state.orders = action?.payload;
+        });
+        builder.addCase(updateOrderAction.rejected, (state, action) => {
+            state.loading = false;
+            state.error = action?.payload;
+            state.isUpdated = false;
             state.orders = [];
         })
     }

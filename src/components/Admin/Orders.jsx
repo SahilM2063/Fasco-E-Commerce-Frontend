@@ -2,7 +2,7 @@
 /* eslint-disable react/prop-types */
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getAllOrders } from "../../redux/slices/orderSlice";
+import { getAllOrders, updateOrderAction } from "../../redux/slices/orderSlice";
 import card from "./assets/card.svg";
 import dots from "./assets/dots.svg";
 
@@ -36,7 +36,14 @@ const Orders = () => {
     dispatch(getAllOrders());
   }, [dispatch]);
 
+  const { loading, isUpdated, error } = useSelector((state) => state?.orders);
   const { orders } = useSelector((state) => state?.orders?.orders);
+
+  useEffect(() => {
+    if (isUpdated) {
+      dispatch(getAllOrders());
+    }
+  }, [isUpdated, error]);
 
   // pagination state
   const [currentPage, setCurrentPage] = useState(1);
@@ -62,7 +69,7 @@ const Orders = () => {
   };
 
   const updateOrderStatus = (orderId, status) => {
-    console.log(orderId, status);
+    dispatch(updateOrderAction({ _id: orderId, status }));
   };
 
   return (
@@ -82,7 +89,7 @@ const Orders = () => {
             </th>
             <th className="text-left font-[poppins] font-semibold">Quantity</th>
             <th className="text-left leading-6  font-[poppins] font-semibold">
-              Payment <br /> Status
+              Order <br /> Status
             </th>
             <th className="text-left leading-6  font-[poppins] font-semibold">
               Payment <br /> mode
@@ -151,6 +158,41 @@ export const TrComponent = ({
   isMenuOpen,
   updateOrderStatus,
 }) => {
+  const renderPaymentStatus = (paymentStatus) => {
+    switch (paymentStatus) {
+      case "paid":
+        return (
+          <div className="flex items-center justify-center w-20 h-6 bg-green-500 rounded-full mr-8">
+            <p className="text-xs leading-3 text-white">Paid</p>
+          </div>
+        );
+      case "pending":
+        return (
+          <div className="flex items-center justify-center w-20 h-6 bg-yellow-500 rounded-full mr-8">
+            <p className="text-[11px] leading-3 text-white">Pending</p>
+          </div>
+        );
+      case "shipped":
+        return (
+          <div className="flex items-center justify-center w-20 h-6 bg-blue-500 rounded-full mr-8">
+            <p className="text-[11px] leading-3 text-white">Shipped</p>
+          </div>
+        );
+      case "delivered":
+        return (
+          <div className="flex items-center justify-center w-20 h-6 bg-green-500 rounded-full mr-8">
+            <p className="text-[11px] leading-3 text-white">Delivered</p>
+          </div>
+        );
+      default:
+        return (
+          <div className="flex items-center justify-center w-20 h-6 bg-red-500 rounded-full mr-8">
+            <p className="text-[11px] leading-3 text-white">Cancelled</p>
+          </div>
+        );
+    }
+  };
+
   return (
     <tr className="h-16 text-sm leading-none text-gray-700 border-b border-t border-gray-200 bg-white hover:bg-gray-100 font-[Poppins]">
       <td className="pl-4 md:pl-2 font-semibold">{id + 1}</td>
@@ -166,17 +208,7 @@ export const TrComponent = ({
           {order?.orderItems?.reduce((acc, item) => acc + item?.quantity, 0)}
         </p>
       </td>
-      <td>
-        {order?.paymentStatus === "paid" ? (
-          <div className="flex items-center justify-center w-20 h-6 bg-green-100 rounded-full mr-8">
-            <p className="text-xs leading-3 text-green-600">Paid</p>
-          </div>
-        ) : (
-          <div className="flex items-center justify-center w-20 h-6 bg-red-100 rounded-full mr-8">
-            <p className="text-[11px] leading-3 text-red-600">Not paid</p>
-          </div>
-        )}
-      </td>
+      <td>{renderPaymentStatus(order?.status)}</td>
       <td>
         {order?.paymentMethod === "card" ? (
           <p className="mr-4 flex items-center gap-2">
@@ -201,7 +233,7 @@ export const TrComponent = ({
           <img src={dots} alt="dots" className="w-4" />
         </div>
         {isMenuOpen && (
-          <ul className="w-[100px] p-2 py-3 bg-white absolute top-0 right-full  z-[1] flex flex-col items-start gap-2 shadow-md rounded-md">
+          <ul className="w-[100px] p-3 bg-white absolute bottom-0 right-full z-[1] flex flex-col items-start gap-2.5 shadow-md rounded-md">
             {orderStatusOptions.map((option, index) => (
               <li
                 onClick={() => {
