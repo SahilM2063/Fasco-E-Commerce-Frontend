@@ -23,7 +23,7 @@ export const createOrderAction = createAsyncThunk("order/createOrder", async (pa
             },
         }
         const { data } = await axios.post(`${baseURL}/orders/create-order`, payload, config);
-        return window.open(data?.url, "_blank");
+        return window.open(data?.url, "_self");
     } catch (error) {
         if (!error?.response) {
             throw error;
@@ -59,6 +59,24 @@ export const updateOrderAction = createAsyncThunk("order/updateOrder", async (pa
             },
         }
         const { data } = await axios.put(`${baseURL}/orders/update/${payload._id}`, payload, config);
+        return data;
+    } catch (error) {
+        if (!error?.response) {
+            throw error;
+        }
+        return rejectWithValue(error?.response?.data);
+    }
+});
+
+export const getOrderStats = createAsyncThunk("order/getOrderStats", async (payload, { rejectWithValue, getState, dispatch }) => {
+    try {
+        const token = getState()?.users?.userAuth?.userInfo?.token;
+        const config = {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        }
+        const { data } = await axios.get(`${baseURL}/orders/sales/stats`, config);
         return data;
     } catch (error) {
         if (!error?.response) {
@@ -122,6 +140,21 @@ const orderSlice = createSlice({
             state.error = action?.payload;
             state.isUpdated = false;
             state.orders = [];
+        });
+
+        builder.addCase(getOrderStats.pending, (state, action) => {
+            state.loading = true;
+            state.orderStats = {};
+            state.error = null;
+        });
+        builder.addCase(getOrderStats.fulfilled, (state, action) => {
+            state.loading = false;
+            state.orderStats = action?.payload;
+        });
+        builder.addCase(getOrderStats.rejected, (state, action) => {
+            state.loading = false;
+            state.error = action?.payload;
+            state.orderStats = {};
         })
     }
 })
