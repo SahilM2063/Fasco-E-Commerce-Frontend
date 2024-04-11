@@ -25,16 +25,13 @@ const Home = () => {
   const quantityChartData = orderStats?.quantityByProductAndCategory?.map(
     (item) => {
       return {
-        qty: item?.totalQuantity,
+        id: `${item?._id?.category}`,
         label: item?._id?.category,
+        value: item?.totalQuantity,
       };
     }
   );
-  const transformedData = quantityChartData?.map((item, index) => ({
-    id: `item-${index}`,
-    label: item.label,
-    value: item.qty,
-  }));
+  console.log(quantityChartData);
 
   const productsByDateData = orderStats?.productsSoldByDate?.map((item) => {
     return {
@@ -76,8 +73,8 @@ const Home = () => {
 
       <div className="middle-graphs w-full grid grid-cols-2 gap-6"></div>
       <div className="h-[300px]">
-        {transformedData && transformedData.length > 0 && (
-          <MyResponsivePie data={transformedData} />
+        {quantityChartData && quantityChartData.length > 0 && (
+          <MyResponsivePie data={quantityChartData} />
         )}
       </div>
     </div>
@@ -86,74 +83,28 @@ const Home = () => {
 
 export default Home;
 
-export const MyResponsivePie = ({ data }) => {
-  return (
-    <ResponsivePie
-      data={data}
-      margin={{ top: 40, right: 80, bottom: 80, left: 80 }}
-      innerRadius={0.5}
-      padAngle={0.7}
-      cornerRadius={3}
-      activeOuterRadiusOffset={8}
-      borderWidth={1}
-      borderColor={{
-        from: "color",
-        modifiers: [["darker", 0.2]],
-      }}
-      arcLinkLabelsSkipAngle={10}
-      arcLinkLabelsTextColor="#333333"
-      arcLinkLabelsThickness={2}
-      arcLinkLabelsColor={{ from: "color" }}
-      arcLabelsSkipAngle={10}
-      arcLabelsTextColor={{
-        from: "color",
-        modifiers: [["darker", 2]],
-      }}
-      defs={[
-        {
-          id: "dots",
-          type: "patternDots",
-          background: "inherit",
-          color: "rgba(255, 255, 255, 0.3)",
-          size: 4,
-          padding: 1,
-          stagger: true,
-        },
-        {
-          id: "lines",
-          type: "patternLines",
-          background: "inherit",
-          color: "rgba(255, 255, 255, 0.3)",
-          rotation: -45,
-          lineWidth: 6,
-          spacing: 10,
-        },
-      ]}
-      legends={[
-        {
-          anchor: "bottom",
-          direction: "row",
-          justify: false,
-          translateX: 0,
-          translateY: 56,
-          itemsSpacing: 0,
-          itemWidth: 100,
-          itemHeight: 18,
-          itemTextColor: "#999",
-          itemDirection: "left-to-right",
-          itemOpacity: 1,
-          symbolSize: 18,
-          symbolShape: "circle",
-          effects: [
-            {
-              on: "hover",
-              style: {
-                itemTextColor: "#000",
-              },
-            },
-          ],
-        },
-      ]}
-    />
-  );
-};
+const MyResponsivePie = ({ data }) => (
+  <ResponsivePie
+    data={data}
+    margin={{ top: 40, right: 80, bottom: 80, left: 80 }}
+    innerRadius={0.5}
+    padAngle={0.7}
+    cornerRadius={3}
+    activeOuterRadiusOffset={8}
+    colors={{ scheme: "blues" }}
+    borderWidth={0}
+    borderColor={{
+      from: "color",
+      modifiers: [["darker", 0.2]],
+    }}
+    arcLinkLabelsSkipAngle={10}
+    arcLinkLabelsTextColor="#000"
+    arcLinkLabelsThickness={2}
+    arcLinkLabelsColor={{ from: "color" }}
+    arcLabelsSkipAngle={10}
+    arcLabelsTextColor={{
+      from: "color",
+      modifiers: [["darker", 2]],
+    }}
+  />
+);
