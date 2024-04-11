@@ -78,7 +78,7 @@ const Home = () => {
         </div>
       </div>
 
-      <div className="middle-graphs w-full grid grid-cols-2 gap-6">
+      <div className="middle-graphs w-full grid grid-cols-2 md:grid-cols-1 sm:grid-cols-1 gap-6 md:gap-0 sm:gap-0">
         <div className="h-[330px] border rounded-lg mt-4 px-3 py-2">
           <span className="font-[Poppins] font-semibold tracking-wide text-xs">
             Products sold by category
@@ -124,7 +124,7 @@ const MyResponsivePie = ({ data }) => (
       from: "color",
       modifiers: [["darker", 0.2]],
     }}
-    arcLabelsSkipAngle={10} 
+    arcLabelsSkipAngle={10}
     arcLabelsTextColor="#FFFFFF"
   />
 );
@@ -132,7 +132,7 @@ const MyResponsivePie = ({ data }) => (
 const MyResponsiveLine = ({ data }) => (
   <ResponsiveLine
     data={data}
-    margin={{ top: 50, right: 110, bottom: 50, left: 60 }}
+    margin={{ top: 50, right: 10, bottom: 50, left: 10 }}
     xScale={{ type: "point" }}
     yScale={{
       type: "linear",
