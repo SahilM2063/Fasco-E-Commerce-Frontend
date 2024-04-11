@@ -118,17 +118,14 @@ const MyResponsivePie = ({ data }) => (
       modifiers: [["darker", 1.2]],
     }}
     activeOuterRadiusOffset={8}
-    colors={{ scheme: "blue_purple" }}
+    colors={{ scheme: "purple_orange" }}
     borderWidth={0}
     borderColor={{
       from: "color",
       modifiers: [["darker", 0.2]],
     }}
-    arcLabelsSkipAngle={10}
-    arcLabelsTextColor={{
-      from: "color",
-      modifiers: [["darker", 2]],
-    }}
+    arcLabelsSkipAngle={10} 
+    arcLabelsTextColor="#FFFFFF"
   />
 );
 
@@ -148,25 +145,8 @@ const MyResponsiveLine = ({ data }) => (
     yFormat=" >-.2f"
     axisTop={null}
     axisRight={null}
-    // axisBottom={{
-    //   tickSize: 5,
-    //   tickPadding: 5,
-    //   tickRotation: 0,
-    //   legend: "transportation",
-    //   legendOffset: 36,
-    //   legendPosition: "middle",
-    //   truncateTickAt: 0,
-    // }}
-    // axisLeft={{
-    //   tickSize: 5,
-    //   tickPadding: 5,
-    //   tickRotation: 0,
-    //   legend: "count",
-    //   legendOffset: -40,
-    //   legendPosition: "middle",
-    //   truncateTickAt: 0,
-    // }}
     pointSize={10}
+    colors={{ scheme: "purple_orange" }}
     pointColor={{ theme: "background" }}
     pointBorderWidth={2}
     pointBorderColor={{ from: "serieColor" }}
