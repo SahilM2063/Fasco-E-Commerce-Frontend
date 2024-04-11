@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { getAllOrders, getOrderStats } from "../../redux/slices/orderSlice";
 import { getAllUsersAction } from "../../redux/slices/userSlice";
 import { ResponsivePie } from "@nivo/pie";
+import { ResponsiveLine } from "@nivo/line";
 
 const Home = () => {
   const dispatch = useDispatch();
@@ -33,12 +34,18 @@ const Home = () => {
   );
   console.log(quantityChartData);
 
-  const productsByDateData = orderStats?.productsSoldByDate?.map((item) => {
-    return {
-      Date: item?._id?.date,
-      ProductsSold: item?.totalProductsSold,
-    };
-  });
+  const productsByDateData =
+    orderStats?.productsSoldByDate?.length > 0
+      ? [
+          {
+            id: "Products Sold By Date",
+            data: orderStats.productsSoldByDate.map((item) => ({
+              x: item._id.date,
+              y: item.totalProductsSold,
+            })),
+          },
+        ]
+      : [];
 
   console.log(productsByDateData);
 
@@ -71,11 +78,23 @@ const Home = () => {
         </div>
       </div>
 
-      <div className="middle-graphs w-full grid grid-cols-2 gap-6"></div>
-      <div className="h-[300px]">
-        {quantityChartData && quantityChartData.length > 0 && (
-          <MyResponsivePie data={quantityChartData} />
-        )}
+      <div className="middle-graphs w-full grid grid-cols-2 gap-6">
+        <div className="h-[330px] border rounded-lg mt-4 px-3 py-2">
+          <span className="font-[Poppins] font-semibold tracking-wide text-xs">
+            Products sold by category
+          </span>
+          {quantityChartData && quantityChartData.length > 0 && (
+            <MyResponsivePie data={quantityChartData} />
+          )}
+        </div>
+        <div className="h-[330px] border rounded-lg mt-4 px-3 py-2">
+          <span className="font-[Poppins] font-semibold tracking-wide text-xs">
+            Products sold by category
+          </span>
+          {productsByDateData && productsByDateData?.length > 0 && (
+            <MyResponsiveLine data={productsByDateData} />
+          )}
+        </div>
       </div>
     </div>
   );
@@ -87,24 +106,72 @@ const MyResponsivePie = ({ data }) => (
   <ResponsivePie
     data={data}
     margin={{ top: 40, right: 80, bottom: 80, left: 80 }}
-    innerRadius={0.5}
-    padAngle={0.7}
-    cornerRadius={3}
+    innerRadius={0.6}
+    padAngle={0.5}
+    cornerRadius={5}
+    arcLinkLabelsColor={{
+      from: "color",
+    }}
+    arcLinkLabelsThickness={3}
+    arcLinkLabelsTextColor={{
+      from: "color",
+      modifiers: [["darker", 1.2]],
+    }}
     activeOuterRadiusOffset={8}
-    colors={{ scheme: "blues" }}
+    colors={{ scheme: "blue_purple" }}
     borderWidth={0}
     borderColor={{
       from: "color",
       modifiers: [["darker", 0.2]],
     }}
-    arcLinkLabelsSkipAngle={10}
-    arcLinkLabelsTextColor="#000"
-    arcLinkLabelsThickness={2}
-    arcLinkLabelsColor={{ from: "color" }}
     arcLabelsSkipAngle={10}
     arcLabelsTextColor={{
       from: "color",
       modifiers: [["darker", 2]],
     }}
+  />
+);
+
+const MyResponsiveLine = ({ data }) => (
+  <ResponsiveLine
+    data={data}
+    margin={{ top: 50, right: 110, bottom: 50, left: 60 }}
+    xScale={{ type: "point" }}
+    yScale={{
+      type: "linear",
+      min: "auto",
+      max: "auto",
+      stacked: true,
+      reverse: false,
+    }}
+    curve="monotoneX"
+    yFormat=" >-.2f"
+    axisTop={null}
+    axisRight={null}
+    // axisBottom={{
+    //   tickSize: 5,
+    //   tickPadding: 5,
+    //   tickRotation: 0,
+    //   legend: "transportation",
+    //   legendOffset: 36,
+    //   legendPosition: "middle",
+    //   truncateTickAt: 0,
+    // }}
+    // axisLeft={{
+    //   tickSize: 5,
+    //   tickPadding: 5,
+    //   tickRotation: 0,
+    //   legend: "count",
+    //   legendOffset: -40,
+    //   legendPosition: "middle",
+    //   truncateTickAt: 0,
+    // }}
+    pointSize={10}
+    pointColor={{ theme: "background" }}
+    pointBorderWidth={2}
+    pointBorderColor={{ from: "serieColor" }}
+    pointLabelYOffset={-12}
+    enableTouchCrosshair={true}
+    useMesh={true}
   />
 );
