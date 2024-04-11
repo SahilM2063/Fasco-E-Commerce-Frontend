@@ -1,9 +1,10 @@
+/* eslint-disable react/prop-types */
 /* eslint-disable no-unused-vars */
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllOrders, getOrderStats } from "../../redux/slices/orderSlice";
 import { getAllUsersAction } from "../../redux/slices/userSlice";
-import { Tiny } from "@ant-design/plots";
+import { ResponsivePie } from "@nivo/pie";
 
 const Home = () => {
   const dispatch = useDispatch();
@@ -29,22 +30,20 @@ const Home = () => {
       };
     }
   );
+  const transformedData = quantityChartData?.map((item, index) => ({
+    id: `item-${index}`,
+    label: item.label,
+    value: item.qty,
+  }));
 
-  console.log(quantityChartData);
+  const productsByDateData = orderStats?.productsSoldByDate?.map((item) => {
+    return {
+      Date: item?._id?.date,
+      ProductsSold: item?.totalProductsSold,
+    };
+  });
 
-  const config = {
-    data: quantityChartData,
-    width: 480,
-    height: 80,
-    padding: 8,
-    shapeField: "smooth",
-    xField: "label",
-    yField: "qty",
-    style: {
-      fill: "linear-gradient(-90deg, white 0%, #E5ECF6 100%)",
-      fillOpacity: 0.6,
-    },
-  };
+  console.log(productsByDateData);
 
   return (
     <div>
@@ -75,9 +74,86 @@ const Home = () => {
         </div>
       </div>
 
-      <Tiny.Area {...config} />
+      <div className="middle-graphs w-full grid grid-cols-2 gap-6"></div>
+      <div className="h-[300px]">
+        {transformedData && transformedData.length > 0 && (
+          <MyResponsivePie data={transformedData} />
+        )}
+      </div>
     </div>
   );
 };
 
 export default Home;
+
+export const MyResponsivePie = ({ data }) => {
+  return (
+    <ResponsivePie
+      data={data}
+      margin={{ top: 40, right: 80, bottom: 80, left: 80 }}
+      innerRadius={0.5}
+      padAngle={0.7}
+      cornerRadius={3}
+      activeOuterRadiusOffset={8}
+      borderWidth={1}
+      borderColor={{
+        from: "color",
+        modifiers: [["darker", 0.2]],
+      }}
+      arcLinkLabelsSkipAngle={10}
+      arcLinkLabelsTextColor="#333333"
+      arcLinkLabelsThickness={2}
+      arcLinkLabelsColor={{ from: "color" }}
+      arcLabelsSkipAngle={10}
+      arcLabelsTextColor={{
+        from: "color",
+        modifiers: [["darker", 2]],
+      }}
+      defs={[
+        {
+          id: "dots",
+          type: "patternDots",
+          background: "inherit",
+          color: "rgba(255, 255, 255, 0.3)",
+          size: 4,
+          padding: 1,
+          stagger: true,
+        },
+        {
+          id: "lines",
+          type: "patternLines",
+          background: "inherit",
+          color: "rgba(255, 255, 255, 0.3)",
+          rotation: -45,
+          lineWidth: 6,
+          spacing: 10,
+        },
+      ]}
+      legends={[
+        {
+          anchor: "bottom",
+          direction: "row",
+          justify: false,
+          translateX: 0,
+          translateY: 56,
+          itemsSpacing: 0,
+          itemWidth: 100,
+          itemHeight: 18,
+          itemTextColor: "#999",
+          itemDirection: "left-to-right",
+          itemOpacity: 1,
+          symbolSize: 18,
+          symbolShape: "circle",
+          effects: [
+            {
+              on: "hover",
+              style: {
+                itemTextColor: "#000",
+              },
+            },
+          ],
+        },
+      ]}
+    />
+  );
+};
