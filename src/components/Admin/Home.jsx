@@ -3,6 +3,7 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllOrders, getOrderStats } from "../../redux/slices/orderSlice";
 import { getAllUsersAction } from "../../redux/slices/userSlice";
+import { Tiny } from "@ant-design/plots";
 
 const Home = () => {
   const dispatch = useDispatch();
@@ -18,6 +19,32 @@ const Home = () => {
   // console.log(mainData);
 
   const { users } = useSelector((state) => state?.users?.users);
+
+  // Quantity chart data
+  const quantityChartData = orderStats?.quantityByProductAndCategory?.map(
+    (item) => {
+      return {
+        qty: item?.totalQuantity,
+        label: item?._id?.category,
+      };
+    }
+  );
+
+  console.log(quantityChartData);
+
+  const config = {
+    data: quantityChartData,
+    width: 480,
+    height: 80,
+    padding: 8,
+    shapeField: "smooth",
+    xField: "label",
+    yField: "qty",
+    style: {
+      fill: "linear-gradient(-90deg, white 0%, #E5ECF6 100%)",
+      fillOpacity: 0.6,
+    },
+  };
 
   return (
     <div>
@@ -47,6 +74,8 @@ const Home = () => {
           </span>
         </div>
       </div>
+
+      <Tiny.Area {...config} />
     </div>
   );
 };
