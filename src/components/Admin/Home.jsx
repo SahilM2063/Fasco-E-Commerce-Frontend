@@ -39,10 +39,12 @@ const Home = () => {
       ? [
           {
             id: "Products Sold By Date",
-            data: orderStats.productsSoldByDate.map((item) => ({
-              x: item._id.date,
-              y: item.totalProductsSold,
-            })),
+            data: [...orderStats.productsSoldByDate] // Shallow copy the array
+              .sort((a, b) => b._id.date - a._id.date) // Sort the copied array
+              .map((item) => ({
+                x: item._id.date,
+                y: item.totalProductsSold,
+              })),
           },
         ]
       : [];
