@@ -80,21 +80,46 @@ const Home = () => {
         </div>
       </div>
 
-      <div className="middle-graphs w-full grid grid-cols-2 md:grid-cols-1 sm:grid-cols-1 gap-6 md:gap-0 sm:gap-0">
-        <div className="h-[330px] border rounded-lg mt-4 px-3 py-2">
+      <div className="middle-graphs w-full grid grid-cols-4 md:grid-cols-1 sm:grid-cols-1 gap-6 md:gap-0 sm:gap-0">
+        <div className="h-[330px] col-span-3 rounded-lg mt-4 px-3 py-2 border">
+          <span className="font-[Poppins] font-semibold tracking-wide text-xs">
+            Products sold by date
+          </span>
+          {productsByDateData && productsByDateData?.length > 0 && (
+            <MyResponsiveLine data={productsByDateData} />
+          )}
+        </div>
+        <div className="h-[330px] col-span-1 rounded-lg mt-4 flex flex-col gap-4 items-start">
+          <div className="w-full flex items-center justify-between bg-[#E3F5FF] rounded-md px-4 py-3">
+            <span className="font-[Poppins] font-semibold">Today Sales</span>
+            <span className="text-sm font-[Poppins] font-semibold">₹ 3442</span>
+          </div>
+          <div className="w-full flex-1 bg-[#E5ECF6] rounded-md px-4 py-3 ">
+            <h1 className="font-[Poppins] font-semibold text-sm mb-4">Orders By Country</h1>
+            {orderStats?.ordersByCountry?.map((item) => (
+              <div
+                key={item?._id}
+                className="w-full flex justify-between items-center gap-4 mb-2"
+              >
+                <span className="w-[40%] font-[Poppins] text-sm">{item?._id} </span>
+                <progress
+                  className="progress w-56"
+                  value={item?.totalOrders}
+                  max={mainData?.totalOrders}
+                ></progress>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      <div className="end-graphs w-full grid grid-cols-2 md:grid-cols-1 sm:grid-cols-1 gap-6 md:gap-0 sm:gap-0 mt-4">
+        <div className="h-[330px]  rounded-lg mt-4 px-3 py-2 bg-[#F7F9FB]">
           <span className="font-[Poppins] font-semibold tracking-wide text-xs">
             Products sold by category
           </span>
           {quantityChartData && quantityChartData.length > 0 && (
             <MyResponsivePie data={quantityChartData} />
-          )}
-        </div>
-        <div className="h-[330px] border rounded-lg mt-4 px-3 py-2">
-          <span className="font-[Poppins] font-semibold tracking-wide text-xs">
-            Products sold by category
-          </span>
-          {productsByDateData && productsByDateData?.length > 0 && (
-            <MyResponsiveLine data={productsByDateData} />
           )}
         </div>
       </div>
@@ -147,6 +172,8 @@ const MyResponsiveLine = ({ data }) => (
     yFormat=" >-.2f"
     axisTop={null}
     axisRight={null}
+    // axisBottom={null}
+    // axisLeft={null}
     pointSize={10}
     colors={{ scheme: "purple_orange" }}
     pointColor={{ theme: "background" }}
@@ -155,5 +182,7 @@ const MyResponsiveLine = ({ data }) => (
     pointLabelYOffset={-12}
     enableTouchCrosshair={true}
     useMesh={true}
+    enableGridX={false}
+    // enableGridY={false}
   />
 );
