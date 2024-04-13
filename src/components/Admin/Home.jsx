@@ -6,6 +6,7 @@ import { getAllOrders, getOrderStats } from "../../redux/slices/orderSlice";
 import { getAllUsersAction } from "../../redux/slices/userSlice";
 import { ResponsivePie } from "@nivo/pie";
 import { ResponsiveLine } from "@nivo/line";
+import { useNavigate } from "react-router-dom";
 
 const Home = () => {
   const dispatch = useDispatch();
@@ -94,14 +95,18 @@ const Home = () => {
             <span className="font-[Poppins] font-semibold">Today Sales</span>
             <span className="text-sm font-[Poppins] font-semibold">₹ 3442</span>
           </div>
-          <div className="w-full flex-1 bg-[#E5ECF6] rounded-md px-4 py-3 ">
-            <h1 className="font-[Poppins] font-semibold text-sm mb-4">Orders By Country</h1>
+          <div className="w-full flex-1 bg-[#E5ECF6]/20 rounded-md px-4 py-3 ">
+            <h1 className="font-[Poppins] font-semibold text-sm mb-4">
+              Orders by country
+            </h1>
             {orderStats?.ordersByCountry?.map((item) => (
               <div
                 key={item?._id}
                 className="w-full flex justify-between items-center gap-4 mb-2"
               >
-                <span className="w-[40%] font-[Poppins] text-sm">{item?._id} </span>
+                <span className="w-[40%] font-[Poppins] text-sm">
+                  {item?._id}{" "}
+                </span>
                 <progress
                   className="progress w-56"
                   value={item?.totalOrders}
@@ -114,7 +119,7 @@ const Home = () => {
       </div>
 
       <div className="end-graphs w-full grid grid-cols-2 md:grid-cols-1 sm:grid-cols-1 gap-6 md:gap-0 sm:gap-0 mt-4">
-        <div className="h-[330px]  rounded-lg mt-4 px-3 py-2 bg-[#F7F9FB]">
+        <div className="h-[330px] rounded-lg mt-4 px-3 py-2 bg-[#F7F9FB]">
           <span className="font-[Poppins] font-semibold tracking-wide text-xs">
             Products sold by category
           </span>
@@ -122,12 +127,52 @@ const Home = () => {
             <MyResponsivePie data={quantityChartData} />
           )}
         </div>
+
+        <div className="h-[330px] rounded-lg mt-4 px-3 py-4 bg-[#F7F9FB]">
+          <h1 className="font-[Poppins] font-semibold tracking-wide text-xs mb-4">
+            Trending products
+          </h1>
+          <div>
+            {orderStats?.topFiveProducts?.map((item, index) => (
+              <Product item={item} key={item?._id} />
+            ))}
+          </div>
+        </div>
       </div>
     </div>
   );
 };
 
 export default Home;
+
+const Product = ({ item }) => {
+  const navigate = useNavigate();
+
+  return (
+    <div className="w-full flex justify-between items-start mb-2 font-[Poppins]">
+      <div className="flex justify-start items-center gap-5">
+        <img
+          src={item?.product?.images[0]}
+          alt="img"
+          className="w-12 rounded-lg"
+        />
+        <div className="flex flex-col items-start justify-start gap-2">
+          <p
+            onClick={() => navigate(`/product/${item?.product?._id}`)}
+            className="leading-3 text-sm font-semibold tracking-wide cursor-pointer"
+          >
+            {item?.product?.name}{" "}
+          </p>
+          <span className="text-xs text-[#6B7280]">
+            {" "}
+            {item?.product?.category}
+          </span>
+        </div>
+      </div>
+      <span className="font-bold pr-4">{item?.totalSold}</span>
+    </div>
+  );
+};
 
 const MyResponsivePie = ({ data }) => (
   <ResponsivePie
@@ -181,8 +226,9 @@ const MyResponsiveLine = ({ data }) => (
     pointBorderColor={{ from: "serieColor" }}
     pointLabelYOffset={-12}
     enableTouchCrosshair={true}
+    animate={true}
     useMesh={true}
     enableGridX={false}
-    // enableGridY={false}
+    enableGridY={false}
   />
 );
