@@ -7,6 +7,7 @@ import { getAllUsersAction } from "../../redux/slices/userSlice";
 import { ResponsivePie } from "@nivo/pie";
 import { ResponsiveLine } from "@nivo/line";
 import { useNavigate } from "react-router-dom";
+import Loader from "../Loader/Loader";
 
 const Home = () => {
   const dispatch = useDispatch();
@@ -17,7 +18,7 @@ const Home = () => {
     dispatch(getOrderStats());
   }, [dispatch]);
 
-  const { orderStats } = useSelector((state) => state?.orders);
+  const { orderStats, loading } = useSelector((state) => state?.orders);
   const mainData = orderStats?.orderStats?.[0];
   // console.log(mainData);
 
@@ -54,91 +55,101 @@ const Home = () => {
 
   return (
     <div>
-      <div className="statsLine w-full grid grid-cols-4 md:grid-cols-2 sm:grid-cols-1 gap-6">
-        <div className="p-6 bg-[#E3F5FF] rounded-2xl flex flex-col justify-between items-start gap-3">
-          <h1 className="font-[Poppins] font-semibold">Total Sales</h1>
-          <span className="font-[Poppins] text-3xl font-bold">
-            ₹ {mainData?.sumOfSales}
-          </span>
-        </div>
-        <div className="p-6 bg-[#E5ECF6] rounded-2xl flex flex-col justify-between items-start gap-3">
-          <h1 className="font-[Poppins] font-semibold">Total Orders</h1>
-          <span className="font-[Poppins] text-3xl font-bold">
-            {mainData?.totalOrders}
-          </span>
-        </div>
-        <div className="p-6 bg-[#E3F5FF] rounded-2xl flex flex-col justify-between items-start gap-3">
-          <h1 className="font-[Poppins] font-semibold">Avg. Order</h1>
-          <span className="font-[Poppins] text-3xl font-bold">
-            ₹ {mainData?.averageOrder?.toFixed(2)}
-          </span>
-        </div>
-        <div className="p-6 bg-[#E5ECF6] rounded-2xl flex flex-col justify-between items-start gap-3">
-          <h1 className="font-[Poppins] font-semibold">Active Users</h1>
-          <span className="font-[Poppins] text-3xl font-bold">
-            {users?.length}
-          </span>
-        </div>
-      </div>
-
-      <div className="middle-graphs w-full grid grid-cols-4 md:grid-cols-1 sm:grid-cols-1 gap-6 md:gap-0 sm:gap-0">
-        <div className="h-[330px] col-span-3 rounded-lg mt-4 px-3 py-2 border">
-          <span className="font-[Poppins] font-semibold tracking-wide text-xs">
-            Products sold by date
-          </span>
-          {productsByDateData && productsByDateData?.length > 0 && (
-            <MyResponsiveLine data={productsByDateData} />
-          )}
-        </div>
-        <div className="h-[330px] col-span-1 rounded-lg mt-4 flex flex-col gap-4 items-start">
-          <div className="w-full flex items-center justify-between bg-[#E3F5FF] rounded-md px-4 py-3">
-            <span className="font-[Poppins] font-semibold">Today Sales</span>
-            <span className="text-sm font-[Poppins] font-semibold">₹ 3442</span>
+      {loading ? (
+        <Loader />
+      ) : (
+        <>
+          <div className="statsLine w-full grid grid-cols-4 md:grid-cols-2 sm:grid-cols-1 gap-6">
+            <div className="p-6 bg-[#E3F5FF] rounded-2xl flex flex-col justify-between items-start gap-3">
+              <h1 className="font-[Poppins] font-semibold">Total Sales</h1>
+              <span className="font-[Poppins] text-3xl font-bold">
+                ₹ {mainData?.sumOfSales}
+              </span>
+            </div>
+            <div className="p-6 bg-[#E5ECF6] rounded-2xl flex flex-col justify-between items-start gap-3">
+              <h1 className="font-[Poppins] font-semibold">Total Orders</h1>
+              <span className="font-[Poppins] text-3xl font-bold">
+                {mainData?.totalOrders}
+              </span>
+            </div>
+            <div className="p-6 bg-[#E3F5FF] rounded-2xl flex flex-col justify-between items-start gap-3">
+              <h1 className="font-[Poppins] font-semibold">Avg. Order</h1>
+              <span className="font-[Poppins] text-3xl font-bold">
+                ₹ {mainData?.averageOrder?.toFixed(2)}
+              </span>
+            </div>
+            <div className="p-6 bg-[#E5ECF6] rounded-2xl flex flex-col justify-between items-start gap-3">
+              <h1 className="font-[Poppins] font-semibold">Active Users</h1>
+              <span className="font-[Poppins] text-3xl font-bold">
+                {users?.length}
+              </span>
+            </div>
           </div>
-          <div className="w-full flex-1 bg-[#E5ECF6]/20 rounded-md px-4 py-3 ">
-            <h1 className="font-[Poppins] font-semibold text-sm mb-4">
-              Orders by country
-            </h1>
-            {orderStats?.ordersByCountry?.map((item) => (
-              <div
-                key={item?._id}
-                className="w-full flex justify-between items-center gap-4 mb-2"
-              >
-                <span className="w-[40%] font-[Poppins] text-sm">
-                  {item?._id}{" "}
+
+          <div className="middle-graphs w-full grid grid-cols-4 md:grid-cols-1 sm:grid-cols-1 gap-6 md:gap-0 sm:gap-0">
+            <div className="h-[330px] col-span-3 md:col-span-2 rounded-lg mt-4 px-3 py-2 border">
+              <span className="font-[Poppins] font-semibold tracking-wide text-xs">
+                Products sold by date
+              </span>
+              {productsByDateData && productsByDateData?.length > 0 && (
+                <MyResponsiveLine data={productsByDateData} />
+              )}
+            </div>
+            <div className="h-[330px] md:h-auto sm:h-auto col-span-1 rounded-lg mt-4 flex flex-col gap-4 items-start">
+              <div className="w-full flex items-center justify-between bg-[#E3F5FF] rounded-md px-4 py-3">
+                <span className="font-[Poppins] font-semibold">
+                  Today Sales
                 </span>
-                <progress
-                  className="progress w-56"
-                  value={item?.totalOrders}
-                  max={mainData?.totalOrders}
-                ></progress>
+                <span className="text-sm font-[Poppins] font-semibold">
+                  ₹ 3442
+                </span>
               </div>
-            ))}
+              <div className="w-full flex-1 bg-[#E5ECF6]/20 rounded-md px-4 py-3 ">
+                <h1 className="font-[Poppins] font-semibold text-sm mb-4">
+                  Orders by country
+                </h1>
+                {orderStats?.ordersByCountry?.map((item) => (
+                  <div
+                    key={item?._id}
+                    className="w-full flex justify-between items-center gap-4 mb-2"
+                  >
+                    <span className="w-[40%] font-[Poppins] text-sm">
+                      {item?._id}{" "}
+                    </span>
+                    <progress
+                      className="progress w-full"
+                      value={item?.totalOrders}
+                      max={mainData?.totalOrders}
+                    ></progress>
+                  </div>
+                ))}
+              </div>
+            </div>
           </div>
-        </div>
-      </div>
 
-      <div className="end-graphs w-full grid grid-cols-2 md:grid-cols-1 sm:grid-cols-1 gap-6 md:gap-0 sm:gap-0 mt-4">
-        <div className="h-[330px] rounded-lg mt-4 px-3 py-2 bg-[#F7F9FB]">
-          <span className="font-[Poppins] font-semibold tracking-wide text-xs">
-            Products sold by category
-          </span>
-          {quantityChartData && quantityChartData.length > 0 && (
-            <MyResponsivePie data={quantityChartData} />
-          )}
-        </div>
+          <div className="end-graphs w-full grid grid-cols-2 md:grid-cols-1 sm:grid-cols-1 gap-6 md:gap-0 sm:gap-0 mt-4">
+            <div className="h-[330px] rounded-lg mt-4 px-3 py-2 bg-[#F7F9FB]">
+              <span className="font-[Poppins] font-semibold tracking-wide text-xs">
+                Products sold by category
+              </span>
+              {quantityChartData && quantityChartData.length > 0 && (
+                <MyResponsivePie data={quantityChartData} />
+              )}
+            </div>
 
-        <div className="h-[330px] rounded-lg mt-4 px-3 py-4 bg-[#F7F9FB]">
-          <h1 className="font-[Poppins] font-semibold tracking-wide text-xs mb-4">
-            Trending products
-          </h1>
-          <div>
-            {orderStats?.topFiveProducts?.map((item, index) => (
-              <Product item={item} key={item?._id} />
-            ))}
+            <div className="h-[330px] rounded-lg mt-4 px-3 py-4 bg-[#F7F9FB]">
+              <h1 className="font-[Poppins] font-semibold tracking-wide text-xs mb-4">
+                Trending products
+              </h1>
+              <div>
+                {orderStats?.topFiveProducts?.map((item, index) => (
+                  <Product item={item} key={item?._id} />
+                ))}
+              </div>
+            </div>
           </div>
-        </div>
-      </div>
+        </>
+      )}
     </div>
   );
 };
