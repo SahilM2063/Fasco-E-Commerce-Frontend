@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllOrders } from "../../redux/slices/orderSlice";
+import card from "../../components/Admin/assets/card.svg";
 
 const OrderHistory = () => {
   const dispatch = useDispatch();
@@ -48,7 +49,9 @@ const OrderHistory = () => {
             <th className="text-left pl-4 font-[poppins] font-semibold">
               Date
             </th>
-            <th className="text-left font-[poppins] font-semibold">Price (INR)</th>
+            <th className="text-left font-[poppins] font-semibold">
+              Price (INR)
+            </th>
             <th className="text-left font-[poppins] font-semibold">Quantity</th>
             <th className="text-left font-[poppins] font-semibold">
               Payment Status
@@ -104,6 +107,41 @@ const OrderHistory = () => {
 export default OrderHistory;
 
 export const TrComponent = ({ order, id }) => {
+  const renderPaymentStatus = (paymentStatus) => {
+    switch (paymentStatus) {
+      case "paid":
+        return (
+          <div className="flex items-center justify-center w-20 h-6 bg-green-500 rounded-full mr-8">
+            <p className="text-xs leading-3 text-white">Paid</p>
+          </div>
+        );
+      case "pending":
+        return (
+          <div className="flex items-center justify-center w-20 h-6 bg-yellow-500 rounded-full mr-8">
+            <p className="text-[11px] leading-3 text-white">Pending</p>
+          </div>
+        );
+      case "shipped":
+        return (
+          <div className="flex items-center justify-center w-20 h-6 bg-blue-500 rounded-full mr-8">
+            <p className="text-[11px] leading-3 text-white">Shipped</p>
+          </div>
+        );
+      case "delivered":
+        return (
+          <div className="flex items-center justify-center w-20 h-6 bg-green-500 rounded-full mr-8">
+            <p className="text-[11px] leading-3 text-white">Delivered</p>
+          </div>
+        );
+      default:
+        return (
+          <div className="flex items-center justify-center w-20 h-6 bg-red-500 rounded-full mr-8">
+            <p className="text-[11px] leading-3 text-white">Cancelled</p>
+          </div>
+        );
+    }
+  };
+
   return (
     <tr className="h-16 text-sm leading-none text-gray-700 border-b border-t border-gray-200 bg-white hover:bg-gray-100 font-[Poppins]">
       <td className="pl-4 font-semibold">{id + 1}</td>
@@ -112,18 +150,31 @@ export const TrComponent = ({ order, id }) => {
         <p className="mr-8 pl-4">{order?.createdAt.slice(0, 10)}</p>
       </td>
       <td>
-        <p className="mr-8 ">{order?.totalPrice}</p>
+        <p className="mr-16 ">{order?.totalPrice}</p>
       </td>
       <td>
-        <p className="mr-8 ">
+        <p className="mr-16 ">
           {order?.orderItems?.reduce((acc, item) => acc + item?.quantity, 0)}
         </p>
       </td>
       <td>
-        <p className="mr-16">{order?.paymentStatus}</p>
+        <p className="mr-8">{renderPaymentStatus(order?.status)}</p>
       </td>
       <td>
-        <p className="mr-16">{order?.paymentMethod}</p>
+        <p className="mr-8">
+          {" "}
+          {order?.paymentMethod === "card" ? (
+            <p className="mr-4 flex items-center gap-2">
+              {" "}
+              <img src={card} alt="card" className="w-5" />{" "}
+              {order?.paymentMethod}
+            </p>
+          ) : (
+            <p className="mr-4 flex items-center gap-2">
+              {order?.paymentMethod}
+            </p>
+          )}
+        </p>
       </td>
     </tr>
   );

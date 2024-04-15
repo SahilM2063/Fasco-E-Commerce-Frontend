@@ -97,7 +97,7 @@ const Home = () => {
             </div>
             <div className="h-[330px] md:h-auto sm:h-auto col-span-1 rounded-lg mt-4 flex flex-col gap-4 items-start">
               <div className="w-full flex items-center justify-between bg-[#E3F5FF] rounded-md px-4 py-3">
-                <span className="font-[Poppins] font-semibold">
+                <span className="font-[Poppins] text-sm tracking-wide font-semibold">
                   Today Sales
                 </span>
                 <span className="text-sm font-[Poppins] font-semibold">
@@ -105,7 +105,7 @@ const Home = () => {
                 </span>
               </div>
               <div className="w-full flex-1 bg-[#E5ECF6]/20 rounded-md px-4 py-3 ">
-                <h1 className="font-[Poppins] font-semibold text-sm mb-4">
+                <h1 className="font-[Poppins] font-semibold text-sm  mb-4">
                   Orders by country
                 </h1>
                 {orderStats?.ordersByCountry?.map((item) => (
@@ -117,7 +117,7 @@ const Home = () => {
                       {item?._id}{" "}
                     </span>
                     <progress
-                      className="progress w-full"
+                      className="progress w-full progress-new1"
                       value={item?.totalOrders}
                       max={mainData?.totalOrders}
                     ></progress>

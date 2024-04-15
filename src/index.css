@@ -2,8 +2,8 @@
 @tailwind components;
 @tailwind utilities;
 
-body::-webkit-scrollbar{
-     display: none;
+body::-webkit-scrollbar {
+    display: none;
 }
 
 .clip-polygon {
@@ -20,4 +20,10 @@ input::-webkit-inner-spin-button {
 
 .scrollbar-hide::-webkit-scrollbar {
     display: none;
+}
+
+.progress-new1::-webkit-progress-value {
+    --tw-bg-opacity: 1;
+    background-color: #542788;
+    /* Apply the Tailwind color class */
 }

@@ -97,6 +97,7 @@ const Customers = () => {
           </tbody>
         </table>
         {/* pagination */}
+
         <div className="join w-full flex justify-center items-center mt-8 mb-4">
           <button
             onClick={() => handlePageChange(currentPage - 1)}
