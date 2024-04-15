@@ -404,7 +404,7 @@ const Shop = () => {
         <div className="sorter w-full mb-4 flex justify-between items-center">
           <select
             onChange={(e) => handleSortChange(e.target.value)}
-            className="font-[Poppins] text-sm border outline-none p-1 rounded-sm cursor-pointer"
+            className="font-[Poppins] text-sm border outline-none p-1 rounded-md cursor-pointer"
           >
             <option>Sort</option>
             {sortOptions?.map((option, index) => {
