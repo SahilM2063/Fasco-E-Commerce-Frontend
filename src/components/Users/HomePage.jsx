@@ -215,7 +215,10 @@ const HomePage = () => {
         </div>
 
         <div className="w-full flex items-center justify-center mt-4">
-          <Link to={"/shop"} className="py-3 md:py-2 px-10 md:px-4 bg-black text-white rounded-lg">
+          <Link
+            to={"/shop"}
+            className="py-3 md:py-2 px-10 md:px-4 bg-black text-white rounded-lg"
+          >
             View more
           </Link>
         </div>
@@ -247,7 +250,10 @@ const HomePage = () => {
             of Tommy Shelby and his gang with meticulously crafted suits, rugged
             outerwear, and vintage accessories.{" "}
           </p>
-          <Link to={"/shop"} className="py-3 text-sm md:py-2 px-10 md:px-4 bg-black text-white rounded-lg mt-6">
+          <Link
+            to={"/shop"}
+            className="py-3 text-sm md:py-2 px-10 md:px-4 bg-black text-white rounded-lg mt-6"
+          >
             Explore now
           </Link>
         </div>

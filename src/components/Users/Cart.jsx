@@ -12,6 +12,7 @@ import { toast } from "react-toastify";
 import couponSvg from "../../assets/coupon.svg";
 import { Link } from "react-router-dom";
 import { getCouponByName, resetCoupon } from "../../redux/slices/couponSlice";
+import Loader from "../Loader/Loader";
 
 const Cart = () => {
   const dispatch = useDispatch();
@@ -103,7 +104,7 @@ const Cart = () => {
     if (couponError) {
       toast.error(couponError?.message);
     }
-    if(coupon?.coupon && coupon?.coupon?.isExpired) {
+    if (coupon?.coupon && coupon?.coupon?.isExpired) {
       toast.error("Coupon is expired");
     }
     if (coupon?.coupon && !coupon?.coupon?.isExpired) {
@@ -134,7 +135,9 @@ const Cart = () => {
     }
   }, [cartData, quantities, appliedCoupon]);
 
-  return (
+  return loading ? (
+    <Loader />
+  ) : (
     <div className="w-full px-32 pb-6 md:px-10 sm:px-6 mt-8">
       <h1 className="font-[Volkhov] text-3xl text-center">Shopping Cart</h1>
       <div className="cartProducts mt-4">

@@ -1,22 +1,18 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable no-unused-vars */
 import React from "react";
-import ac1 from "../../assets/ac1.png";
-import ratingStar from "../../assets/ratingStar.svg";
-
-const rating_star = (
-  <>
-    <img src={ratingStar} alt="star" />
-    <img src={ratingStar} alt="star" />
-    <img src={ratingStar} alt="star" />
-    <img src={ratingStar} alt="star" />
-    <img src={ratingStar} alt="star" />
-  </>
-);
+import { useNavigate } from "react-router-dom";
+import filledStar from "../../assets/filledStar.svg";
+import emptyStar from "../../assets/emptyStar.svg";
 
 const ArrivalProductCard = ({ product }) => {
+  const navigate = useNavigate();
+
   return (
-    <div className="card w-full border flex flex-col items-center p-5 font-[Poppins] rounded-lg select-none">
+    <div
+      onClick={() => navigate(`product/${product?._id}`)}
+      className="card w-full border flex flex-col items-center p-5 font-[Poppins] rounded-lg select-none cursor-pointer"
+    >
       <img
         src={product?.images[0]}
         alt="product_img"
@@ -29,7 +25,6 @@ const ArrivalProductCard = ({ product }) => {
           </h5>
           <span className="text-sm text-[#8A8A8A]">{product?.brand}</span>
         </div>
-        <div className="stars flex">{rating_star}</div>
       </div>
       <p className="w-full text-left text-[#484848] text-[12px] font-[600] opacity-90 mb-2">
         (4.1k) Customer Reviews
@@ -38,10 +33,33 @@ const ArrivalProductCard = ({ product }) => {
         <h2 className="text-2xl font-extrabold text-[#484848]">
           ₹ {product?.price}
         </h2>
-        <span className="text-sm text-red-500">Almost Sold Out</span>
+        <span className="text-sm text-red-500">
+          {renderStars(Math.floor(product?.averageRating))}
+          {/* {product?.averageRating} */}
+        </span>
       </div>
     </div>
   );
 };
 
 export default ArrivalProductCard;
+
+const renderStars = (rating) => {
+  const filledStars = Array.from({ length: rating }, (_, index) => (
+    <img
+      key={`filled_${index}`}
+      src={filledStar}
+      alt="Filled Star"
+      className="md:w-3 sm:w-3"
+    />
+  ));
+  const emptyStars = Array.from({ length: 5 - rating }, (_, index) => (
+    <img
+      key={`empty_${index}`}
+      src={emptyStar}
+      alt="Empty Star"
+      className="md:w-3 sm:w-3"
+    />
+  ));
+  return [...filledStars, ...emptyStars];
+};
