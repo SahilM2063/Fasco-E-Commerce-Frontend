@@ -51,7 +51,7 @@ const Collection = () => {
           </div>
         </div>
         <div className="row w-full flex sm:flex-col-reverse justify-between items-start gap-10 md:gap-0 sm:gap-6 h-[400px] sm:h-auto md:h-[300px] mb-16 md:mb-12 sm:mb-8">
-          <div className="content flex flex-col items-start justify-start gap-2 pl-8 sm:pl-0 w-full md:w-[90%] h-full">
+          <div className="content flex flex-col items-start justify-start gap-2 pr-8 sm:pr-0 w-full md:w-[90%] h-full">
             <div className="text-container w-full">
               <h1 className="font-[Poppins] font-semibold text-4xl md:text-lg sm:text-xl">
                 Women Fashion
@@ -133,7 +133,7 @@ const Collection = () => {
           </div>
         </div>
         <div className="row w-full flex sm:flex-col-reverse justify-between items-start gap-10 md:gap-0 sm:gap-6 h-[400px] sm:h-auto md:h-[300px] mb-16 md:mb-12 sm:mb-8">
-          <div className="content flex flex-col items-start justify-start gap-2 pl-8 sm:pl-0 w-full md:w-[90%] h-full">
+          <div className="content flex flex-col items-start justify-start gap-2 pr-8 sm:pr-0 w-full md:w-[90%] h-full">
             <div className="text-container w-full">
               <h1 className="font-[Poppins] font-semibold text-4xl md:text-lg sm:text-xl">
                 Men Accessories
