@@ -13,6 +13,7 @@ import {
 } from "../../redux/slices/userSlice";
 import { toast } from "react-toastify";
 import { Link } from "react-router-dom";
+import Loader from "../Loader/Loader";
 
 const Profile = () => {
   const dispatch = useDispatch();
@@ -166,7 +167,9 @@ const Profile = () => {
     return;
   };
 
-  return (
+  return loading ? (
+    <Loader />
+  ) : (
     <>
       <div className="sm:overflow-x-scroll scrollbar-hide">
         <div className="avatar-container w-full flex justify-between items-start rounded-md p-4 sm:p-2">
@@ -405,7 +408,7 @@ const Profile = () => {
               onClick={handleAddressInfoSubmit}
               className="w-[calc(50%-8px)] py-2 bg-black text-white rounded-lg border-[1px] border-black"
             >
-              {loading ? "Saving..." : "Save"}
+              Save
             </button>
           </div>
         </div>
