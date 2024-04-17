@@ -18,8 +18,8 @@ const links = [
     href: "/shop",
   },
   {
-    title: "Category",
-    href: "/category",
+    title: "Collection",
+    href: "/collection",
   },
   {
     title: "About Us",

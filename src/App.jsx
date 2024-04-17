@@ -29,6 +29,7 @@ import OrderHistory from "./components/Users/OrderHistory.jsx";
 import OrderComponent from "./components/Users/OrderComponent.jsx";
 import OrderSuccess from "./components/Users/OrderSuccess.jsx";
 import OrderFailed from "./components/Users/OrderFailed.jsx";
+import Collection from "./components/Users/Collection.jsx";
 
 function App() {
   return (
@@ -47,6 +48,7 @@ function App() {
         <Route path="*" element={<NotFound />} />
         <Route path="/" element={<HomePage />} />
         <Route path="/shop" element={<Shop />} />
+        <Route path="/collection" element={<Collection />} />
         <Route path="/about-us" element={<AboutUs />} />
         <Route path="/product/:id" element={<SingleProductDetail />} />
         <Route path="/user/register" element={<Register />} />

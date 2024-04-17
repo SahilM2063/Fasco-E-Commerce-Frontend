@@ -20,6 +20,7 @@ const Home = () => {
 
   const { orderStats, loading } = useSelector((state) => state?.orders);
   const mainData = orderStats?.orderStats?.[0];
+  const todaySales = orderStats?.todaySales?.[0];
   // console.log(mainData);
 
   const { users } = useSelector((state) => state?.users?.users);
@@ -101,7 +102,7 @@ const Home = () => {
                   Today Sales
                 </span>
                 <span className="text-sm font-[Poppins] font-semibold">
-                  ₹ 3442
+                  ₹ {todaySales?.sumOfSales}
                 </span>
               </div>
               <div className="w-full flex-1 bg-[#E5ECF6]/20 rounded-md px-4 py-3 ">
