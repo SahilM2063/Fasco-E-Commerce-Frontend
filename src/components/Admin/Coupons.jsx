@@ -127,40 +127,42 @@ const Coupons = () => {
           </tbody>
         </table>
         {/* pagination */}
-        <div className="join w-full flex justify-center items-center mt-8 mb-4">
-          <button
-            onClick={() => handlePageChange(currentPage - 1)}
-            className={`join-item btn btn-sm border-none rounded-l-md ${
-              currentPage === 1 && "bg-gray"
-            }`}
-            disabled={currentPage === 1}
-          >
-            «
-          </button>
-          {Array.from({ length: totalPages }, (_, i) => i + 1).map(
-            (pageNum) => (
-              <button
-                key={pageNum}
-                onClick={() => handlePageChange(pageNum)}
-                className={`join-item btn btn-sm border-none font-[Poppins] font-semibold text-xs flex items-center justify-center ${
-                  currentPage === pageNum &&
-                  "bg-[#1a1a1a] text-white hover:bg-[#1a1a1a] hover:text-white"
-                }`}
-              >
-                {pageNum}
-              </button>
-            )
-          )}
-          <button
-            onClick={() => handlePageChange(currentPage + 1)}
-            className={`join-item btn btn-sm border-none rounded-r-md ${
-              currentPage === totalPages && "bg-gray"
-            }`}
-            disabled={currentPage === totalPages}
-          >
-            »
-          </button>
-        </div>
+        {paginatedCoupons?.length < perPageLimit && currentPage === 1 ? null : (
+          <div className="join w-full flex justify-center items-center mt-8 mb-4">
+            <button
+              onClick={() => handlePageChange(currentPage - 1)}
+              className={`join-item btn btn-sm border-none rounded-l-md ${
+                currentPage === 1 && "bg-gray"
+              }`}
+              disabled={currentPage === 1}
+            >
+              «
+            </button>
+            {Array.from({ length: totalPages }, (_, i) => i + 1).map(
+              (pageNum) => (
+                <button
+                  key={pageNum}
+                  onClick={() => handlePageChange(pageNum)}
+                  className={`join-item btn btn-sm border-none font-[Poppins] font-semibold text-xs flex items-center justify-center ${
+                    currentPage === pageNum &&
+                    "bg-[#1a1a1a] text-white hover:bg-[#1a1a1a] hover:text-white"
+                  }`}
+                >
+                  {pageNum}
+                </button>
+              )
+            )}
+            <button
+              onClick={() => handlePageChange(currentPage + 1)}
+              className={`join-item btn btn-sm border-none rounded-r-md ${
+                currentPage === totalPages && "bg-gray"
+              }`}
+              disabled={currentPage === totalPages}
+            >
+              »
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );
@@ -200,7 +202,11 @@ export const TrComponent = ({
         </div>
       </td>
       <td>
-        <p className="mr-16">{coupon?.daysLeft}</p>
+        <p className="mr-16">
+          {coupon?.daysLeft?.split(" ")[0] < 0
+            ? "0 days left"
+            : coupon?.daysLeft}
+        </p>
       </td>
       <td>
         <p className="mr-16">{coupon?.startDate.slice(0, 10)}</p>

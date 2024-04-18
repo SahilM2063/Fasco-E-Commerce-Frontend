@@ -97,41 +97,42 @@ const Customers = () => {
           </tbody>
         </table>
         {/* pagination */}
-
-        <div className="join w-full flex justify-center items-center mt-8 mb-4">
-          <button
-            onClick={() => handlePageChange(currentPage - 1)}
-            className={`join-item btn btn-sm border-none rounded-l-md ${
-              currentPage === 1 && "bg-gray"
-            }`}
-            disabled={currentPage === 1}
-          >
-            «
-          </button>
-          {Array.from({ length: totalPages }, (_, i) => i + 1).map(
-            (pageNum) => (
-              <button
-                key={pageNum}
-                onClick={() => handlePageChange(pageNum)}
-                className={`join-item btn btn-sm border-none font-[Poppins] font-semibold text-xs flex items-center justify-center ${
-                  currentPage === pageNum &&
-                  "bg-[#1a1a1a] text-white hover:bg-[#1a1a1a] hover:text-white"
-                }`}
-              >
-                {pageNum}
-              </button>
-            )
-          )}
-          <button
-            onClick={() => handlePageChange(currentPage + 1)}
-            className={`join-item btn btn-sm border-none rounded-r-md ${
-              currentPage === totalPages && "bg-gray"
-            }`}
-            disabled={currentPage === totalPages}
-          >
-            »
-          </button>
-        </div>
+        {paginatedUsers?.length < perPageLimit && currentPage === 1 ? null : (
+          <div className="join w-full flex justify-center items-center mt-8 mb-4">
+            <button
+              onClick={() => handlePageChange(currentPage - 1)}
+              className={`join-item btn btn-sm border-none rounded-l-md ${
+                currentPage === 1 && "bg-gray"
+              }`}
+              disabled={currentPage === 1}
+            >
+              «
+            </button>
+            {Array.from({ length: totalPages }, (_, i) => i + 1).map(
+              (pageNum) => (
+                <button
+                  key={pageNum}
+                  onClick={() => handlePageChange(pageNum)}
+                  className={`join-item btn btn-sm border-none font-[Poppins] font-semibold text-xs flex items-center justify-center ${
+                    currentPage === pageNum &&
+                    "bg-[#1a1a1a] text-white hover:bg-[#1a1a1a] hover:text-white"
+                  }`}
+                >
+                  {pageNum}
+                </button>
+              )
+            )}
+            <button
+              onClick={() => handlePageChange(currentPage + 1)}
+              className={`join-item btn btn-sm border-none rounded-r-md ${
+                currentPage === totalPages && "bg-gray"
+              }`}
+              disabled={currentPage === totalPages}
+            >
+              »
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );

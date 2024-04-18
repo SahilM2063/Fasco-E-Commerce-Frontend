@@ -4,6 +4,8 @@ import { useSelector, useDispatch } from "react-redux";
 import { getAllProductsAction } from "../../redux/slices/productSlice";
 import { useNavigate } from "react-router-dom";
 import downSvg from "../../assets/down.svg";
+import filledStar from "../../assets/filledStar.svg";
+import emptyStar from "../../assets/emptyStar.svg";
 import filterSVg from "../../assets/filter.svg";
 import closeMenu from "../../assets/closeMenu.svg";
 import { getAllCategoriesAction } from "../../redux/slices/categorySlice";
@@ -222,6 +224,26 @@ const Shop = () => {
   // handling pagination change
   const handlePageChange = (newPage) => {
     setCurrentPage(newPage);
+  };
+
+  const renderStars = (rating) => {
+    const filledStars = Array.from({ length: rating }, (_, index) => (
+      <img
+        key={`filled_${index}`}
+        src={filledStar}
+        alt="Filled Star"
+        className="md:w-3 sm:w-3"
+      />
+    ));
+    const emptyStars = Array.from({ length: 5 - rating }, (_, index) => (
+      <img
+        key={`empty_${index}`}
+        src={emptyStar}
+        alt="Empty Star"
+        className="md:w-3 sm:w-3"
+      />
+    ));
+    return [...filledStars, ...emptyStars];
   };
 
   return (
@@ -456,18 +478,9 @@ const Shop = () => {
                   <h2 className="text-2xl sm:text-lg font-extrabold text-[#484848]">
                     ₹ {product?.price}
                   </h2>
-
-                  {product?.qtyLeft > 0 ? (
-                    <span className="text-sm sm:text-[10px] text-green-500">
-                      {" "}
-                      In Stock{" "}
-                    </span>
-                  ) : (
-                    <span className="text-sm sm:text-[10px] text-red-500">
-                      {" "}
-                      Out of Stock
-                    </span>
-                  )}
+                  <div className="flex items-center">
+                    {renderStars(Math.floor(product?.averageRating))}
+                  </div>
                 </div>
               </div>
             );
@@ -475,40 +488,42 @@ const Shop = () => {
         </div>
 
         {/* pagination */}
-        <div className="join w-full flex justify-center items-center mt-8">
-          <button
-            onClick={() => handlePageChange(currentPage - 1)}
-            className={`join-item btn border-none rounded-l-md ${
-              currentPage === 1 && "bg-gray"
-            }`}
-            disabled={currentPage === 1}
-          >
-            «
-          </button>
-          {Array.from({ length: totalPages }, (_, i) => i + 1).map(
-            (pageNum) => (
-              <button
-                key={pageNum}
-                onClick={() => handlePageChange(pageNum)}
-                className={`join-item btn border-none w-10 h-10 font-[Poppins] font-semibold flex items-center justify-center ${
-                  currentPage === pageNum &&
-                  "bg-[#1a1a1a] text-white hover:bg-[#1a1a1a] hover:text-white"
-                }`}
-              >
-                {pageNum}
-              </button>
-            )
-          )}
-          <button
-            onClick={() => handlePageChange(currentPage + 1)}
-            className={`join-item btn border-none rounded-r-md ${
-              currentPage === totalPages && "bg-gray"
-            }`}
-            disabled={currentPage === totalPages}
-          >
-            »
-          </button>
-        </div>
+        {paginatedProducts?.length < perPageLimit && currentPage === 1 ? null : (
+          <div className="join w-full flex justify-center items-center mt-8">
+            <button
+              onClick={() => handlePageChange(currentPage - 1)}
+              className={`join-item btn border-none rounded-l-md ${
+                currentPage === 1 && "bg-gray"
+              }`}
+              disabled={currentPage === 1}
+            >
+              «
+            </button>
+            {Array.from({ length: totalPages }, (_, i) => i + 1).map(
+              (pageNum) => (
+                <button
+                  key={pageNum}
+                  onClick={() => handlePageChange(pageNum)}
+                  className={`join-item btn border-none w-10 h-10 font-[Poppins] font-semibold flex items-center justify-center ${
+                    currentPage === pageNum &&
+                    "bg-[#1a1a1a] text-white hover:bg-[#1a1a1a] hover:text-white"
+                  }`}
+                >
+                  {pageNum}
+                </button>
+              )
+            )}
+            <button
+              onClick={() => handlePageChange(currentPage + 1)}
+              className={`join-item btn border-none rounded-r-md ${
+                currentPage === totalPages && "bg-gray"
+              }`}
+              disabled={currentPage === totalPages}
+            >
+              »
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );
