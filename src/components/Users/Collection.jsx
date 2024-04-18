@@ -5,6 +5,7 @@ import womenFashion from "../../assets/womenFashion.jpeg";
 import kidFashion from "../../assets/kidsFashion.jpeg";
 import menAcce from "../../assets/menAcce.jpeg";
 import womenAcce from "../../assets/womenAcce.jpeg";
+import { Link } from "react-router-dom";
 
 const Collection = () => {
   return (
@@ -45,9 +46,9 @@ const Collection = () => {
                 )}
               </div>
             </div>
-            <button className="bg-black text-white tracking-wide text-sm md:text-xs sm:text-xs font-[Poppins] rounded-full px-10 md:px-6 sm:px-6 py-3 md:py-2 sm:py-2 mt-4 sm:mt-2">
+            <Link to={"/shop"}  className="bg-black text-white tracking-wide text-sm md:text-xs sm:text-xs font-[Poppins] rounded-full px-10 md:px-6 sm:px-6 py-3 md:py-2 sm:py-2 mt-4 sm:mt-2">
               Explore
-            </button>
+            </Link>
           </div>
         </div>
         <div className="row w-full flex sm:flex-col-reverse justify-between items-start gap-10 md:gap-0 sm:gap-6 h-[400px] sm:h-auto md:h-[300px] mb-16 md:mb-12 sm:mb-8">
@@ -79,9 +80,9 @@ const Collection = () => {
                 )}
               </div>
             </div>
-            <button className="bg-black text-white tracking-wide text-sm md:text-xs sm:text-xs font-[Poppins] rounded-full px-10 md:px-6 sm:px-6 py-3 md:py-2 sm:py-2 mt-4 sm:mt-2">
+            <Link to={"/shop"} className="bg-black text-white tracking-wide text-sm md:text-xs sm:text-xs font-[Poppins] rounded-full px-10 md:px-6 sm:px-6 py-3 md:py-2 sm:py-2 mt-4 sm:mt-2">
               Explore
-            </button>
+            </Link>
           </div>
           <div className="image-container w-full h-full rounded-md overflow-hidden">
             <img
@@ -127,9 +128,9 @@ const Collection = () => {
                 )}
               </div>
             </div>
-            <button className="bg-black text-white tracking-wide text-sm md:text-xs sm:text-xs font-[Poppins] rounded-full px-10 md:px-6 sm:px-6 py-3 md:py-2 sm:py-2 mt-4 sm:mt-2">
+            <Link to={"/shop"} className="bg-black text-white tracking-wide text-sm md:text-xs sm:text-xs font-[Poppins] rounded-full px-10 md:px-6 sm:px-6 py-3 md:py-2 sm:py-2 mt-4 sm:mt-2">
               Explore
-            </button>
+            </Link>
           </div>
         </div>
         <div className="row w-full flex sm:flex-col-reverse justify-between items-start gap-10 md:gap-0 sm:gap-6 h-[400px] sm:h-auto md:h-[300px] mb-16 md:mb-12 sm:mb-8">
@@ -161,9 +162,9 @@ const Collection = () => {
                 )}
               </div>
             </div>
-            <button className="bg-black text-white tracking-wide text-sm md:text-xs sm:text-xs font-[Poppins] rounded-full px-10 md:px-6 sm:px-6 py-3 md:py-2 sm:py-2 mt-4 sm:mt-2">
+            <Link to={"/shop"} className="bg-black text-white tracking-wide text-sm md:text-xs sm:text-xs font-[Poppins] rounded-full px-10 md:px-6 sm:px-6 py-3 md:py-2 sm:py-2 mt-4 sm:mt-2">
               Explore
-            </button>
+            </Link>
           </div>
           <div className="image-container w-full h-full sm:max-h-[230px] rounded-md overflow-hidden">
             <img
@@ -208,9 +209,9 @@ const Collection = () => {
                 )}
               </div>
             </div>
-            <button className="bg-black text-white tracking-wide text-sm md:text-xs sm:text-xs font-[Poppins] rounded-full px-10 md:px-6 sm:px-6 py-3 md:py-2 sm:py-2 mt-4 sm:mt-2">
+            <Link to={"/shop"} className="bg-black text-white tracking-wide text-sm md:text-xs sm:text-xs font-[Poppins] rounded-full px-10 md:px-6 sm:px-6 py-3 md:py-2 sm:py-2 mt-4 sm:mt-2">
               Explore
-            </button>
+            </Link>
           </div>
         </div>
       </div>

@@ -102,7 +102,7 @@ const Home = () => {
                   Today Sales
                 </span>
                 <span className="text-sm font-[Poppins] font-semibold">
-                  ₹ {todaySales?.sumOfSales}
+                  ₹ {todaySales?.sumOfSales || 0}
                 </span>
               </div>
               <div className="w-full flex-1 bg-[#E5ECF6]/20 rounded-md px-4 py-3 ">
