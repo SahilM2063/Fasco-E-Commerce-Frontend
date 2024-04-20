@@ -69,6 +69,7 @@ const OrderHistory = () => {
       </table>
 
       {/* pagination */}
+      
       {paginatedOrders?.length < perPageLimit && currentPage === 1 ? null : (
         <div className="join w-full flex justify-center items-center mt-8 mb-4">
           <button
