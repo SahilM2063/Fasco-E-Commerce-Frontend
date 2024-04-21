@@ -35,7 +35,6 @@ const ArrivalProductCard = ({ product }) => {
         </h2>
         <span className="text-sm text-red-500">
           {renderStars(Math.floor(product?.averageRating))}
-          {/* {product?.averageRating} */}
         </span>
       </div>
     </div>
