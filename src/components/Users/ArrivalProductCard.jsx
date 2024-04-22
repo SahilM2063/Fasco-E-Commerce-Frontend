@@ -33,9 +33,9 @@ const ArrivalProductCard = ({ product }) => {
         <h2 className="text-2xl font-extrabold text-[#484848]">
           ₹ {product?.price}
         </h2>
-        <span className="text-sm text-red-500">
+        <div className="flex items-center text-sm text-red-500">
           {renderStars(Math.floor(product?.averageRating))}
-        </span>
+        </div>
       </div>
     </div>
   );
