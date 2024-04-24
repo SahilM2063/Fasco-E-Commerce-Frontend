@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { loginUserAction } from "../../../redux/slices/userSlice.js";
 import googleSvg from "./assets/google.svg";
 import baseURL from "../../../utils/baseURL.js";
+import logImage from "../../../assets/signin.jpg";
 import { toast } from "react-toastify";
 import { isValidEmail } from "../../../utils/helper.js";
 import openEye from "../../../assets/openEye.svg";
@@ -64,10 +65,10 @@ const Login = () => {
 
   return (
     <div className="wrapper w-full h-[calc(100vh-104px)] px-32 md:px-10 sm:px-6 py-4">
-      <div className="w-full h-full flex justify-center items-center border rounded-3xl md:rounded-2xl sm:rounded-xl">
+      <div className="w-full h-full flex justify-center items-center border rounded-3xl md:rounded-2xl sm:rounded-xl overflow-hidden">
         <div className="img_container w-[50%] h-full md:hidden sm:hidden">
           <img
-            src={loginImg}
+            src={logImage}
             alt="loginImg"
             className="h-full object-cover md:hidden sm:hidden"
           />

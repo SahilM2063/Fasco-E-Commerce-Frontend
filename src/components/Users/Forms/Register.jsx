@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import registerImg from "./assets/registerImg.png";
+import regimage from "../../../assets/signup.jpg";
 import { useDispatch, useSelector } from "react-redux";
 import { registerUserAction } from "../../../redux/slices/userSlice";
 import { toast } from "react-toastify";
@@ -75,10 +76,10 @@ const Register = () => {
 
   return (
     <div className="wrapper w-full h-[calc(100vh-104px)] px-32 md:px-10 sm:px-6 py-4">
-      <div className="w-full h-full flex justify-center items-center border rounded-3xl md:rounded-2xl sm:rounded-xl">
+      <div className="w-full h-full flex justify-center items-center border rounded-3xl md:rounded-2xl sm:rounded-xl overflow-hidden">
         <div className="img_container w-[50%] h-full md:hidden sm:hidden">
           <img
-            src={registerImg}
+            src={regimage}
             alt="loginImg"
             className="h-full object-cover md:hidden sm:hidden"
           />
